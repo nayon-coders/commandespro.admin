@@ -1,0 +1,67 @@
+{
+  "project_info": {
+    "project_number": "656750425910",
+    "project_id": "grocaryecommerce",
+    "storage_bucket": "grocaryecommerce.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:656750425910:android:bb13acf3fb609614356597",
+        "android_client_info": {
+          "package_name": "com.commandespro.admin.app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCURgKrZeA7hKosqEIKwE8uX_IgzrmCnSk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:656750425910:android:baf230efc2ecdb6d356597",
+        "android_client_info": {
+          "package_name": "com.example.nectar"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCURgKrZeA7hKosqEIKwE8uX_IgzrmCnSk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:656750425910:android:ae22ca98f416f6e9356597",
+        "android_client_info": {
+          "package_name": "com.example.new_admin"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCURgKrZeA7hKosqEIKwE8uX_IgzrmCnSk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
