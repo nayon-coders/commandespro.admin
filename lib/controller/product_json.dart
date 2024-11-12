@@ -384,6 +384,17 @@ class ProductJson{
     "Zimbabwe"
   ];
 
+  //user Role
+  static final userRole=[
+    "Super Admin",
+    "Admin",
+    "Buyer",
+    "Preparer",
+    "Deliverer",
+    "Accounting",
+    "Sales",
+  ];
+
 
 
 }

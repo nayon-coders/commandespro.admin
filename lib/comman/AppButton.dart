@@ -10,11 +10,13 @@ class AppButton extends StatelessWidget {
         required this.text,
         this.isLoading = false,
         this.width = 200,
+        this.height = 38,
         this.bgColor = AppColors.primaryColor});
   final VoidCallback onClick;
   final String text;
   final bool isLoading;
   final double width;
+  final double height;
   final Color bgColor;
 
   @override
@@ -23,7 +25,7 @@ class AppButton extends StatelessWidget {
       onTap: onClick,
       child: Container(
         width: width,
-        height: 38,
+        height: height,
         padding:const EdgeInsets.only(left: 25, right: 25, top: 8, bottom: 8),
         decoration: BoxDecoration(
           color: bgColor,

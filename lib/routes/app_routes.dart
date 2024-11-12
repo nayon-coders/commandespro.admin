@@ -1,6 +1,9 @@
 import 'package:commandespro_admin/data/binding/category_binding.dart';
 import 'package:commandespro_admin/features/dashboard/screens/dashboard.dart';
 import 'package:commandespro_admin/features/products/screens/add_products.dart';
+import 'package:commandespro_admin/features/settings/screen/add_new_user.dart';
+import 'package:commandespro_admin/features/settings/screen/post_code.dart';
+import 'package:commandespro_admin/features/settings/screen/user_list.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -35,6 +38,24 @@ class AppPages{
           page: () => CategoryScreen(),
           binding: CategoryBinding()
       ),
+
+
+    //setting
+    GetPage(
+        name: AppRoute.add_new_user,
+        transition:Transition.fade ,
+        page: ()=>AddNewUser(),
+    ),
+    GetPage(
+      name: AppRoute.user_list,
+      transition:Transition.fade ,
+      page: ()=>UserList(),
+    ),
+    GetPage(
+        name: AppRoute.postal_code,
+      transition:Transition.fade ,
+      page: ()=>PostCode(),
+    )
 
   ];
 }
