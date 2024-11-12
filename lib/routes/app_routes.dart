@@ -1,4 +1,6 @@
 import 'package:commandespro_admin/data/binding/category_binding.dart';
+import 'package:commandespro_admin/features/ajouter_cmd/screen/add_client.dart';
+import 'package:commandespro_admin/features/ajouter_cmd/screen/add_cmd.dart';
 import 'package:commandespro_admin/features/dashboard/screens/dashboard.dart';
 import 'package:commandespro_admin/features/products/screens/add_products.dart';
 import 'package:commandespro_admin/features/settings/screen/add_new_user.dart';
@@ -55,7 +57,19 @@ class AppPages{
         name: AppRoute.postal_code,
       transition:Transition.fade ,
       page: ()=>PostCode(),
-    )
+    ),
 
+
+    GetPage(
+        name: AppRoute.add_cmd,
+        transition: Transition.fade,
+        page: ()=>AddCmd(),
+    ),
+
+    GetPage(
+      name: AppRoute.addClient,
+      transition: Transition.fade,
+      page: ()=>AddClient(),
+    ),
   ];
 }

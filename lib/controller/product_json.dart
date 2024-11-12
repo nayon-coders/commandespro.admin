@@ -395,6 +395,34 @@ class ProductJson{
     "Sales",
   ];
 
+  static final orderStatus=[
+    "En preparación",
+    "Livree",
+    "Annulee",
+  ];
+
+  static final deliveryBoy = [
+    "Jean Dupont",
+    "Marie Rousseau",
+    "Paul Martin",
+
+  ];
+
+  static final payment = [
+    "Prelevement SEPA",
+    "Virement",
+    "Carte Bancaire",
+
+  ];
+
+  static final status = [
+    "En Attente",
+    "Actif",
+    "Inactif",
+    "Blacklist",
+
+  ];
+
 
 
 }

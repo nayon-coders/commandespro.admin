@@ -17,6 +17,7 @@ class AppRoute {
   static const String add_new_user = '/add-new-user';
   static const String postal_code = '/postal-code';
   static const String add_cmd = '/add-cmd';
+  static const String addClient = '/add-client';
   static const String add_customer = '/add-customer';
   static const String customer_home = '/customer-home';
   static const String customer_list = '/customer-list';

@@ -70,7 +70,8 @@ class _AddNewUserState extends State<AddNewUser> {
                     AppInput(hint: "User's Last Name", controller: _lastName, text: "Last Name*"),
                     const SizedBox(height:20,),
 
-
+                    const Text("Role",style: TextStyle(fontSize: 16,fontWeight: FontWeight.w600,color: Colors.black),),
+                   const SizedBox(height: 10,),
                     DropDown2(
                         items: ProductJson.userRole,
                         value: selectedValue,

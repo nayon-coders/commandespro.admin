@@ -1,3 +1,4 @@
+import 'package:commandespro_admin/routes/app_pages.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hover_menu/hover_menu.dart';
@@ -158,10 +159,11 @@ class AppMenuBar extends StatelessWidget {
                       });
                     },
                     onTap: (){
+                      Get.toNamed(AppRoute.add_cmd);
                     },
                     child: Container(
-                      padding: EdgeInsets.only(left: 20, right: 20, top: 10, bottom: 10),
-                      decoration: BoxDecoration(
+                      padding:const EdgeInsets.only(left: 20, right: 20, top: 10, bottom: 10),
+                      decoration:const BoxDecoration(
                         color: Colors.white,
                       ),
                       child: Row(
@@ -182,8 +184,7 @@ class AppMenuBar extends StatelessWidget {
                         controller.onAddCustomerHome.value = isHovered;
                       });
                     },
-                    onTap: (){
-                    },
+                    onTap: ()=>Get.toNamed(AppRoute.addClient),
                     child: Container(
                       padding: EdgeInsets.only(left: 20, right: 20, top: 10, bottom: 10),
                       decoration: BoxDecoration(
