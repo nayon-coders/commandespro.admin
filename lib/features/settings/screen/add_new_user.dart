@@ -1,5 +1,7 @@
 import 'package:commandespro_admin/comman/AppButton.dart';
 import 'package:commandespro_admin/features/menus/screens/app_scaffold.dart';
+import 'package:commandespro_admin/features/settings/controller/admin.role.controller.dart';
+import 'package:commandespro_admin/features/settings/widgets/role_dorpdown.dart';
 import 'package:commandespro_admin/utility/app_const.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -9,14 +11,14 @@ import '../../../comman/dropdown2.dart';
 import '../../../controller/product_json.dart';
 import '../../../utility/text_style.dart';
 
-class AddNewUser extends StatefulWidget {
-   AddNewUser({super.key});
+class AddNewAdmin extends StatefulWidget {
+   AddNewAdmin({super.key});
 
   @override
-  State<AddNewUser> createState() => _AddNewUserState();
+  State<AddNewAdmin> createState() => _AddNewAdminState();
 }
 
-class _AddNewUserState extends State<AddNewUser> {
+class _AddNewAdminState extends State<AddNewAdmin> {
   final _email = TextEditingController();
 
   final _password = TextEditingController();
@@ -27,6 +29,8 @@ class _AddNewUserState extends State<AddNewUser> {
 
   String? selectedValue;
   bool isChecked = false;
+
+  final AdminRoleController controller = Get.find<AdminRoleController>();
 
   @override
   Widget build(BuildContext context) {
@@ -55,52 +59,45 @@ class _AddNewUserState extends State<AddNewUser> {
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                     Text("Add User",style: formTitleStyle(),),
+                     Obx(() {
+                       if(controller.isEdit.value){
+                          return Text("Edit User",style: formTitleStyle(),);
+                       }else{
+                          return Text("Add User",style: formTitleStyle(),);
+                       }
+                       }
+                     ),
                     const SizedBox(height: 20,),
 
-                    AppInput(hint: "Enter user Email", controller: _email, text: "Email(Username)*"),
+                    AppInput(hint: "Enter user Email", controller: controller.email.value, text: "Email(Username)*"),
                    const SizedBox(height:20,),
 
-                    AppInput(hint: "Password", controller: _password, text: "Password*"),
+                    AppInput(hint: "Password", controller:  controller.pass.value, text: "Password*"),
                     const SizedBox(height:20,),
 
-                    AppInput(hint: "User's First Name", controller: _firstName, text: "First Name*"),
+                    AppInput(hint: "User's First Name", controller:  controller.firstName.value, text: "First Name*"),
                     const SizedBox(height:15,),
 
-                    AppInput(hint: "User's Last Name", controller: _lastName, text: "Last Name*"),
+                    AppInput(hint: "User's Last Name", controller:  controller.lastName.value, text: "Last Name*"),
                     const SizedBox(height:20,),
 
                     const Text("Role",style: TextStyle(fontSize: 16,fontWeight: FontWeight.w600,color: Colors.black),),
                    const SizedBox(height: 10,),
-                    DropDown2(
-                        items: ProductJson.userRole,
-                        value: selectedValue,
-                        hint: "Role",
-                        onChange: (v){
-                          setState(() {
-                            selectedValue = v;
-                          });
-                        }
+                    AdminRoleList(),
+
+
+
+                    Obx((){
+                        return AppButton(
+                          isLoading: controller.isCreatingAdmin.value,
+                          onClick: (){
+                            controller.createNewAdmin();
+                          },
+                          text: "Add User",
+                          width: double.infinity,
+                        );
+                      }
                     ),
-
-                    const SizedBox(height: 30,),
-
-                    const Text("Access Rights",style:TextStyle(color: AppColors.primaryColor,fontSize: 16,fontWeight: FontWeight.bold)),
-                    const SizedBox(height: 10,),
-                    Padding(
-                      padding: const EdgeInsets.only(left: 20.0),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Icon(Icons.check_box,color: Colors.grey.shade300,size: 16,),
-                          Text("Full access to all features",style: pTextStyle(),),
-                        ],
-                      ),
-                    ),
-                   const SizedBox(height: 25,),
-
-                    AppButton(onClick: (){}, text: "Add User",width: double.infinity,),
                   ],
                 ),
               ),

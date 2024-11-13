@@ -50,7 +50,7 @@ class AppConfig{
   static const String SINGLE_ADMIN = "$BASE_URL/admins/";
   static const String ADMIN_GET_ALL = "$BASE_URL/admins/all";
   static const String ADMIN_DELETE = "$BASE_URL/admins/delete/";
-  static const String ADMIN_ROLE_GET = "$BASE_URL/admins/role";
+  static const String ADMIN_ROLE_GET = "$BASE_URL/admins/rolewithpermission";
   static const String ADMIN_ROLE_PERMISSION_GET = "$BASE_URL/admins/rolewithpermission";
 
 

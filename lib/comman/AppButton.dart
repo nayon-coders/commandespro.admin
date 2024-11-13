@@ -10,7 +10,7 @@ class AppButton extends StatelessWidget {
         required this.text,
         this.isLoading = false,
         this.width = 200,
-        this.height = 38,
+        this.height = 50,
         this.bgColor = AppColors.primaryColor});
   final VoidCallback onClick;
   final String text;

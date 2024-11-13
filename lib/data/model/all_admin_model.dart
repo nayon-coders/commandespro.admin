@@ -11,7 +11,7 @@ String allAdminListModelToJson(AllAdminListModel data) => json.encode(data.toJso
 class AllAdminListModel {
   final bool? success;
   final String? message;
-  final List<Datum>? data;
+  final List<SingleAdmin>? data;
 
   AllAdminListModel({
     this.success,
@@ -22,7 +22,7 @@ class AllAdminListModel {
   factory AllAdminListModel.fromJson(Map<String, dynamic> json) => AllAdminListModel(
     success: json["success"],
     message: json["message"],
-    data: json["data"] == null ? [] : List<Datum>.from(json["data"]!.map((x) => Datum.fromJson(x))),
+    data: json["data"] == null ? [] : List<SingleAdmin>.from(json["data"]!.map((x) => SingleAdmin.fromJson(x))),
   );
 
   Map<String, dynamic> toJson() => {
@@ -32,7 +32,7 @@ class AllAdminListModel {
   };
 }
 
-class Datum {
+class SingleAdmin {
   final int? id;
   final String? firstName;
   final String? lastName;
@@ -41,7 +41,7 @@ class Datum {
   final String? password;
   final List<Permission>? permissions;
 
-  Datum({
+  SingleAdmin({
     this.id,
     this.firstName,
     this.lastName,
@@ -51,7 +51,7 @@ class Datum {
     this.permissions,
   });
 
-  factory Datum.fromJson(Map<String, dynamic> json) => Datum(
+  factory SingleAdmin.fromJson(Map<String, dynamic> json) => SingleAdmin(
     id: json["id"],
     firstName: json["first_name"],
     lastName: json["last_name"],

@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_rx/get_rx.dart';
+import 'package:get/get_rx/src/rx_types/rx_types.dart';
 
 import '../../../app.config.dart';
 import '../../../data/model/all_order_model.dart';
@@ -30,7 +31,7 @@ class OrderController extends GetxController{
   RxList totalCancelOrder = [].obs;
   RxList totalReturnOrder = [].obs;
   RxList totalshippedr = [].obs;
-  RxList totalOrder = [].obs;
+  RxList<OrderItem> totalOrder = <OrderItem>[].obs;
   RxList totalLivraisonOrder = [].obs;
   RxList totalRegulOrder = [].obs;
   RxList totalCompleteOrder = [].obs;
@@ -54,7 +55,7 @@ class OrderController extends GetxController{
 
   //list of text editing controller
   var textEditingController = [].obs;
-  var searchResults = [].obs;
+  RxList<OrderItem> searchResults = <OrderItem>[].obs;
 
 
   //
@@ -119,20 +120,26 @@ class OrderController extends GetxController{
   }
 
   // New method to search orders by company name
-  void searchOrderByCompanyName(String companyName,
-      RxList<dynamic> totalOrder) {
-    print("searching for $companyName");
+  void searchOrderByCompanyName(String companyName, List<OrderItem> totalOrder) {
+    // Ensure the search results list is cleared each time
+    searchResults.value = [];
+    // totalOrder.refresh();
+    print("Searching for ${totalOrder.length}");
+    print("Searching for ${searchResults.length}");
+
     if (companyName.isEmpty) {
-      // If the search input is empty, return all orders
-      searchResults.value = totalOrder;
+      // Return all orders if no search term is provided
+      searchResults.value = totalOrder.toSet().toList(); // Remove any duplicates if they exist
     } else {
-      // Filter the orders based on the company name
-      searchResults.value = totalOrder.where((order) =>
-          order.company.toLowerCase().contains(companyName
-              .toLowerCase()) // Assuming companyName is a field in OrderModel
-      ).toList(); // Convert the Iterable to a List
+      // Filter orders by company name, ignoring case
+      searchResults.value = totalOrder
+          .where((order) => order.company != null && // Check that company is not null
+          order.company!.toLowerCase().contains(companyName.toLowerCase()))
+          .toSet() // Remove duplicates
+          .toList();
     }
-    print("searching for $searchResults");
+
+    print("Search results: $searchResults");
     update();
   }
 

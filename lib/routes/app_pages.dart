@@ -14,7 +14,9 @@ class AppRoute {
   static const String customers = '/customers';
   static const String settings = '/settings';
   static const String user_list = '/user-list';
+  static const String admin_list = '/admin-list';
   static const String add_new_user = '/add-new-user';
+  static const String edit_new_user = '/edit-new-user';
   static const String postal_code = '/postal-code';
   static const String add_cmd = '/add-cmd';
   static const String addClient = '/add-client';
@@ -27,6 +29,7 @@ class AppRoute {
   static const String customer_assets = '/customer-assets';
   static const String pages = '/app-pages';
   static const String setting = '/app-seetting';
+  static const String profile = '/profile';
   static const String login = '/login';
   static const String register = '/register';
   static const String forgot_password = '/forgot-password';

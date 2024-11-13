@@ -55,7 +55,7 @@ class AppMenus{
         {
           "title": "USER LIST",
           "sub_items":[] ,//no sub items
-          "page" : AppRoute.user_list
+          "page" : AppRoute.admin_list
         },
         {
           "title": "ADD NEW USER",
