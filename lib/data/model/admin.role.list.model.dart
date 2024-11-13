@@ -33,21 +33,45 @@ class AdminRoleListModel {
 }
 
 class SingleAdminRole {
-  final int? id;
-  final String? name;
+  final int? roleId;
+  final String? roleName;
+  final List<Permission>? permissions;
 
   SingleAdminRole({
-    this.id,
-    this.name,
+    this.roleId,
+    this.roleName,
+    this.permissions,
   });
 
   factory SingleAdminRole.fromJson(Map<String, dynamic> json) => SingleAdminRole(
-    id: json["id"],
-    name: json["name"],
+    roleId: json["role_id"],
+    roleName: json["role_name"],
+    permissions: json["permissions"] == null ? [] : List<Permission>.from(json["permissions"]!.map((x) => Permission.fromJson(x))),
   );
 
   Map<String, dynamic> toJson() => {
-    "id": id,
-    "name": name,
+    "role_id": roleId,
+    "role_name": roleName,
+    "permissions": permissions == null ? [] : List<dynamic>.from(permissions!.map((x) => x.toJson())),
+  };
+}
+
+class Permission {
+  final String? section;
+  final List<String>? name;
+
+  Permission({
+    this.section,
+    this.name,
+  });
+
+  factory Permission.fromJson(Map<String, dynamic> json) => Permission(
+    section: json["section"],
+    name: json["name"] == null ? [] : List<String>.from(json["name"]!.map((x) => x)),
+  );
+
+  Map<String, dynamic> toJson() => {
+    "section": section,
+    "name": name == null ? [] : List<dynamic>.from(name!.map((x) => x)),
   };
 }

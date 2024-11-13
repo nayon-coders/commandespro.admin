@@ -1,4 +1,5 @@
 import 'package:commandespro_admin/data/json/menus_list.dart';
+import 'package:commandespro_admin/features/menus/widgets/app_drawer_menu.dart';
 import 'package:commandespro_admin/utility/app_const.dart';
 import 'package:commandespro_admin/utility/text_style.dart';
 import 'package:flutter/material.dart';
@@ -26,6 +27,7 @@ class _AppScaffoldState extends State<AppScaffold> {
 
     return Scaffold(
       backgroundColor: AppColors.scaffoldColor,
+      drawer: AppMenuDrawer(),
       body: SafeArea(
         child: ListView(
 

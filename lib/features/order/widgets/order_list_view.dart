@@ -7,10 +7,13 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../../../comman/app_table/table.header.dart';
+import '../../../data/model/all_order_model.dart';
 
 class OrderList extends StatelessWidget {
   final OrderController controller;
-   OrderList({super.key, required this.controller});
+
+  final List<OrderItem>? allOrders;
+   OrderList({super.key, required this.controller, required this.allOrders});
 
   final TextEditingController _textEditingController = TextEditingController();
 
@@ -33,10 +36,10 @@ class OrderList extends StatelessWidget {
   Widget build(BuildContext context) {
     return ListView.builder(
       //data length
-      itemCount: controller.allOrderModel.value.data!.length,
+      itemCount: allOrders?.length,
       itemBuilder: (context, index){
         //store data variable
-        var data = controller.allOrderModel.value.data![index] ;
+        var data = allOrders![index] ;
         return Container(
           //margin:const EdgeInsets.only(bottom:5,top: 5),
           padding:const EdgeInsets.only(left: 5, right: 5, bottom: 5,top: 5),

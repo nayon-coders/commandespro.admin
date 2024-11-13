@@ -10,7 +10,6 @@ class ProductBinding extends Bindings{
     // TODO: implement dependencies
 
     Get.lazyPut<ProductController>(()=>ProductController());
-    Get.lazyPut<PostCodeController>(()=>PostCodeController());
   }
 
 

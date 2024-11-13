@@ -40,7 +40,7 @@ class ProductController extends GetxController{
 
 
   Rx<ProductListModel> productListModel = ProductListModel().obs;
-  RxList searchResults = [].obs;
+  RxList<SingleProducts> singleProductsList = <SingleProducts>[].obs;
   Rx<SingleProducts> selectedSingleProductListModel = SingleProducts().obs;
 
 
@@ -55,9 +55,15 @@ class ProductController extends GetxController{
   //get all product
   getAllProduct()async{
     isGettingData.value = true;
+
     var res = await ApiService().getApi(AppConfig.PRODUCT_GET);
+    singleProductsList.clear();
     if(res.statusCode == 200){
       productListModel.value = ProductListModel.fromJson(jsonDecode(res.body));
+      for(var i in productListModel.value.data!){
+        addProductListTextEditing(i);
+        singleProductsList.add(i);
+      }
 
     }
     isGettingData.value = false;
@@ -66,18 +72,18 @@ class ProductController extends GetxController{
 
 
   // New method to search orders by company name
-  void searchOrderByCompanyName(String companyName) {
-    print("searching for $companyName");
-    if (companyName.isEmpty) {
-      // If the search input is empty, return all orders
-      searchResults.value = productListModel.value.data!;
+  void searchOrderByCompanyName(String query) {
+    if(query.isEmpty){
+      singleProductsList.value = productListModel.value.data!;
+      update();
+      return;
     } else {
       // Filter the orders based on the company name
-      searchResults.value = productListModel.value.data!.where((order) =>
-          order.name!.toLowerCase().contains(companyName.toLowerCase()) // Assuming companyName is a field in OrderModel
+      singleProductsList.value = productListModel.value.data!.where((order) =>
+          order.name!.toLowerCase().contains(query.toLowerCase()) // Assuming companyName is a field in OrderModel
       ).toList(); // Convert the Iterable to a List
     }
-    print("searching for $searchResults");
+    print("searching for $singleProductsList");
     update();
   }
 
@@ -102,6 +108,7 @@ class ProductController extends GetxController{
       "short_description": productShortDes.value.text,
       "tax": tax.value,
       "country": country.value,
+      "stock" : productStock.value.text,
       "purchase_price": productPurchasePrice.value.text,
       "regular_price": restaurantPrice.value.text,
       "selling_price": resellerPrice.value.text,
@@ -146,6 +153,7 @@ class ProductController extends GetxController{
       "tax": tax.value,
       "country": country.value,
       "purchase_price": productPurchasePrice.value.text,
+      "stock" : productStock.value.text,
       "regular_price": restaurantPrice.value.text,
       "selling_price": resellerPrice.value.text,
       "whole_price": wholesalersPrice.value.text,
@@ -219,6 +227,57 @@ class ProductController extends GetxController{
     }
   }
 
+
+  // list for
+  RxList<TextEditingController> productPurchasePriceList = <TextEditingController>[].obs;
+  RxList<TextEditingController> productTypesList = <TextEditingController>[].obs;
+  RxList<TextEditingController> stock = <TextEditingController>[].obs;
+  RxList<TextEditingController> units = <TextEditingController>[].obs;
+  RxList<TextEditingController> origin = <TextEditingController>[].obs;
+  RxList<TextEditingController> status = <TextEditingController>[].obs;
+
+  //add add list for product
+  addProductListTextEditing(SingleProducts data){
+    productPurchasePriceList.add(TextEditingController(text: data.purchasePrice.toString()));
+    productTypesList.add(TextEditingController(text: data.productType.toString()));
+    stock.add(TextEditingController(text: data.isStock.toString()));
+    units.add(TextEditingController(text: data.unit.toString()));
+    origin.add(TextEditingController(text: data.country.toString()));
+    status.add(TextEditingController(text: data.status.toString()));
+  }
+
+  //edit info from list
+  RxBool isEditProductList = false.obs;
+  editProductList(id, index)async{
+    isEditProductList.value = true;
+
+
+    var data = {
+      "product_type": productTypesList[index].value.text,
+      "unit": units[index].value.text,
+      "country": origin[index].value.text,
+      "stock" : stock[index].value.text,
+      "purchase_price": productPurchasePriceList[index].value.text,
+    };
+    print("data ---- ${data}");
+
+    var res = await ApiService().putApi(AppConfig.PRODUCT_UPDATE+"$id", data);
+
+    if(res.statusCode == 200){
+      getAllProduct();
+      Get.snackbar("Success!", "Product updated success", backgroundColor: Colors.green);
+      clearAll();
+    }else{
+      Get.snackbar("Error!", "Something went wrong. Status Code: ${res.statusCode}", backgroundColor: Colors.red);
+    }
+    getAllProduct();
+    isEditProductList.value = false;
+
+
+  }
+
+
+
   clearAll(){
     isEdit.value = false;
     mainCatId.value = "";
@@ -240,6 +299,9 @@ class ProductController extends GetxController{
     subCatListId.value.clear();
 
   }
+
+
+
 
 
 }
