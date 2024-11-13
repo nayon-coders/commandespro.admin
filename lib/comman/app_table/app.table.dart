@@ -109,6 +109,7 @@
 // }
 
 
+import 'package:commandespro_admin/utility/app_const.dart';
 import 'package:flutter/material.dart';
 
 
@@ -116,7 +117,7 @@ import 'package:flutter/material.dart';
 class AppTable extends StatelessWidget {
   AppTable({super.key, this. onPageFront, required this.headersChildren, required this.row, required this.onSearch, required this.searchController, required this.title, this.onChanged, this.isSearchShow = true, this.onPageBack, this.pageLength});
   final List<Widget> headersChildren;
-  final Color headerBg = Colors.green;
+  final Color headerBg = AppColors.primaryColor;
   final Widget row;
   final VoidCallback onSearch;
   final TextEditingController searchController;
@@ -181,8 +182,8 @@ class AppTable extends StatelessWidget {
                   onTap: onSearch,
                   child: Container(
                     width: 70, height: 40,
-                    decoration:const BoxDecoration(
-                      color: Colors.teal,
+                    decoration: BoxDecoration(
+                      color: AppColors.primaryColor,
                     ),
                     child: const Center(child: Text("Search",
                       style: TextStyle(

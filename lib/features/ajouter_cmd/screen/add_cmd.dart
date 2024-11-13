@@ -1,3 +1,4 @@
+import 'package:commandespro_admin/features/ajouter_cmd/controller/controller.dart';
 import 'package:commandespro_admin/features/ajouter_cmd/widget/input_filed.dart';
 import 'package:commandespro_admin/features/menus/screens/app_scaffold.dart';
 import 'package:flutter/material.dart';
@@ -19,6 +20,7 @@ class AddCmd extends StatefulWidget {
 }
 
 class _AddCmdState extends State<AddCmd> {
+  final ClientController controller = Get.find<ClientController>();
   final _orderNumber = TextEditingController();
   final _client  = TextEditingController();
   final _email  = TextEditingController();
@@ -141,7 +143,7 @@ class _AddCmdState extends State<AddCmd> {
                            DataCell(
                                SizedBox(
                                  height: 35,
-                                 width: 150,
+                                 width: 200,
                                  child: InputFiled(
                                      hint: "Nom du product", controller: _productNumber),
                                )
@@ -159,7 +161,7 @@ class _AddCmdState extends State<AddCmd> {
 
 
                            DataCell(SizedBox(
-                             width: 100,
+                             width: 120,
                              child: InputFiled(
                                maxLine: 4,
                                  hint: "Commentaire", controller: _description),

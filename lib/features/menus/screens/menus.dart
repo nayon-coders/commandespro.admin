@@ -44,6 +44,8 @@ class AppMenuBar extends StatelessWidget {
                         onHover: (isHovered) {
                           WidgetsBinding.instance!.addPostFrameCallback((_) {
                            // controller.selectedMenuId.value = -1;
+                            controller.onAddCustomerClick.value = false;
+                            controller.onAddCMDClick.value = false;
                             controller.onHoverSubMenuId.value = {};
                             controller.onAddCMDHover.value = false;
                             controller.onAddCustomerHome.value = false;
@@ -81,6 +83,8 @@ class AppMenuBar extends StatelessWidget {
                             WidgetsBinding.instance.addPostFrameCallback((_) {
                               controller.selectedMenuId.value = -1;
                               controller.onAddCMDHover.value = false;
+                              controller.onAddCustomerClick.value = false;
+                              controller.onAddCMDClick.value = false;
                               controller.onAddCustomerHome.value = false;
                               // Set the hover state based on the item's "title" property or any other unique identifier
                               controller.onHoverSubMenuId.value = isHovered ? item : null;
@@ -159,6 +163,8 @@ class AppMenuBar extends StatelessWidget {
                       });
                     },
                     onTap: (){
+                      controller.onAddCustomerClick.value = false;
+                      controller.onAddCMDClick.value = true;
                       Get.toNamed(AppRoute.add_cmd);
                     },
                     child: Container(
@@ -169,7 +175,7 @@ class AppMenuBar extends StatelessWidget {
                       child: Row(
                         children: [
                           Icon(Icons.shopping_cart_outlined, color:  controller.onAddCMDHover.value ? Colors.black: AppColors.primaryColor,), //icon
-                          Text("AJOUTER UNE CMD", style: TextStyle(color:  controller.onAddCMDHover.value ? Colors.black: AppColors.primaryColor, fontSize: 16, fontWeight: FontWeight.w600),), //text
+                          Text("AJOUTER UNE CMD", style: TextStyle(color:  controller.onAddCMDHover.value ||  controller.onAddCMDClick.value  ? Colors.black: AppColors.primaryColor, fontSize: 16, fontWeight: FontWeight.w600),), //text
                         ],
                       ),
                     ),
@@ -184,7 +190,11 @@ class AppMenuBar extends StatelessWidget {
                         controller.onAddCustomerHome.value = isHovered;
                       });
                     },
-                    onTap: ()=>Get.toNamed(AppRoute.addClient),
+                    onTap: (){
+                      controller.onAddCMDClick.value = false;
+                      controller.onAddCustomerClick.value = true;
+                      Get.toNamed(AppRoute.addClient);
+                   },
                     child: Container(
                       padding: EdgeInsets.only(left: 20, right: 20, top: 10, bottom: 10),
                       decoration: BoxDecoration(
@@ -193,7 +203,7 @@ class AppMenuBar extends StatelessWidget {
                       child: Row(
                         children: [
                           Icon(Icons.shopping_cart_outlined, color:  controller.onAddCustomerHome.value ? Colors.black: AppColors.primaryColor,), //icon
-                          Text("AJUTRE UN CLIENT".tr, style: TextStyle(color:  controller.onAddCustomerHome.value ? Colors.black: AppColors.primaryColor, fontSize: 16, fontWeight: FontWeight.w600),), //text
+                          Text("AJUTRE UN CLIENT".tr, style: TextStyle(color:  controller.onAddCustomerHome.value || controller.onAddCustomerClick.value ? Colors.black: AppColors.primaryColor, fontSize: 16, fontWeight: FontWeight.w600),), //text
                         ],
                       ),
                     ),

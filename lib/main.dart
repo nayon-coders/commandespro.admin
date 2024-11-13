@@ -1,3 +1,4 @@
+import 'package:commandespro_admin/features/auth/screen/auth_view.dart';
 import 'package:commandespro_admin/features/dashboard/screens/dashboard.dart';
 import 'package:commandespro_admin/features/products/screens/add_products.dart';
 import 'package:commandespro_admin/routes/app_pages.dart';
@@ -66,8 +67,9 @@ class MyApp extends StatelessWidget {
       ),
       getPages: AppPages().route,
       initialBinding: InitBinding(),
+    initialRoute: AppRoute.login,
     //  home: Dashboard(),
-      home: Dashboard(),
+     // home: AuthView(),
     );
   }
 }

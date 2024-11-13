@@ -8,5 +8,8 @@ class AppMenuController extends GetxController{
    RxBool onAddCMDHover = false.obs;
    RxBool onAddCustomerHome = false.obs;
 
+   RxBool onAddCustomerClick = false.obs;
+   RxBool onAddCMDClick = false.obs;
+
 
 }
