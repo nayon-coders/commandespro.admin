@@ -4,11 +4,11 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../../../comman/AppButton.dart';
+import '../../../comman/app_input.dart';
 import '../../../comman/dropdown2.dart';
 import '../../../controller/product_json.dart';
 import '../../../utility/app_const.dart';
 import '../../../utility/text_style.dart';
-import '../../../widgets/app_input.dart';
 import '../widget/vta_list_tile.dart';
 
 class AddCmd extends StatefulWidget {

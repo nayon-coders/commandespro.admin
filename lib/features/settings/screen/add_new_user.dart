@@ -1,10 +1,10 @@
 import 'package:commandespro_admin/comman/AppButton.dart';
 import 'package:commandespro_admin/features/menus/screens/app_scaffold.dart';
 import 'package:commandespro_admin/utility/app_const.dart';
-import 'package:commandespro_admin/widgets/app_input.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import '../../../comman/app_input.dart';
 import '../../../comman/dropdown2.dart';
 import '../../../controller/product_json.dart';
 import '../../../utility/text_style.dart';

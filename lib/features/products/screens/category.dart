@@ -10,7 +10,7 @@ import 'package:get/get.dart';
 import '../../../comman/app_network_image.dart';
 import '../../../controller/firebase.image.controller.dart';
 import '../../../data/model/main.category.model.dart';
-import '../../../widgets/app_input.dart';
+import '../../../comman/app_input.dart';
 class CategoryScreen extends StatefulWidget {
   const CategoryScreen({super.key});
 

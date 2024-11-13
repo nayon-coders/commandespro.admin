@@ -4,11 +4,11 @@ import 'package:commandespro_admin/features/menus/screens/app_scaffold.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import '../../../comman/app_input.dart';
 import '../../../comman/dropdown2.dart';
 import '../../../controller/product_json.dart';
 import '../../../utility/app_const.dart';
 import '../../../utility/text_style.dart';
-import '../../../widgets/app_input.dart';
 
 class AddClient extends StatefulWidget {
    AddClient({super.key});

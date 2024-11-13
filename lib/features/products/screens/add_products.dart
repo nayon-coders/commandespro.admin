@@ -2,7 +2,7 @@ import 'package:commandespro_admin/features/menus/screens/app_scaffold.dart';
 import 'package:commandespro_admin/features/products/controller/product_controller.dart';
 import 'package:commandespro_admin/utility/app_const.dart';
 import 'package:commandespro_admin/utility/text_style.dart';
-import 'package:commandespro_admin/widgets/app_input.dart';
+import 'package:commandespro_admin/comman/app_input.dart';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
