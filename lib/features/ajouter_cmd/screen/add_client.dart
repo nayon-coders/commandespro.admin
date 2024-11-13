@@ -62,7 +62,7 @@ class _AddClientState extends State<AddClient> {
               Container(
                 padding:const EdgeInsets.all(20),
                 decoration: BoxDecoration(
-                  color: AppColors.lighGry,
+                  color: Colors.white,
                   borderRadius: BorderRadius.circular(10),
                   boxShadow: [
                     BoxShadow(
@@ -78,8 +78,9 @@ class _AddClientState extends State<AddClient> {
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text("Ajouter un Client",style: formTitleStyle(),),
-                    Text("Choisir le profil du client *",style: pTextStyle(),),
+                    const Text("Ajouter un Client",style: TextStyle(fontSize: 40,fontWeight: FontWeight.bold,color: AppColors.primaryColor),),
+                    const SizedBox(height: 15,),
+                    Text("Choisir le profil du client *",style: boldTextStyle(),),
                     const SizedBox(height: 20,),
                     Row(
                       children: [

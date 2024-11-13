@@ -1,6 +1,7 @@
 import 'package:commandespro_admin/data/binding/category_binding.dart';
 import 'package:commandespro_admin/features/ajouter_cmd/screen/add_client.dart';
 import 'package:commandespro_admin/features/ajouter_cmd/screen/add_cmd.dart';
+import 'package:commandespro_admin/features/customers_screen/screen/customer_screen.dart';
 import 'package:commandespro_admin/features/dashboard/screens/dashboard.dart';
 import 'package:commandespro_admin/features/products/screens/add_products.dart';
 import 'package:commandespro_admin/features/settings/screen/add_new_user.dart';
@@ -70,6 +71,12 @@ class AppPages{
       name: AppRoute.addClient,
       transition: Transition.fade,
       page: ()=>AddClient(),
+    ),
+
+    GetPage(
+      name: AppRoute.customers,
+      transition: Transition.fade,
+      page: ()=>CustomerScreen(),
     ),
   ];
 }

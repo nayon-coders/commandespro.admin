@@ -12,6 +12,7 @@ TextStyle h1TextStyle() => const TextStyle(color: AppColors.textColor, fontSize:
 
 // p style for the app
 TextStyle pTextStyle() => const TextStyle(color: AppColors.textColor, fontSize: 16, fontWeight: FontWeight.w400);
+TextStyle boldTextStyle() => const TextStyle(color: AppColors.textColor, fontSize: 18, fontWeight: FontWeight.w600);
 TextStyle formTitleStyle() => const TextStyle(
     fontSize: 18,
     fontWeight: FontWeight.bold,

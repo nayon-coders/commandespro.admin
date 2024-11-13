@@ -40,13 +40,13 @@ class _AddCmdState extends State<AddCmd> {
     return AppScaffold(
         body:Container(
           width: Get.width,
-          padding:const EdgeInsets.only(left: 100, right: 100, top: 40, bottom: 50),
+          padding:const EdgeInsets.only(left: 200, right: 200, top: 40, bottom: 50),
           child: Column(
             children: [
               Container(
                 padding:const EdgeInsets.all(20),
                 decoration: BoxDecoration(
-                  color: AppColors.lighGry,
+                  color: Colors.white,
                   borderRadius: BorderRadius.circular(10),
                   boxShadow: [
                     BoxShadow(
@@ -62,8 +62,8 @@ class _AddCmdState extends State<AddCmd> {
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const Center(child: Text("Ajouter une Commande",style: TextStyle(fontWeight: FontWeight.w600,fontSize: 30,color: AppColors.primaryColor))),
-                    const SizedBox(height: 20,),
+                    const Center(child: Text("Ajouter une Commande",style: TextStyle(fontWeight: FontWeight.w600,fontSize: 40,color: AppColors.primaryColor))),
+                    const SizedBox(height: 10,),
                    const Text("Détails de la commande",style: TextStyle(fontSize: 18,fontWeight: FontWeight.w600,color: AppColors.textDarkColor)),
 
                     AppInput(hint: "Enter order number ", controller: _orderNumber, text: "Numéro de commande :"),
@@ -122,7 +122,7 @@ class _AddCmdState extends State<AddCmd> {
                     //data table product name,quantity,vat
                     DataTable(
                       border: TableBorder.all(color: Colors.grey),
-                      columnSpacing: 115,
+                      //columnSpacing: 100,
                       dataRowMaxHeight: 110,
                       dataRowMinHeight: 110,
                       headingRowColor:const WidgetStatePropertyAll(AppColors.primaryColor),
@@ -141,7 +141,7 @@ class _AddCmdState extends State<AddCmd> {
                            DataCell(
                                SizedBox(
                                  height: 35,
-                                 width: 100,
+                                 width: 150,
                                  child: InputFiled(
                                      hint: "Nom du product", controller: _productNumber),
                                )
@@ -168,7 +168,7 @@ class _AddCmdState extends State<AddCmd> {
 
                            DataCell(SizedBox(
                              height: 35,
-                             width: 100,
+                             width: 150,
                              child: InputFiled(
                                  hint: "Prix Unitaire HT", controller: _priceVat),
                            )),
