@@ -53,7 +53,7 @@ class ProductController extends GetxController{
   }
 
   //get all product
-  getAllProduct()async{
+  Future<List<SingleProducts>?> getAllProduct()async{
     isGettingData.value = true;
 
     var res = await ApiService().getApi(AppConfig.PRODUCT_GET);
@@ -67,6 +67,8 @@ class ProductController extends GetxController{
 
     }
     isGettingData.value = false;
+
+    return  productListModel.value.data;
 
   }
 
@@ -83,7 +85,6 @@ class ProductController extends GetxController{
           order.name!.toLowerCase().contains(query.toLowerCase()) // Assuming companyName is a field in OrderModel
       ).toList(); // Convert the Iterable to a List
     }
-    print("searching for $singleProductsList");
     update();
   }
 
@@ -161,7 +162,6 @@ class ProductController extends GetxController{
       "images": convertedImage.isEmpty ? productImages.value : convertedImage,
       "subcategories": subCatListId.value,
     };
-    print("data ---- ${data}");
 
     var res = await ApiService().putApi(AppConfig.PRODUCT_UPDATE+"$id", data);
 
@@ -259,7 +259,7 @@ class ProductController extends GetxController{
       "stock" : stock[index].value.text,
       "purchase_price": productPurchasePriceList[index].value.text,
     };
-    print("data ---- ${data}");
+
 
     var res = await ApiService().putApi(AppConfig.PRODUCT_UPDATE+"$id", data);
 

@@ -1,6 +1,7 @@
 import 'package:commandespro_admin/comman/app_input.dart';
 import 'package:commandespro_admin/features/ajouter_cmd/widget/input_filed.dart';
 import 'package:commandespro_admin/features/menus/screens/app_scaffold.dart';
+import 'package:commandespro_admin/features/settings/controller/admin.role.controller.dart';
 import 'package:commandespro_admin/routes/app_routes.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -23,6 +24,7 @@ class ProductList extends StatefulWidget {
 
 class _ProductListState extends State<ProductList> {
   ProductController _productController = Get.find();
+  final AdminRoleController adminRoleController = Get.find();
 
   final _searchController = TextEditingController();
 

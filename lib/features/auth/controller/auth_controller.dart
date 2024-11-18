@@ -1,5 +1,5 @@
 import 'dart:convert';
-
+import 'dart:html' as html;
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
@@ -69,7 +69,8 @@ class AuthController extends GetxController {
 
     if(response.statusCode == 200){
 
-      sharedPreferences?.setString("token", data["data"]["token"].toString());
+      html.window.localStorage["token"] = data["data"]["token"].toString();
+    sharedPreferences?.setString("token", data["data"]["token"].toString());
 
       await getMyProfile();
       if(sharedPreferences!.getString("role") != null){

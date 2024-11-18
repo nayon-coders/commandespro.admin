@@ -1,15 +1,23 @@
+
+
+import 'package:commandespro_admin/comman/app_input.dart';
+import 'package:commandespro_admin/comman/dropdown2.dart';
+import 'package:commandespro_admin/controller/date_picker.dart';
 import 'package:commandespro_admin/features/ajouter_cmd/controller/controller.dart';
 import 'package:commandespro_admin/features/ajouter_cmd/widget/input_filed.dart';
+import 'package:commandespro_admin/features/ajouter_cmd/widget/selecte_delivery_address.dart';
+import 'package:commandespro_admin/features/customers_screen/controller/user.controller.dart';
 import 'package:commandespro_admin/features/menus/screens/app_scaffold.dart';
+import 'package:commandespro_admin/features/products/controller/product_controller.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../../../comman/AppButton.dart';
-import '../../../comman/app_input.dart';
-import '../../../comman/dropdown2.dart';
-import '../../../controller/product_json.dart';
 import '../../../utility/app_const.dart';
 import '../../../utility/text_style.dart';
+import '../widget/select_customer.dart';
+import '../widget/select_product.dart';
 import '../widget/vta_list_tile.dart';
 
 class AddCmd extends StatefulWidget {
@@ -20,13 +28,11 @@ class AddCmd extends StatefulWidget {
 }
 
 class _AddCmdState extends State<AddCmd> {
-  final ClientController controller = Get.find<ClientController>();
-  final _orderNumber = TextEditingController();
-  final _client  = TextEditingController();
-  final _email  = TextEditingController();
-  final _phone  = TextEditingController();
-  final _address  = TextEditingController();
-  final _datetime = TextEditingController();
+  final CMDController controller = Get.find<CMDController>();
+  final AppUserController customerController = Get.put(AppUserController());
+  final ProductController productController = Get.find();
+  final DatePickerController datatimeController = Get.put(DatePickerController());
+ 
   final _productNumber = TextEditingController();
   final _vat = TextEditingController();
   final _quantity= TextEditingController();
@@ -36,6 +42,20 @@ class _AddCmdState extends State<AddCmd> {
 
   String? selectedValue;
   String? selectStatus;
+  
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+
+    WidgetsBinding.instance!.addPostFrameCallback((timeStamp) async{
+
+       customerController.getAllUser("");
+      var data = await productController.getAllProduct();
+       controller.selectedProduct.value = data!.first;
+       controller.quantity.value[0].text = "1";
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -64,150 +84,330 @@ class _AddCmdState extends State<AddCmd> {
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const Center(child: Text("Ajouter une Commande",style: TextStyle(fontWeight: FontWeight.w600,fontSize: 40,color: AppColors.primaryColor))),
-                    const SizedBox(height: 10,),
-                   const Text("Détails de la commande",style: TextStyle(fontSize: 18,fontWeight: FontWeight.w600,color: AppColors.textDarkColor)),
+                    Center(
+                      child: Text("Add an Order",
+                        style: TextStyle(
+                          fontWeight: FontWeight.w600,
+                          fontSize: 50,
+                          color: AppColors.primaryColor
+                        ),
+                      ),
+                    ),
+                    SizedBox(height: 20,),
 
-                    AppInput(hint: "Enter order number ", controller: _orderNumber, text: "Numéro de commande :"),
-                    const SizedBox(height:20,),
+                  //Customer name
+                    SelectCustomer(customerController: customerController, controller: controller), //Select Customer
 
-                    AppInput(hint: "select date",suffixIcon: IconButton(onPressed: (){}, icon: const Icon(Icons.date_range)), controller: _datetime, text: "Date et heure de livraison :"),
-                    const SizedBox(height:20,),
 
-                    const Text("Statut de la commande :",style: TextStyle(fontSize: 16,fontWeight: FontWeight.w600,color: Colors.black),),
-                    const SizedBox(height: 10,),
-                    DropDown2(
-                        items: ProductJson.orderStatus,
-                        value: selectStatus,
-                        hint: "En preparation",
-                        onChange: (v){
-                          setState(() {
-                            selectStatus = v;
-                          });
-                        }
+                    SelectDeliveryAddress(customerController: customerController, controller: controller), //Select Customer
+                    SizedBox(height: 20,),
+                    Row(
+                      children: [
+                        Expanded(
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text("Delivery Date",
+                                style: TextStyle(
+                                  fontWeight: FontWeight.w600,
+                                  color: Colors.black,
+                                  fontSize: 16
+                                ),
+                              ),
+                              SizedBox(height: 10,),
+                              Obx(() {
+                                  return InkWell(
+                                    onTap: (){
+                                      datatimeController.pickDate(context);
+                                      controller.deliveryDate.value = datatimeController.formattedDateForServer.value;
+                                    },
+                                    child: Container(
+                                      height: 48,
+                                      decoration: BoxDecoration(
+                                        border: Border.all(color: Colors.grey.shade300),
+                                        borderRadius: BorderRadius.circular(5)
+                                      ),
+                                      child: Center(
+                                        child: Text("${controller.deliveryDate.value}",
+                                          style: TextStyle(
+                                            color: Colors.black,
+                                            fontWeight: FontWeight.w600,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  );
+                                }
+                              ),
+                            ],
+                          )
+                        ),
+                        SizedBox(width: 20,),
+                        Expanded(
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text("Select Payment Method",
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.w600,
+                                      color: Colors.black,
+                                      fontSize: 16
+                                  ),
+                                ),
+                                SizedBox(height: 10,),
+                                Obx(() {
+                                  return InkWell(
+                                    onTap: (){
+                                      datatimeController.pickDate(context);
+                                      controller.deliveryDate.value = datatimeController.formattedDate.value;
+                                    },
+                                    child: Container(
+                                      height: 48,
+                                      decoration: BoxDecoration(
+                                          border: Border.all(color: Colors.grey.shade300),
+                                          borderRadius: BorderRadius.circular(5)
+                                      ),
+                                      child: DropDown2(
+                                          items: controller.paymentMethodList.value,
+                                          hint: "Select payment mthod",
+                                          onChange: (v){
+                                            controller.paymentMethod.value = v;
+                                          }
+                                      ),
+                                    ),
+                                  );
+                                }
+                                ),
+                              ],
+                            )
+                        ),
+                      ],
                     ),
 
-                    const SizedBox(height: 30,),
-                    const Text("Informations du client",style: TextStyle(fontSize: 16,fontWeight: FontWeight.w600,color: Colors.black),),
-                    const SizedBox(height: 10,),
-                    AppInput(hint: "Nom du client", controller: _client, text: "Client (Société) :"),
+                    SizedBox(height: 20,),
+                    SelectProduct(productController: productController, controller: controller),
 
                     const SizedBox(height: 20,),
-                    AppInput(hint: "Email du client", controller: _email, text: "Email :"),
 
-                    const SizedBox(height: 20,),
-                    AppInput(hint: "Telephone du client", controller: _phone, text: "Telephone :"),
+                    Obx(() {
+                        return Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            _tableHeader(),
+                            ListView.builder(
+                              shrinkWrap: true,
+                              physics: NeverScrollableScrollPhysics(),
+                              itemCount: controller.selectedProductList.length,
+                              itemBuilder: (_, index){
+                                print("controller.quantity.value: ${controller.quantity.value.length}");
 
-                    const SizedBox(height: 20,),
-                    const Text("Adresse de Livraison",style:TextStyle(color: AppColors.textDarkColor,fontSize: 16,fontWeight: FontWeight.bold)),
+                                var data = controller.selectedProductList[index];
+                                return Container(
+                                  width: Get.width,
+                                  height: 50,
+                                  decoration: BoxDecoration(
+                                      color: index.isEven ? Colors.grey.shade100 : Colors.white
+                                  ),
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Container(
+                                        width: 200,
+                                        decoration: BoxDecoration(
+                                          border: Border(
+                                            right:BorderSide(color: Colors.white),
+                                          ),
+                                        ),
+                                        child: Row(
+                                          mainAxisAlignment:MainAxisAlignment.center,
+                                          children: [
+                                            Image.network("${data.images![0].imageUrl}",width: 30,height: 30,),
+                                            Text("${data.name}",style: TextStyle(
+                                              color: Colors.black,
+                                              fontWeight: FontWeight.w600,
+                                            ),),
+                                          ],
+                                        ),
+                                      ),
+                                      Container(
+                                        width: 80,
+                                        padding: EdgeInsets.only(top: 10, bottom: 10, right: 10),
+                                        decoration: BoxDecoration(
+                                          border: Border(
+                                            right:BorderSide(color: Colors.white),
+                                          ),
+                                        ),
+                                        child: Center(
+                                          child: InputFiled(
+                                            controller: controller.quantity[index], hint: 'Quantity',
+                                            onChanged: (v){
+                                             print(" controller.quantity[index].text --- ${ controller.quantity[index].text}");
+                                              controller.totalPriceCalculation(index);
+                                              // controller.totalTaxCalculation();
+                                              // controller.totalDiscountCalculation();
+                                              // controller.totalAmountCalculation();
+                                              // controller.subTotalCalculation();
 
-                    const SizedBox(height: 15,),
-                    AppInput(hint: "Adresse de Livraison", controller: _address, text: "Adresse :"),
+                                            },
+                                          ),
+                                        ),
+                                      ),
+                                      Container(
+                                        padding: EdgeInsets.only(top: 10, bottom: 10, right: 10),
+                                        width: 100,
+                                        decoration: BoxDecoration(
+                                          border: Border(
+                                            right:BorderSide(color: Colors.white),
+                                          ),
+                                        ),
+                                        child: Center(
+                                          child: InputFiled(
+                                            controller: controller.comment.value[index], hint: 'Comment',
+                                          ),
+                                        ),
+                                      ),
+                                      Container(
+                                        width: 200,
+                                        decoration: BoxDecoration(
+                                          border: Border(
+                                            right:BorderSide(color: Colors.white),
+                                          ),
+                                        ),
+                                        child: Obx(() {
+                                            return Center(
+                                              child: Text("${controller.totalProductPrice.value[index].toStringAsFixed(2)} €",style: TextStyle(
+                                                color: Colors.black,
+                                                fontWeight: FontWeight.w600,
+                                              ),),
+                                            );
+                                          }
+                                        ),
+                                      ),
+                                      Container(
+                                        width: 100,
+                                        decoration: BoxDecoration(
+                                          border: Border(
+                                            right:BorderSide(color: Colors.white),
+                                          ),
+                                        ),
+                                        child: Center(
+                                          child: Text("${data.tax} %",style: TextStyle(
+                                            color: Colors.black,
+                                            fontWeight: FontWeight.w600,
+                                          ),),
+                                        ),
+                                      ),
+                                      Container(
+                                        width: 200,
+                                        decoration: BoxDecoration(
+                                          border: Border(
+                                            right:BorderSide(color: Colors.white),
+                                          ),
+                                        ),
+                                        child: Obx(() {
+                                            return Center(
+                                              child: Text("${controller.totalProductPriceWithTax.value[index].toStringAsFixed(2)} €",style: TextStyle(
+                                                color: Colors.black,
+                                                fontWeight: FontWeight.w600,
+                                              ),),
+                                            );
+                                          }
+                                        ),
+                                      ),
+                                      Container(
+                                          width: 50,
+                                          decoration: BoxDecoration(
+                                            border: Border(
+                                              right:BorderSide(color: Colors.white),
+                                            ),
+                                          ),
+                                          child: IconButton(
+                                            onPressed: (){
+                                              controller.selectedProductList.removeAt(index);
+                                              controller.quantity.removeAt(index);
+                                              controller.comment.removeAt(index);
+                                              controller.totalProductPrice.removeAt(index);
 
-                    const SizedBox(height:20,),
+                                              controller.totalTaxCalculation();
+                                              controller.totalDiscountCalculation();
+                                              controller.totalAmountCalculation();
+                                              controller.subTotalCalculation();
+                                            },
+                                            icon: Icon(Icons.delete,color: Colors.red,),
+                                          )
+                                      ),
 
-                    const Text("Livreur :",style: TextStyle(fontSize: 16,fontWeight: FontWeight.w600,color: Colors.black),),
-                    const SizedBox(height: 10,),
-                    DropDown2(
-                        items: ProductJson.deliveryBoy,
-                        value: selectedValue,
-                        hint: "Jean Dupont",
-                        onChange: (v){
-                          setState(() {
-                            selectedValue = v;
-                          });
-                        }
+
+                                    ],
+                                  ),
+                                );
+                              },
+                            )
+                          ],
+                        );
+                      }
                     ),
+                    const SizedBox(height: 20,),
 
                     const SizedBox(height: 20,),
 
-                    //data table product name,quantity,vat
-                    DataTable(
-                      border: TableBorder.all(color: Colors.grey),
-                      //columnSpacing: 100,
-                      dataRowMaxHeight: 110,
-                      dataRowMinHeight: 110,
-                      headingRowColor:const WidgetStatePropertyAll(AppColors.primaryColor),
-                      dividerThickness: 1,
-
-                        columns: const [
-                          DataColumn(label:Text( "Product",style: TextStyle(fontWeight: FontWeight.w600,color: Colors.white,),)),
-                          DataColumn(label:Text( "Quantité",style: TextStyle(fontWeight: FontWeight.w600,color: Colors.white,),)),
-                          DataColumn(label:Text( "Commentaire",style: TextStyle(fontWeight: FontWeight.w600,color: Colors.white,),)),
-                          DataColumn(label:Text( "Prix Unitaire HT",style: TextStyle(fontWeight: FontWeight.w600,color: Colors.white,),)),
-                          DataColumn(label:Text( "TVA (%)",style: TextStyle(fontWeight: FontWeight.w600,color: Colors.white,),)),
-                          DataColumn(label:Text( "Total HT",style: TextStyle(fontWeight: FontWeight.w600,color: Colors.white,),)),
-                        ],
-                        rows:  [
-                          DataRow(cells: [
-                           DataCell(
-                               SizedBox(
-                                 height: 35,
-                                 width: 200,
-                                 child: InputFiled(
-                                     hint: "Nom du product", controller: _productNumber),
-                               )
-                           ),
-
-
-                           DataCell(SizedBox(
-                             height: 35,
-                             width: 50,
-                             child: InputFiled(
-                               textType: TextInputType.number,
-                                 hint: "Qu", controller: _quantity),
-                           )),
-
-
-
-                           DataCell(SizedBox(
-                             width: 120,
-                             child: InputFiled(
-                               maxLine: 4,
-                                 hint: "Commentaire", controller: _description),
-                           )),
-
-
-                           DataCell(SizedBox(
-                             height: 35,
-                             width: 150,
-                             child: InputFiled(
-                                 hint: "Prix Unitaire HT", controller: _priceVat),
-                           )),
-
-
-                           DataCell(SizedBox(
-                             height: 35,
-                             width: 50,
-                             child: InputFiled(
-                                 textType: TextInputType.number,
-                                 hint: "TV", controller: _vat),
-                           )),
-
-
-                           DataCell(SizedBox(
-                             height: 35,
-                             width: 80,
-                             child: InputFiled(
-                                 hint: "Total HT", controller: _totalVat),
-                           )),
-                          ])
-                        ],
-                    ),
-                    const SizedBox(height: 20,),
-                    AppButton(onClick: (){}, text: "Ajouter un product"),
                     SizedBox(height: 30,),
 
                     //Postal List Table
-                    VtaListTile(title: "Sous-total HT :",),
+                    Obx(() {
+                        return VtaListTile(title: "Sous-total HT :", amount: "${controller.subTotal.value.toStringAsFixed(2)} €",);
+                      }
+                    ),
                     SizedBox(height: 20,),
-                    VtaListTile(title: "TVA (20%) :",),
+                    Obx(() {
+                        return VtaListTile(title: "TVA :",  amount: "${controller.totalTax.value.toStringAsFixed(2)} €");
+                      }
+                    ),
                     SizedBox(height: 20,),
-                    VtaListTile(title: "TVA (5,5%) :",),
+                    Obx(() {
+                        return VtaListTile(title: "TVA(%) :",  amount: "${controller.totalTaxRate.value.toStringAsFixed(2)} %");
+                      }
+                    ),
                     SizedBox(height: 20,),
-                    VtaListTile(title: "Total TTC :",),
+                    Obx(() {
+                        return VtaListTile(title: "Delivery Fee:",  amount: "${controller.deliveryCost.value.toStringAsFixed(2)} €");
+                      }
+                    ),
                     SizedBox(height: 20,),
-                    AppButton(onClick: (){}, text: "Enregisrer la Commande")
+                    // VtaListTile(title: "TVA (5,5%) :",),
+                    // SizedBox(height: 20,),
+                    Obx(() {
+                        return VtaListTile(title: "Total TTC :",  amount: "${controller.totalAmount.value.toStringAsFixed(2)}  €");
+                      }
+                    ),
+                    SizedBox(height: 30,),
+                    Obx(() {
+                        return AppButton(
+                          isLoading: controller.isOrderCreating.value,
+                          width: 200,
+                            onClick: (){
+                              if(controller.selectedUser.value == null){
+                                Get.snackbar("Error!", "Please select a customer", backgroundColor: Colors.red);
+                                return;
+                              }
+                              if(controller.selectedDeliveryAddress.value == null){
+                                Get.snackbar("Error!", "Please select a delivery address", backgroundColor: Colors.red);
+                                return;
+                              }
+                              if(controller.selectedProductList.isEmpty){
+                                Get.snackbar("Error!", "Please select a product", backgroundColor: Colors.red);
+                                return;
+                              }
+                              controller.createOrder();
+
+                            },
+                            text: "Enregisrer la Commande"
+                        );
+                      }
+                    )
 
 
 
@@ -223,4 +423,120 @@ class _AddCmdState extends State<AddCmd> {
         ),
     );
   }
+
+  Container _tableHeader() {
+    return Container(
+                        width: Get.width,
+                        height: 50,
+                        decoration: BoxDecoration(
+                          color: AppColors.primaryColor
+                        ),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Container(
+                              width: 200,
+                              decoration: BoxDecoration(
+                                border: Border(
+                                  right:BorderSide(color: Colors.white),
+                                ),
+                              ),
+                              child: Center(
+                                child: Text("Product Name",style: TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.w600,
+                                ),),
+                              ),
+                            ),
+                            Container(
+                              width: 80,
+                              decoration: BoxDecoration(
+                                border: Border(
+                                  right:BorderSide(color: Colors.white),
+                                ),
+                              ),
+                              child: Center(
+                                child: Text("Quantity",style: TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.w600,
+                                ),),
+                              ),
+                            ),
+                            Container(
+                              width: 100,
+                              decoration: BoxDecoration(
+                                border: Border(
+                                  right:BorderSide(color: Colors.white),
+                                ),
+                              ),
+                              child: Center(
+                                child: Text("Comment",style: TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.w600,
+                                ),),
+                              ),
+                            ),
+                            Container(
+                              width: 200,
+                              decoration: BoxDecoration(
+                                border: Border(
+                                  right:BorderSide(color: Colors.white),
+                                ),
+                              ),
+                              child: Center(
+                                child: Text("Unit Price excluding VAT	",style: TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.w600,
+                                ),),
+                              ),
+                            ),
+                             Container(
+                              width: 100,
+                              decoration: BoxDecoration(
+                                border: Border(
+                                  right:BorderSide(color: Colors.white),
+                                ),
+                              ),
+                              child: Center(
+                                child: Text("VAT (%)",style: TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.w600,
+                                ),),
+                              ),
+                            ),
+                            Container(
+                              width: 200,
+                              decoration: BoxDecoration(
+                                border: Border(
+                                  right:BorderSide(color: Colors.white),
+                                ),
+                              ),
+                              child: Center(
+                                child: Text("Total excluding VAT",style: TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.w600,
+                                ),),
+                              ),
+                            ),
+                            Container(
+                              width: 50,
+                              decoration: BoxDecoration(
+                                border: Border(
+                                  right:BorderSide(color: Colors.white),
+                                ),
+                              ),
+                              child: Center(
+                                child: Text("Action",style: TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.w600,
+                                ),),
+                              ),
+                            ),
+
+
+                          ],
+                        ),
+                      );
+  }
 }
+

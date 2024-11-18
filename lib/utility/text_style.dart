@@ -19,5 +19,17 @@ TextStyle formTitleStyle() => const TextStyle(
     color: AppColors.primaryColor
 );
 
+TextStyle invoiceTextTitle() => const TextStyle(
+    fontSize: 16,
+    fontWeight: FontWeight.bold,
+    color: AppColors.textColor
+);
+
+TextStyle invoiceText() => const TextStyle(
+    fontSize: 14,
+    fontWeight: FontWeight.w400,
+    color: AppColors.textColor
+);
+
 
 //

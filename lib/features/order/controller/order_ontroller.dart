@@ -56,6 +56,8 @@ class OrderController extends GetxController{
   //list of text editing controller
   var textEditingController = [].obs;
   RxList<OrderItem> searchResults = <OrderItem>[].obs;
+  RxList<TextEditingController> invoiceTextEditingControllerList = <TextEditingController>[].obs;
+  RxList<String> deliveryDateList = <String>[].obs;
 
 
   //
@@ -85,6 +87,11 @@ class OrderController extends GetxController{
       allOrderModel.value = allOrderModelFromJson(response.body);
       for (var i in allOrderModel.value.data!) {
         totalOrder.add(i);
+
+        //store text editing controller
+        invoiceTextEditingControllerList.add(TextEditingController());
+        deliveryDateList.add(i.deliveryDate!);
+
         if (i.orderStatus == "En Attente") {
           totalPendingOrder.add(i);
         } else if (i.orderStatus == "Préparation") {
@@ -162,11 +169,12 @@ class OrderController extends GetxController{
     isUpdatingOrderStatus.value = true;
     var response = await ApiService().putApi(
         AppConfig.ORDER_STATUS_UPDATE + id.toString(), {"order_status": value});
+
     if (response.statusCode == 200) {
-      getAllOrder();
-      getSingleOrder(id.toString());
+      //getAllOrder();
+   //   getSingleOrder(id.toString());
       Get.snackbar("Success!", "Order status updated successfully",
-          snackPosition: SnackPosition.BOTTOM, backgroundColor: Colors.green);
+          backgroundColor: Colors.green);
     }
     isUpdatingOrderStatus.value = false;
   }

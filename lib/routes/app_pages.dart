@@ -40,5 +40,7 @@ class AppRoute {
   static const String maintenance = '/maintenance';
   static const String coming_soon = '/coming-soon';
   static const String under_construction = '/under-construction';
+  static const String order_invoice = '/order-invoice';
+  static const String invoice_genaret = '/invoice-generate';
 
 }

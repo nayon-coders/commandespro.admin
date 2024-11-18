@@ -38,6 +38,7 @@ class AppConfig{
   static const String USER_STATUS_UPDATE = "$BASE_URL/user/status/";
   static const String USER_SINGLE = "$BASE_URL/user/";
   static const String USER_UPDATE = "$BASE_URL/user/update/";
+  static const String DELETE_USER = "$BASE_URL/user/delete/";
 
 
 
@@ -52,6 +53,10 @@ class AppConfig{
   static const String ADMIN_DELETE = "$BASE_URL/admins/delete/";
   static const String ADMIN_ROLE_GET = "$BASE_URL/admins/rolewithpermission";
   static const String ADMIN_ROLE_PERMISSION_GET = "$BASE_URL/admins/rolewithpermission";
+  static const String NEW_CUSTOMER = "$BASE_URL/user/signup";
+  static const String ADD_DELIVERY_ADDRESS = "$BASE_URL/delivery-addresss/create/";
+  static const String all_delivery_address = "$BASE_URL/delivery-addresss/";
+  static const String CREART_ORDER = "$BASE_URL/order/create/";
 
 
   //product";

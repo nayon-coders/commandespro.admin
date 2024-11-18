@@ -37,7 +37,7 @@ class AppMenus{
     {
       "title": "INVOICE",
       "items" : [],
-      "page" : AppRoute.invoice
+      "page" : AppRoute.invoice_genaret
     },
     {
       "title": "CREDITS",

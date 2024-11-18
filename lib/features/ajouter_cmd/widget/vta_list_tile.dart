@@ -2,8 +2,9 @@ import 'package:commandespro_admin/utility/text_style.dart';
 import 'package:flutter/material.dart';
 
 class VtaListTile extends StatelessWidget {
-  const VtaListTile({super.key, required this.title});
+  const VtaListTile({super.key, required this.title, required this.amount});
   final String title;
+  final String amount;
 
   @override
   Widget build(BuildContext context) {
@@ -24,7 +25,7 @@ class VtaListTile extends StatelessWidget {
           ),
           child: Align(
             alignment: Alignment.centerLeft,
-              child: Text("0.00\$",style:  TextStyle(fontWeight: FontWeight.w400,fontSize: 13,color: Colors.blueGrey),)),
+              child: Text("${amount}",style:  TextStyle(fontWeight: FontWeight.w400,fontSize: 13,color: Colors.blueGrey),)),
         )
       ],
     );

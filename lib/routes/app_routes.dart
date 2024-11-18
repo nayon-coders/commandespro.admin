@@ -1,10 +1,13 @@
 import 'package:commandespro_admin/data/binding/category_binding.dart';
+import 'package:commandespro_admin/data/binding/invoice_genarate_binding.dart';
 import 'package:commandespro_admin/data/binding/order_binding.dart';
 import 'package:commandespro_admin/data/binding/post_code_binding.dart';
-import 'package:commandespro_admin/features/ajouter_cmd/screen/add_client.dart';
+import 'package:commandespro_admin/features/ajouter_cmd/screen/add_customer.dart';
 import 'package:commandespro_admin/features/ajouter_cmd/screen/add_cmd.dart';
 import 'package:commandespro_admin/features/customers_screen/screen/customer_screen.dart';
 import 'package:commandespro_admin/features/dashboard/screens/dashboard.dart';
+import 'package:commandespro_admin/features/invoice/screen/invoice_genaret.dart';
+import 'package:commandespro_admin/features/order/screen/order_invoice.dart';
 import 'package:commandespro_admin/features/order/screen/order_list.dart';
 import 'package:commandespro_admin/features/products/screens/add_products.dart';
 import 'package:commandespro_admin/features/settings/screen/add_new_user.dart';
@@ -90,7 +93,7 @@ class AppPages{
     GetPage(
       name: AppRoute.addClient,
       transition: Transition.fade,
-      page: ()=>AddClient(),
+      page: ()=>AddCustomer(),
       binding: ClientBinding()
     ),
 
@@ -98,6 +101,7 @@ class AppPages{
       name: AppRoute.customers,
       transition: Transition.fade,
       page: ()=>CustomerScreen(),
+      binding: UserBinding()
     ),
 
     GetPage(
@@ -111,6 +115,19 @@ class AppPages{
       transition: Transition.fade,
       page: ()=>PostCode(),
       binding: PostCodeBinding()
+    ),
+
+    GetPage(
+        name: AppRoute.order_invoice,
+        transition: Transition.fade,
+        page: ()=>OrderInvoice(),
+        binding: PostCodeBinding()
+    ),
+    GetPage(
+        name: AppRoute.invoice_genaret,
+        transition: Transition.fade,
+        page: ()=>InvoiceGanerate(),
+        binding: InvoiceGenarateBinding()
     ),
   ];
 }

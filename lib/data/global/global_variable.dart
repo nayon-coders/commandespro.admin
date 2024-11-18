@@ -17,4 +17,7 @@ class GlobalVariable {
   // Add your global variable here
   static final Rx<AdminProfileModel> adminProfile= AdminProfileModel().obs;
 
+  static final RxList accountStatus = <String>["Active","Inactive","Blocklist"].obs;
+  static final RxList<String> accountType = <String>["Restauration", "Revendeur", "Grossiste"].obs;
+
 }

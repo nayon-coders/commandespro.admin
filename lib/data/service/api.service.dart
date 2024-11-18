@@ -1,5 +1,5 @@
 import 'dart:convert';
-
+import 'dart:html' as html ;
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
@@ -30,7 +30,7 @@ class ApiService{
 
         headers: {
             "Content-Type" : "application/json",
-          "Authorization" : "Bearer ${sharedPreferences!.getString("token")}"
+          "Authorization" : "Bearer ${html.window.localStorage["token"]}"
         }
     );
     debugPrint("Url -------------- ${url}");
@@ -46,7 +46,7 @@ class ApiService{
         body: jsonEncode(data),
         headers: {
         "Content-Type" : "application/json",
-          "Authorization" : "Bearer ${sharedPreferences!.getString("token")}"
+          "Authorization" : "Bearer ${html.window.localStorage["token"]}"
         }
     );
     debugPrint("Url -------------- ${url}");
@@ -60,7 +60,7 @@ class ApiService{
   Future<http.Response> deleteApi(url)async{
     var response = await http.delete(Uri.parse(url),
         headers: {
-          "Authorization" : "Bearer ${sharedPreferences!.getString("token")}"
+          "Authorization" : "Bearer ${html.window.localStorage["token"]}"
         }
     );
     debugPrint("Url -------------- ${url}");

@@ -40,7 +40,7 @@ class _CategoryScreenState extends State<CategoryScreen> {
             Expanded(
               child: Container(
                 height: 430,
-                padding: EdgeInsets.all(20),
+                padding: EdgeInsets.all(15),
                 decoration: BoxDecoration(
                   color: Colors.grey.shade300,
                   borderRadius: BorderRadius.circular(5),

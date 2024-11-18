@@ -123,24 +123,21 @@ class _OrderListViewState extends State<OrderListView> {
                               ),
 
                             ],
-                            row: Container(
-                              height: 500,
-                              child: Obx(() {
-                                if(controller.isGettingData.value){
-                                  return Center(child: CircularProgressIndicator(),);
-                                }else if(controller.allOrderModel.value.data != null){
-                                  //cehck search result is empty or not
-                                  if(controller.searchResults.isNotEmpty){ //if search result is not empty
-                                    return OrderList(controller: controller, allOrders: controller.searchResults );
-                                  }else{
-                                    return OrderList(controller: controller, allOrders: controller.allOrderModel.value.data!);
-                                  }
+                            row: Obx(() {
+                              if(controller.isGettingData.value){
+                                return Center(child: CircularProgressIndicator(),);
+                              }else if(controller.allOrderModel.value.data != null){
+                                //cehck search result is empty or not
+                                if(controller.searchResults.isNotEmpty){ //if search result is not empty
+                                  return OrderList(controller: controller, allOrders: controller.searchResults );
                                 }else{
-                                  return Center(child: Text("No Data Found"));
+                                  return OrderList(controller: controller, allOrders: controller.allOrderModel.value.data!);
                                 }
-
+                              }else{
+                                return Center(child: Text("No Data Found"));
                               }
-                              ),
+
+                            }
                             ) ,
                             onSearch: (){
                               print("searching for ${controller.totalOrder.length}");
@@ -159,37 +156,6 @@ class _OrderListViewState extends State<OrderListView> {
                     ),
                   )
                 ),
-                SizedBox(height: 40,),
-                Obx((){
-                    return Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        AppButton(
-                            bgColor: controller.selectedOrdersItems.value.isEmpty ? Colors.grey : AppColors.primaryColor,
-                            onClick: (){
-                              controller.selectedOrdersItems.value.isEmpty ? null : onExporting(true);
-                            },
-                            text: "Export PDF (invoices)"
-                        ),
-                        AppButton(
-                            bgColor: controller.selectedOrdersItems.value.isEmpty ? Colors.grey : AppColors.primaryColor,
-                            onClick: (){
-                              controller.selectedOrdersItems.value.isEmpty ? null : onExporting(true);
-                            },
-                            text: "Export preparation"
-                        ),
-                        AppButton(
-                            bgColor: controller.selectedOrdersItems.value.isEmpty ? Colors.grey : AppColors.primaryColor,
-                            onClick: (){
-                              controller.selectedOrdersItems.value.isEmpty ? null : onExporting(true);
-                            },
-                            text: "Export delivery notes"
-                        ),
-                      ],
-                    );
-                  }
-                )
-
               ],
             ),
           ),

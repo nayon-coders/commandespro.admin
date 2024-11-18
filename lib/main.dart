@@ -12,8 +12,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import 'data/binding/init_binding.dart';
 import 'data/localization/app_localization.dart';
-import 'features/menus/controller/menu_controller.dart';
 import 'firebase_options.dart';
+import "dart:html" as html;
 
 SharedPreferences? sharedPreferences;
 void main() async{
@@ -22,8 +22,11 @@ void main() async{
       options: DefaultFirebaseOptions.currentPlatform
   );
   sharedPreferences = await SharedPreferences.getInstance();
+  html.window.localStorage["token"] != null ? initialRoute = AppRoute.dashboard : initialRoute = AppRoute.login;
   runApp(const MyApp());
 }
+
+var initialRoute; // = AppRoute.login;
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
@@ -67,7 +70,7 @@ class MyApp extends StatelessWidget {
       ),
       getPages: AppPages().route,
       initialBinding: InitBinding(),
-    initialRoute: AppRoute.login,
+      initialRoute: initialRoute,
     //  home: Dashboard(),
      // home: AuthView(),
     );

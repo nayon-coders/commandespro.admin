@@ -1,7 +1,7 @@
 import 'package:commandespro_admin/controller/editable_controller.dart';
 import 'package:commandespro_admin/features/menus/screens/app_scaffold.dart';
 import 'package:commandespro_admin/features/settings/controller/admin.role.controller.dart';
-import 'package:commandespro_admin/features/settings/controller/user.controller.dart';
+import 'package:commandespro_admin/features/customers_screen/controller/user.controller.dart';
 import 'package:commandespro_admin/routes/app_pages.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';

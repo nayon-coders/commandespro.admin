@@ -115,12 +115,12 @@ import 'package:flutter/material.dart';
 
 
 class AppTable extends StatelessWidget {
-  AppTable({super.key, this. onPageFront, required this.headersChildren, required this.row, required this.onSearch, required this.searchController, required this.title, this.onChanged, this.isSearchShow = true, this.onPageBack, this.pageLength});
+  AppTable({super.key, this. onPageFront, required this.headersChildren, required this.row, required this.onSearch,  this.searchController, required this.title, this.onChanged, this.isSearchShow = true, this.onPageBack, this.pageLength});
   final List<Widget> headersChildren;
   final Color headerBg = AppColors.primaryColor;
   final Widget row;
   final VoidCallback onSearch;
-  final TextEditingController searchController;
+  final TextEditingController? searchController;
   final String title;
   final Function(String)? onChanged;
   final bool isSearchShow;

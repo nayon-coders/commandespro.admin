@@ -2,6 +2,8 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:get/get_rx/get_rx.dart';
+import 'package:get/get_rx/src/rx_types/rx_types.dart';
 
 import '../../../app.config.dart';
 import '../../../data/model/single_customer_model.dart';
@@ -42,6 +44,9 @@ class AppUserController extends GetxController{
   Rx<TextEditingController> contractFacturationController = TextEditingController().obs;
   Rx<TextEditingController> postCodeController = TextEditingController().obs;
   Rx<TextEditingController> siretController = TextEditingController().obs;
+  RxList<String> selectedAccountType = <String>[].obs;
+  RxList<String> selectedAccountStatus = <String>[].obs;
+
 
 
 
@@ -49,23 +54,31 @@ class AppUserController extends GetxController{
   RxBool isLoading = false.obs;
   RxBool isUpdating = false.obs;
   Rx<UserListModel> userListModel = UserListModel().obs;
+  Rx<UserList> selectedUser = UserList().obs;
   RxList<UserList> newUserList = <UserList>[].obs;
   RxList<UserList> blockUserList = <UserList>[].obs;
   RxList<UserList> activeUserList = <UserList>[].obs;
+  RxList<UserList> allUserList = <UserList>[].obs;
 
   Rx<SingleCustomerModel> singleCustomerModel = SingleCustomerModel().obs;
 
   //get all user
   getAllUser(String page)async{
     isLoading.value = true;
+
     var res = await ApiService().getApi(AppConfig.USER_GET);
     if(res.statusCode == 200){
       activeUserList.value.clear();
       blockUserList.value.clear();
       newUserList.value.clear();
+      allUserList.clear();
+      clearTextField();
       userListModel.value = UserListModel.fromJson(jsonDecode(res.body));
       for(var i in userListModel.value.data!){
-        if(i.status == "Actif"){
+        allUserList.value.add(i); // Add all data to the list
+        storeDataIntoList(allUserList); // Store data into the list
+         if(i.status == "Active"){
+          selectedUser.value = i;
           activeUserList.value.add(i);
         }else if(i.status == "Blacklist"){
           blockUserList.value.add(i);
@@ -75,21 +88,21 @@ class AppUserController extends GetxController{
       }
     }
     isLoading.value = false;
+
+
   }
 
 
   //update user status
-  updateUserStatus(id, status)async{
+  updateUserStatus(id, status, index)async{
     isUpdating.value = true;
     var data = {
       "status" : status
     };
     var res = await ApiService().putApi(AppConfig.USER_STATUS_UPDATE+"${id}", data);
     if(res.statusCode == 200){
-      getAllUser(userListModel.value.currentPage.toString());
-      Get.back();
-      Get.snackbar("Success!", "User status is update. Status: ${status}" ,backgroundColor: Colors.green);
-
+      getAllUser("1");
+    //  Get.snackbar("Success!", "User status is update. Status: ${status}" ,backgroundColor: Colors.green);
     }else{
       Get.snackbar("Error!", "Something went wrong. Status: ${res.statusCode}", backgroundColor: Colors.red);
     }
@@ -123,23 +136,18 @@ class AppUserController extends GetxController{
 
 
   //update user with id
-  updateUser(id)async{
+  updateUser(id, index)async{
     isUpdating.value = true;
     var data = {
-      "name" : nameController.value.text,
-      "email" : emailController.value.text,
-      "accountPhone" : accountPhoneController.value.text,
-      "brand" : brandController.value.text,
-      "city" : cityController.value.text,
-      "company" : companyController.value.text,
-      "contractComptabilit" : contractComptabiliteController.value.text,
-      "contractFacturation" : contractFacturationController.value.text,
-      "postCode" : postCodeController.value.text,
-      "siret" : siretController.value.text,
+      "name" : nameControllerList.value[index].text,
+      "accountPhone" : accountPhoneControllerList.value[index].text,
+      "account_type" : selectedAccountType.value[index],
+      "postCode" : postCodeControllerList.value[index].text,
     };
+    print("data --- ${data}");
     var res = await ApiService().putApi(AppConfig.USER_UPDATE+"${id}", data);
     if(res.statusCode == 200){
-      getSingleUser(id);
+      getAllUser("1");
       Get.snackbar("Success!", "User is updated successfully",backgroundColor: Colors.green);
     }else{
       Get.snackbar("Error!", "Something went wrong. Status: ${res.statusCode}", backgroundColor: Colors.red);
@@ -147,6 +155,19 @@ class AppUserController extends GetxController{
     isUpdating.value = false;
   }
 
+
+  deleteUser(id)async{
+    isLoading.value = true;
+    var res = await ApiService().deleteApi(AppConfig.DELETE_USER+"${id}");
+    if(res.statusCode == 200){
+
+      getAllUser("1");
+      Get.snackbar("Success!", "User is deleted successfully",backgroundColor: Colors.green);
+    }else{
+      Get.snackbar("Error!", "Something went wrong. Status: ${res.statusCode}", backgroundColor: Colors.red);
+    }
+    isLoading.value = false;
+  }
 
   Color getCustomerStatusColor(String status) {
     switch (status) {
@@ -170,20 +191,54 @@ class AppUserController extends GetxController{
 
   // New method to search orders by company name
   RxList searchResults = [].obs;
-  void searchCustomerByName(String companyName, RxList<UserList> userList) {
-    print("searching for $companyName");
-    if (companyName.isEmpty) {
-      // If the search input is empty, return all orders
-      searchResults.value = userList.value.toList();
+  void searchCustomerByName(String query) {
+    print("searching for $query");
+    if(query.isEmpty){
+      allUserList.value = userListModel.value.data!;
+      update();
+      return;
     } else {
       // Filter the orders based on the company name
-      searchResults.value = userList.value.where((values) =>
-          values.name!.toLowerCase().contains(companyName.toLowerCase()) // Assuming companyName is a field in OrderModel
+      allUserList.value = allUserList.value.where((value) =>
+          value.name!.toLowerCase().contains(query.toLowerCase())
+         || value.company!.toLowerCase().contains(query.toLowerCase())
+        || value.email!.toLowerCase().contains(query.toLowerCase())
+        || value.accountPhone!.toLowerCase().contains(query.toLowerCase())
+        || value.postCode!.toLowerCase().contains(query.toLowerCase())
+
       ).toList(); // Convert the Iterable to a List
     }
     print("searching for $searchResults");
     update();
   }
+
+
+  // text editing controller list items
+  RxList<TextEditingController> nameControllerList = <TextEditingController>[].obs;
+  RxList<TextEditingController> emailControllerList = <TextEditingController>[].obs;
+  RxList<TextEditingController> accountPhoneControllerList = <TextEditingController>[].obs;
+  RxList<TextEditingController> postCodeControllerList = <TextEditingController>[].obs;
+
+  //method: store data into this list
+  void storeDataIntoList(List<UserList> userList) {
+    clearTextField();
+    for (var i in userList) {
+      nameControllerList.add(TextEditingController(text: i.name));
+      emailControllerList.add(TextEditingController(text: i.email));
+      accountPhoneControllerList.add(TextEditingController(text: i.accountPhone));
+      postCodeControllerList.add(TextEditingController(text: i.postCode));
+      selectedAccountType.value.add(i.accountType!);
+    }
+  }
+  //clear all text Editing controller
+  void clearTextField() {
+    nameControllerList.clear();
+    emailControllerList.clear();
+    accountPhoneControllerList.clear();
+    postCodeControllerList.clear();
+    selectedAccountType.clear();
+  }
+
 
 
 

@@ -11,6 +11,8 @@ class PostCodeBinding extends Bindings{
     // TODO: implement dependencies
 
     Get.lazyPut<PostCodeController>(()=>PostCodeController());
+    Get.lazyPut<AdminRoleController>(() => AdminRoleController());
+
   }
 
 
