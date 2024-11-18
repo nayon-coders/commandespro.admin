@@ -4,6 +4,7 @@ import 'package:commandespro_admin/data/binding/order_binding.dart';
 import 'package:commandespro_admin/data/binding/post_code_binding.dart';
 import 'package:commandespro_admin/features/ajouter_cmd/screen/add_customer.dart';
 import 'package:commandespro_admin/features/ajouter_cmd/screen/add_cmd.dart';
+import 'package:commandespro_admin/features/app_screen/screen/app_setting.dart';
 import 'package:commandespro_admin/features/customers_screen/screen/customer_screen.dart';
 import 'package:commandespro_admin/features/dashboard/screens/dashboard.dart';
 import 'package:commandespro_admin/features/invoice/screen/invoice_genaret.dart';
@@ -22,6 +23,7 @@ import '../data/binding/auth_binding.dart';
 import '../data/binding/client_binding.dart';
 import '../data/binding/product_binding.dart';
 import '../data/binding/user_binding.dart';
+import '../features/app_screen/screen/app_page.dart';
 import '../features/auth/screen/auth_view.dart';
 import '../features/products/screens/category.dart';
 import '../features/products/screens/product_list.dart';
@@ -81,6 +83,22 @@ class AppPages{
       page: ()=>AdminList(),
       binding: AdminBinding()
     ),
+
+
+    //app setting
+    GetPage(
+        name: AppRoute.setting,
+        transition:Transition.fade ,
+        page: ()=>AppSetting(),
+
+    ),
+    GetPage(
+      name: AppRoute.pages,
+      transition:Transition.fade ,
+      page: ()=>AppPage(),
+
+    ),
+
 
 
     GetPage(
