@@ -5,11 +5,11 @@ class AppTranslations extends Translations {
   Map<String, Map<String, String>> get keys => {
     'en_ES': {
       "add_cmd": "ADD A CMD",
-      "add_customer ": "ADD A CUSTOMER"
+      "add_customer.dart ": "ADD A CUSTOMER"
     },
     'es_ES': {
       "add_cmd": "AJOUTER UNE CM",
-      "add_customer ": "AJUTRE UN CLIENT"
+      "add_customer.dart ": "AJUTRE UN CLIENT"
     },
   };
 }
