@@ -7,63 +7,129 @@
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <div class="invoice-container">
-    <header>
-      <h1>Invoice - CommandesPro.com</h1>
-    </header>
-    <section class="invoice-details">
-      <div class="left">
-        <h2>CommandesPro</h2>
-        <p>10, rue de la Chicane<br>
+<div class="invoice-container">
+  <br><br>
+  <img src="logo.png", width="200px", height="auto" class="logo">
+  <section class="invoice-details">
+    <div class="left">
+      <h2>CommandesPro</h2>
+      <p>10, rue de la Chicane<br>
         59620 Villeneuve d'Ascq<br>
         Tel.: 01 23 45 67 89<br>
         Email: contact@commandespros.com</p>
-      </div>
-      <div class="right">
-        <p>Invoice No.: <span id="invoiceNo"></span><br>
-        Invoice date: <span id="invoiceDate"></span><br>
-        Order No.: <span id="orderNo"></span><br>
-        Order date: <span id="orderDate"></span></p>
-      </div>
-    </section>
-    <section class="billing-delivery">
-      <div class="billing">
-        <h3>Billing address:</h3>
-        <p id="billingName"></p>
-        <p id="billingStreet"></p>
-        <p id="billingCity"></p>
-        <p>Email: <span id="billingEmail"></span></p>
-      </div>
-      <div class="delivery">
-        <h3>Delivery address:</h3>
-        <p id="deliveryName"></p>
-        <p id="deliveryStreet"></p>
-        <p id="deliveryCity"></p>
-        <p>Contact: <span id="deliveryContact"></span></p>
-      </div>
-    </section>
-    <table class="product-table">
-      <thead>
-        <tr>
-          <th>Product</th>
-          <th>Quantity</th>
-          <th>Price excluding VAT</th>
-          <th>Total excluding VAT</th>
-        </tr>
-      </thead>
-      <tbody id="productTableBody"></tbody>
-    </table>
-    <div class="totals">
-      <p>Subtotal excluding tax: <span id="subtotal"></span></p>
-      <p>VAT 5.5%: <span id="vat"></span></p>
-      <p><strong>Total incl. VAT: <span id="total"></span></strong></p>
     </div>
-    <footer>
-      <p>In accordance with Articles L441-1 and L 441-10 of the French Commercial Code, any late payment automatically entails...</p>
-      <p><strong>Payment terms:</strong> Upon receipt</p>
-      <p>Payment by bank transfer payable to <strong>La Trouvaille</strong>...</p>
-    </footer>
+    <div class="right" style="margin-top: 40px">
+      <p>
+        <b>Invoice No.:</b> <span id="invoiceNo"></span><br>
+        <b>Invoice date:</b> <span id="invoiceDate"></span><br>
+       <b> Order No.:</b> <span id="orderNo"></span><br>
+        <b>Order date:</b> <span id="orderDate"></span></p>
+    </div>
+  </section>
+  <section class="billing-delivery">
+    <div class="billing">
+      <h3>Billing address:</h3>
+      <span id="billingName"></span><br>
+      <span id="billingStreet"></span><br>
+      <span id="billingCity"></span><br>
+      <span>Email: <span id="billingEmail"></span></span>
+    </div>
+    <div class="delivery">
+      <h3>Delivery address:</h3>
+      <span id="deliveryName"></span><br>
+      <span id="deliveryStreet"></span><br>
+      <span id="deliveryCity"></span><br>
+      <span>Contact: <span id="deliveryContact"></span></span><br>
+    </div>
+  </section>
+  <table class="product-table">
+    <thead>
+    <tr>
+      <th>Product</th>
+      <th>Quantity</th>
+      <th>Price excluding VAT</th>
+      <th>Total excluding VAT</th>
+    </tr>
+    </thead>
+    <tbody id="productTableBody"></tbody>
+  </table>
+
+  <div class="totals">
+    <p>Subtotal excluding tax: <span id="subtotal"></span></p>
+    <p>VAT Amount: <span id="vat"></span></p>
+    <p><strong>Total incl. VAT: <span id="total"></span></strong></p>
+    <br><br>
   </div>
-  <script src="script.js"></script>
+  <footer>
+    <p>In accordance with Articles L441-1 and L 441-10 of the French Commercial Code, any late payment automatically entails, in addition to late payment penalties, an obligation for the debtor to pay a fixed compensation of €40 for recovery costs. Additional compensation may be claimed, upon presentation of supporting documents, when the recovery costs incurred exceed the amount of the fixed compensation.</p>
+    <p><strong>Payment terms:</strong> Upon receipt</p>
+    <span>Payment by bank transfer payable to **La Trouvaille** to the account:</span>
+    <span>IBAN: FR76 1350 7001 6131 7483 0215 875</span>
+    <span>BIC / Swift: CCBPFRPPLIL</span>
+    <span>Bank: Banque Populaire du Nord</span>
+
+    <br><br><br>
+    <div style="display: flex; justify-content: space-between; align-items: center;">
+      <p style="text-align: left; margin: 0;">
+        SAS La Trouvaille - RCS Lille Metropole B 897 954 285
+      </p>
+      <p style="text-align: right; margin: 0;">
+        Siret: 89795428500010 - VAT No.: FR13897954285
+      </p>
+    </div>
+    <br><br><br>
+
+  </footer>
+</div>
+
+<div class="print-button-container" style="text-align: center; margin-top: 20px; margin-bottom: 40px">
+  <button
+          onclick="printInvoice()"
+          style="
+      background-color: #e64c85;
+      color: white;
+      width: 300px;
+      height: 50px;
+      border: none;
+      padding: 10px 20px;
+
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 16px;
+      box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+      transition: background-color 0.3s ease, transform 0.2s ease;"
+          onmouseover="this.style.backgroundColor='#e64c85'; this.style.transform='scale(1.05)';"
+          onmouseout="this.style.backgroundColor='#e64c85'; this.style.transform='scale(1)';"
+  >
+    Print Invoice
+  </button>
+</div>
+
+<script src="script.js"></script>
+
+<script>
+  function printInvoice() {
+    // Get the content of the invoice-container
+    const invoiceContainer = document.querySelector('.invoice-container').outerHTML;
+
+    // Open a new window
+    const printWindow = window.open('', '_blank', 'width=800,height=600');
+
+    // Write the HTML content to the new window
+    printWindow.document.open();
+    printWindow.document.write(`
+      <html>
+        <head>
+          <title>Print Invoice</title>
+          <link rel="stylesheet" href="style.css">
+        </head>
+        <body onload="window.print(); window.close();">
+          ${invoiceContainer}
+        </body>
+      </html>
+    `);
+    printWindow.document.close();
+  }
+</script>
 </body>
 </html>

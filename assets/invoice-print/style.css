@@ -7,12 +7,10 @@ body {
   }
   
   .invoice-container {
-    width: 80%;
+    width: 90%;
     margin: 20px auto;
     padding: 20px;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    background-color: #fdfdfd;
+
   }
   
   header {
@@ -27,7 +25,7 @@ body {
   }
   
   .invoice-details .left, .invoice-details .right {
-    width: 48%;
+    width: 30%;
   }
   
   .billing-delivery {
@@ -37,7 +35,7 @@ body {
   }
   
   .billing, .delivery {
-    width: 48%;
+    width: 30%;
   }
   
   table {

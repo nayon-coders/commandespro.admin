@@ -3,6 +3,7 @@ import 'package:commandespro_admin/comman/dropdown2.dart';
 import 'package:commandespro_admin/controller/date_picker.dart';
 import 'package:commandespro_admin/controller/product_json.dart';
 import 'package:commandespro_admin/features/order/controller/order_ontroller.dart';
+import 'package:commandespro_admin/features/order/controller/print_controller.dart';
 import 'package:commandespro_admin/routes/app_pages.dart';
 import 'package:commandespro_admin/routes/open_ne_tab_rout.dart';
 import 'package:easy_tooltip/easy_tooltip.dart';
@@ -21,6 +22,7 @@ class OrderList extends StatelessWidget {
 
   final TextEditingController _textEditingController = TextEditingController();
 
+  final PrintController printController = Get.put(PrintController());
   final DatePickerController datePickerController = Get.put(DatePickerController());
 
   // List of possible dropdown values
@@ -197,32 +199,54 @@ class OrderList extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    EasyTooltip(
-                      text: 'View Invoice',
-                      child: IconButton(
-                        onPressed: (){
-                         // openNewTab(AppRoute.order_invoice, arguments: {"order_id": data.id.toString()});
-                          Get.toNamed(AppRoute.order_invoice, arguments: {"order_id": data.id.toString()});
-                        },
-                        icon: Icon(Icons.featured_play_list, color: Colors.amber, size: 20,),
+                    Container(
+                      width: 40,
+                      height: 40,
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(100)
+                      ),
+                      child: EasyTooltip(
+                        text: 'View Invoice',
+                        child: Obx(() {
+                            return IconButton(
+                              onPressed: ()async{
+                               if(controller.invoiceTextEditingControllerList[index].text.isEmpty){
+                                 Get.snackbar("Error!", "Please enter invoice number", backgroundColor: Colors.red);
+                                 return;
+                               }
+
+                               await printController.getSingleUser(data.createdBy!).then((e){
+                                 openNewTabInvoice(context, printController.invoicePrintModel(data, controller.invoiceTextEditingControllerList[index].text, controller.deliveryDateList[index], printController.singleCustomerModel.value));
+                               });
+
+                              },
+                              icon: printController.isLoading.value ? SizedBox(
+                                width: 20,
+                                height: 20,
+                                child: Center(child: CircularProgressIndicator(),),
+                              ) : Icon(Icons.print, color: Colors.black, size: 20,),
+                            );
+                          }
+                        ),
                       ),
                     ),
-                    EasyTooltip(
-                      text: 'See Delivery Note',
-                      child: IconButton(
-                        onPressed: (){
-
-                        },
-                        icon: Icon(Icons.note_add, color: Colors.green, size: 20,),
+                    SizedBox(width: 10,),
+                    Container(
+                      width: 40,
+                      height: 40,
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(100)
                       ),
-                    ),
-                    EasyTooltip(
-                      text: 'See have',
-                      child: IconButton(
-                        onPressed: (){
+                      child: EasyTooltip(
+                        text: 'See have',
+                        child: IconButton(
+                          onPressed: (){
 
-                        },
-                        icon: Icon(Icons.check_circle_outline, color: Colors.indigo, size: 20,),
+                          },
+                          icon: Icon(Icons.check_circle_outline, color: Colors.indigo, size: 20,),
+                        ),
                       ),
                     )
                   ],
