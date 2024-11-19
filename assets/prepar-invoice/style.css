@@ -1,0 +1,83 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f5f5f5;
+    color: #333;
+}
+
+.container {
+    width: 80%;
+    margin: 20px auto;
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.header {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.header .logo {
+    width: 150px;
+    margin-bottom: 10px;
+}
+
+.header h1 {
+    font-size: 24px;
+    color: #333;
+}
+
+.header p {
+    font-size: 14px;
+    color: #666;
+}
+
+.header .printed-by {
+    font-style: italic;
+    color: #444;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+thead th {
+    background-color: #d63384;
+    color: white;
+    padding: 10px;
+    text-align: left;
+}
+
+tbody td {
+    border-bottom: 1px solid #ddd;
+    padding: 10px;
+    text-align: left;
+}
+
+tbody tr:hover {
+    background-color: #f9f9f9;
+}
+
+.print-button {
+    display: block;
+    width: 100%;
+    max-width: 150px;
+    margin: 20px auto 0;
+    padding: 10px 15px;
+    background-color: #d63384;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    text-align: center;
+    font-size: 16px;
+}
+
+.print-button:hover {
+    background-color: #c02674;
+}
