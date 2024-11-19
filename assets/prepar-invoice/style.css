@@ -7,12 +7,11 @@ body {
 }
 
 .container {
-    width: 80%;
+    width: 90%;
     margin: 20px auto;
     background: white;
     padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+
 }
 
 .header {
@@ -47,7 +46,7 @@ table {
 }
 
 thead th {
-    background-color: #d63384;
+    background-color: #e64c85;
     color: white;
     padding: 10px;
     text-align: left;
@@ -69,7 +68,7 @@ tbody tr:hover {
     max-width: 150px;
     margin: 20px auto 0;
     padding: 10px 15px;
-    background-color: #d63384;
+    background-color: #e64c85;
     color: white;
     border: none;
     border-radius: 4px;
@@ -79,5 +78,5 @@ tbody tr:hover {
 }
 
 .print-button:hover {
-    background-color: #c02674;
+    background-color: #e64c85;
 }

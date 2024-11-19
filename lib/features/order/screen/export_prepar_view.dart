@@ -14,7 +14,7 @@ class ExportPreparWebVIew extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final encodedData = Uri.encodeComponent(jsonEncode(jsonData));
-    final iframeUrl = 'assets/invoice/export-preparation/index.html?data=$encodedData';
+    final iframeUrl = 'assets/prepar-invoice/index.html?data=$encodedData';
 
     if (kIsWeb) {
       // Register the iframe only for web

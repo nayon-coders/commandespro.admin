@@ -1,5 +1,6 @@
 
 import 'package:commandespro_admin/controller/date_picker.dart';
+import 'package:commandespro_admin/features/auth/controller/auth_controller.dart';
 import 'package:commandespro_admin/features/customers_screen/controller/user.controller.dart';
 import 'package:commandespro_admin/features/invoice/widgets/filter_options_view.dart';
 import 'package:commandespro_admin/features/menus/screens/app_scaffold.dart';
@@ -25,11 +26,13 @@ class _InvoiceGanerateState extends State<InvoiceGanerate> {
   final InvoiceController controller = Get.find();
   final DatePickerController datePickerController = Get.find();
   final PrintController printController = Get.put(PrintController());
+  final AuthController authController = Get.put(AuthController());
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
+    authController.getMyProfile();
 
   }
   @override
@@ -295,6 +298,43 @@ class _InvoiceGanerateState extends State<InvoiceGanerate> {
 
               }
             ),
+            SizedBox(height: 30,),
+            Center(
+              child: Obx(() {
+                  return InkWell(
+                    onTap: ()async{
+                      if(printController.isGettingData.value){
+                        return null;
+                      }
+                      await printController.getAllProduct().then((e){
+                        openPreparationNewTab(context, printController.preparInvoiceModel(printController.productListModel.value.data!, controller.shortOrderList, authController.myprofiel.value));
+                      });
+                    },
+                    child: Container(
+                      width: 250,
+                      height: 50,
+                      decoration: BoxDecoration(
+                        color: AppColors.primaryColor,
+                        borderRadius: BorderRadius.circular(5),
+                      ),
+                      child: printController.isGettingData.value ? Center(child: CircularProgressIndicator(color: Colors.white,),) : Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(Icons.print, color: Colors.white, size: 20,),
+                          SizedBox(width: 10,),
+                          Text("Export preparation",
+                            style: TextStyle(
+                                color: Colors.white, fontWeight: FontWeight.bold, fontSize: 16
+                            ),)
+                        ],
+                      ),
+                    ),
+                  );
+                }
+              ),
+            ),
+            SizedBox(height: 30,),
+
 
 
           ],

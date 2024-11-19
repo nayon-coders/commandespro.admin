@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:commandespro_admin/data/model/admin_profile_model.dart';
 import 'package:commandespro_admin/data/model/all_order_model.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -10,6 +11,7 @@ import 'package:pdf/widgets.dart' as pw;
 import 'package:printing/printing.dart';
 
 import '../../../app.config.dart';
+import '../../../data/model/product.list.model.dart';
 import '../../../data/model/single_customer_model.dart';
 import '../../../data/service/api.service.dart';
 
@@ -17,7 +19,10 @@ import '../../../data/service/api.service.dart';
 class PrintController extends GetxController {
 
   RxBool isLoading = false.obs;
+  RxBool isGettingData = false.obs;
   Rx<SingleCustomerModel> singleCustomerModel = SingleCustomerModel().obs;
+
+  Rx<ProductListModel> productListModel = ProductListModel().obs;
 
   //get single user
   Future getSingleUser(id)async{
@@ -35,25 +40,58 @@ class PrintController extends GetxController {
     }
   }
 
+  //get all product
+  Future<List<SingleProducts>?> getAllProduct()async{
+    isGettingData.value = true;
+
+    var res = await ApiService().getApi(AppConfig.PRODUCT_GET);
+    if(res.statusCode == 200){
+      productListModel.value = ProductListModel.fromJson(jsonDecode(res.body));
+    }
+    isGettingData.value = false;
+
+    return  productListModel.value.data;
+
+  }
+
+
 
   //prepare order invoice model
-  preparInvoiceModel(OrderItem orderItem){
+  preparInvoiceModel(List<SingleProducts> productList, List<OrderItem> orderList, AdminProfileModel admin){
 
     List product = [];
-    for(var i in []){
-      product.add( {
-        "product": "White Mushrooms STD - Kg",
-        "lastPrice": "2.99",
-        "quantityOrdered": 12,
-        "commandedUnit": "Kg",
-        "knownStock": 20,
-        "stockUnit": "Kg"
-      });
+    List allProductId = [];
+
+    for(var i in productList){
+      allProductId.add(i.id.toString());
     }
-    return {
+    for(var i =0; i<orderList.length; i++){
+      for(var j = 0; j<orderList[i].products!.length; j++){
+        if(allProductId.contains(orderList[i].products![j].productId.toString())){
+          product.add({
+            "product": "${orderList[i].products![j].name}",
+            "lastPrice": "${orderList[i].total!.toStringAsFixed(2)}",
+            "quantityOrdered": "${orderList[i].products![j].quantity}",
+            "commandedUnit": productList.where((element) => element.id == orderList[i].products![j].productId).first.productType,
+            "knownStock": productList.where((element) => element.id == orderList[i].products![j].productId).first.isStock,
+            "stockUnit":  productList.where((element) => element.id == orderList[i].products![j].productId).first.unit,
+          });
+        }
+      }
+    }
+
+      // Get the current DateTime
+      DateTime now = DateTime.now();
+
+      // Define the desired format
+      String formattedDate = DateFormat('EEEE, MMMM d, y \'at\' h:mm a').format(now);
+
+
+
+      return {
       "title": "Preparation of the day's orders",
-      "dateTime": "Saturday, July 27, 2024 at 3:45 p.m.",
-      "printedBy": "Farid BELMAHI",
+      "dateTime": formattedDate,
+      "printedBy": "${admin.firstName} ${admin.lastName}",
       "orders": product
     };
   }

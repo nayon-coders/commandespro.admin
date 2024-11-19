@@ -7,12 +7,12 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-<div class="container">
+<div class="container invoice-container">
     <div class="header" style="text-align: left">
         <img src="logo.png" alt="Company Logo" class="logo" style="width: 200px; height: auto;">
         <h1>Preparation of the day's orders</h1>
-        <p>Saturday, July 27, 2024 at 3:45 p.m.</p>
-        <p class="printed-by">Printed by Farid BELMAHI</p>
+        <p></p>
+        <p class="printed-by"></p>
     </div>
     <table>
         <thead>
@@ -26,65 +26,57 @@
         </tr>
         </thead>
         <tbody>
-        <tr>
-            <td>White Mushrooms STD - Kg</td>
-            <td>2.99 €</td>
-            <td>12</td>
-            <td>Kg</td>
-            <td>20</td>
-            <td>Kg</td>
-        </tr>
-        <tr>
-            <td>Basil - P</td>
-            <td>0.91 €</td>
-            <td>10</td>
-            <td>Piece</td>
-            <td>50</td>
-            <td>Piece</td>
-        </tr>
-        <tr>
-            <td>EXTRA Chives - P</td>
-            <td>0.99 €</td>
-            <td>6</td>
-            <td>Piece</td>
-            <td>30</td>
-            <td>Piece</td>
-        </tr>
-        <tr>
-            <td>Yellow Lemons STD - Kg</td>
-            <td>1.96 €</td>
-            <td>5</td>
-            <td>Kg</td>
-            <td>40</td>
-            <td>Kg</td>
-        </tr>
-        <tr>
-            <td>STD Lawyer - P</td>
-            <td>0.80 €</td>
-            <td>20</td>
-            <td>Piece</td>
-            <td>60</td>
-            <td>Piece</td>
-        </tr>
-        <tr>
-            <td>Rocket Salad Sachet 500g STD - P</td>
-            <td>4.99 €</td>
-            <td>1</td>
-            <td>Piece</td>
-            <td>15</td>
-            <td>Piece</td>
-        </tr>
-        <tr>
-            <td>Mesclun Salad Sachet 500g STD - P</td>
-            <td>5.60 €</td>
-            <td>2</td>
-            <td>Piece</td>
-            <td>10</td>
-            <td>Piece</td>
-        </tr>
         </tbody>
     </table>
-    <button class="print-button">Print PDF</button>
 </div>
+<div class="print-button-container" style="text-align: center; margin-top: 20px; margin-bottom: 40px">
+    <button
+            onclick="printInvoice()"
+            style="
+      background-color: #e64c85;
+      color: white;
+      width: 300px;
+      height: 50px;
+      border: none;
+      padding: 10px 20px;
+
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 16px;
+      box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+      transition: background-color 0.3s ease, transform 0.2s ease;"
+            onmouseover="this.style.backgroundColor='#e64c85'; this.style.transform='scale(1.05)';"
+            onmouseout="this.style.backgroundColor='#e64c85'; this.style.transform='scale(1)';"
+    >
+        Print Invoice
+    </button>
+</div>
+
+<script src="script.js"></script>
+
+<script>
+    function printInvoice() {
+      // Get the content of the invoice-container
+      const invoiceContainer = document.querySelector('.invoice-container').outerHTML;
+
+      // Open a new window
+      const printWindow = window.open('', '_blank', 'width=800,height=600');
+
+      // Write the HTML content to the new window
+      printWindow.document.open();
+      printWindow.document.write(`
+        <html>
+          <head>
+            <title>Print Invoice</title>
+            <link rel="stylesheet" href="style.css">
+          </head>
+          <body onload="window.print(); window.close();">
+            ${invoiceContainer}
+          </body>
+        </html>
+      `);
+      printWindow.document.close();
+    }
+</script>
 </body>
 </html>
