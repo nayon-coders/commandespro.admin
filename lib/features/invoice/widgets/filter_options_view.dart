@@ -196,39 +196,6 @@ class _FilterOptionsViewState extends State<FilterOptionsView> {
           ],
         ),
         SizedBox(width: 30,),
-        Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text("Customer",
-              style: TextStyle(
-                  color: Colors.black, fontWeight: FontWeight.bold
-              ),
-            ),
-            SizedBox(height: 10,),
-            //show all customer in a dropdown list
-            Obx(() {
-              return Container(
-                width: 200,
-                height: 50,
-                decoration: BoxDecoration(
-                  border: Border.all(color: Colors.grey.shade200),
-                  borderRadius: BorderRadius.circular(5),
-                ),
-                child: DropDown2(
-                    items: controller.paymentStatusList.value,
-                    value:  controller.selectedPaymentStatus.value.isNotEmpty ?  controller.selectedPaymentStatus.value : null,
-                    hint: "select Packaging", onChange: (v){setState(() {
-                  controller.selectedPaymentStatus.value = v!;
-
-                });}),
-              );
-            }
-            ),
-
-          ],
-        ),
-        SizedBox(width: 30,),
 
         Column(
           children: [

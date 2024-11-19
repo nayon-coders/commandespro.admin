@@ -91,36 +91,37 @@ class _OrderListViewState extends State<OrderListView> {
                               TableHeader(name: "STATUS", width: 200),
                               TableHeader(name: "INVOICE", width: 130),
                               TableHeader(name: "INVOICE DATE", width: 150),
-                              TableHeader(name: "TOTAL INCL. VAT	", width: 130),
+                              TableHeader(name: "TOTAL INCL. VAT	", width: 160),
                               TableHeader(name: "ACTIONS", width: 120),
-                              SizedBox(
-                                width: 130,
-                                child: Row(
-                                  children: [
-                                    TableHeader(name: "SELECTION", width: 90),
-                                    Obx(() {
-                                      return Checkbox(
-                                        value: controller.isAllSelectedOrder.value,
-                                        onChanged: (bool? value) {
-                                          print("the value  is --- ${value}");
-                                          controller.isAllSelectedOrder.value = value!;
-                                          if(value){
-                                            if(controller.searchResults.value.isEmpty){
-                                              controller.selectedOrdersItems.value = controller.allOrderModel.value.data!;
-                                            }else{
-                                              controller.selectedOrdersItems.value = controller.searchResults;
-                                            }
-                                          }else{
-                                            controller.selectedOrdersItems.value = [];
-                                          }
-                                        },
-
-                                      );
-                                    }
-                                    ),
-                                  ],
-                                ),
-                              ),
+                              // SizedBox(
+                              //   width: 130,
+                              //   child: Row(
+                              //     children: [
+                              //       TableHeader(name: "SELECTION", width: 90),
+                              //       Obx(() {
+                              //         return Checkbox(
+                              //           value: controller.isAllSelectedOrder.value,
+                              //           onChanged: (bool? value) {
+                              //             print("the value  is --- ${value}");
+                              //             controller.isAllSelectedOrder.value = value!;
+                              //             if(value){
+                              //               if(controller.searchResults.value.isEmpty){
+                              //                 controller.selectedOrdersItems.value = controller.allOrderModel.value.data!;
+                              //               }else{
+                              //                 controller.selectedOrdersItems.value = controller.searchResults;
+                              //               }
+                              //             }else{
+                              //               controller.selectedOrdersItems.value = [];
+                              //             }
+                              //           },
+                              //
+                              //         );
+                              //       }
+                              //       ),
+                              //     ],
+                              //   ),
+                              // ),
+                              ///TODO: selection order working later
 
                             ],
                             row: Obx(() {

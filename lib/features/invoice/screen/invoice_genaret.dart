@@ -3,6 +3,8 @@ import 'package:commandespro_admin/controller/date_picker.dart';
 import 'package:commandespro_admin/features/customers_screen/controller/user.controller.dart';
 import 'package:commandespro_admin/features/invoice/widgets/filter_options_view.dart';
 import 'package:commandespro_admin/features/menus/screens/app_scaffold.dart';
+import 'package:commandespro_admin/features/order/controller/print_controller.dart';
+import 'package:commandespro_admin/routes/open_ne_tab_rout.dart';
 import 'package:commandespro_admin/utility/app_const.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
@@ -22,6 +24,7 @@ class InvoiceGanerate extends StatefulWidget {
 class _InvoiceGanerateState extends State<InvoiceGanerate> {
   final InvoiceController controller = Get.find();
   final DatePickerController datePickerController = Get.find();
+  final PrintController printController = Get.put(PrintController());
 
   @override
   void initState() {
@@ -57,7 +60,13 @@ class _InvoiceGanerateState extends State<InvoiceGanerate> {
             SizedBox(height: 30,),
             Obx(() {
               if(controller.shortOrderList.isEmpty){
-                return Center(child: Text("Generate Invoice"),);
+                return Container(
+                    padding: EdgeInsets.only(left: 20, right: 20, top: 100, bottom: 100),
+                    child: Center(child: Text("Generate Invoice",
+                      style: TextStyle(
+                          fontSize: 30, fontWeight: FontWeight.bold, color: AppColors.primaryColor
+                      ),)
+                    ));
               }else{
                 return AppTable(
                   isSearchShow: false,
@@ -133,15 +142,16 @@ class _InvoiceGanerateState extends State<InvoiceGanerate> {
                                     child: TableHeader(name: "${index+1}", width: 100)
                                 ),
 
-                                Container(
-                                  width: 100,
-                                    height: 40,
-                                    padding: EdgeInsets.only(left: 10,right: 5),
-                                    decoration: BoxDecoration(
-                                      color: Colors.white,
-                                      borderRadius: BorderRadius.circular(5),
+                                Center(
+                                  child: Container(
+                                    transform: Matrix4.translationValues(0.0, -15.0, 0.0),
+                                    width: 100,
+                                    child: AppInput(
+                                      hint: "INV-00${index+1}",
+                                      controller: controller.invoiceTextEditingControllerList[index],
+                                      text: "",
                                     ),
-                                    child: TableHeader(name: "INV-00${index+1}", width: 100)
+                                  ),
                                 ),
 
                                 Container(
@@ -159,7 +169,9 @@ class _InvoiceGanerateState extends State<InvoiceGanerate> {
                                     return InkWell(
                                       onTap: (){
                                         datePickerController.pickDate(context);
-                                        controller.invoiceDate.value = datePickerController.formattedDate.value;
+                                        controller.invoiceDateList.value.insert(index,  datePickerController.formattedDate.value);
+
+                                        print("controller.invoiceDateList ----- ${controller.invoiceDateList[index]}");
                                       },
                                       child: Container(
                                           width: 130,
@@ -169,7 +181,7 @@ class _InvoiceGanerateState extends State<InvoiceGanerate> {
                                             color: Colors.white,
                                             borderRadius: BorderRadius.circular(5),
                                           ),
-                                          child: TableHeader(name: "${controller.invoiceDate}", width: 100)
+                                          child: TableHeader(name: "${controller.invoiceDateList.value[index]}", width: 100)
                                       ),
                                     );
                                   }
@@ -199,22 +211,31 @@ class _InvoiceGanerateState extends State<InvoiceGanerate> {
 
 
                                 Container(
-                                  width: 100,
+                                  width: 40,
                                   height: 40,
-                                  padding: EdgeInsets.only(left: 10,right: 5),
+                                //  padding: EdgeInsets.only(left: 10,right: 5),
+                                  margin: EdgeInsets.only(right: 60),
                                   decoration: BoxDecoration(
                                     color: Colors.white,
-                                    borderRadius: BorderRadius.circular(5),
+                                    borderRadius: BorderRadius.circular(100),
                                   ),
                                   child: Row(
                                     children: [
-                                      IconButton(
-                                          onPressed: (){},
-                                          icon: Icon(Icons.edit, color: Colors.amber,)
-                                      ),
-                                      IconButton(
-                                          onPressed: (){},
-                                          icon: Icon(Icons.print, color: Colors.blueGrey,)
+                                      Obx(() {
+                                          return IconButton(
+                                              onPressed: ()async{
+                                                if(controller.invoiceTextEditingControllerList[index].text.isEmpty){
+                                                  Get.snackbar("Error!", "Please enter invoice number", backgroundColor: Colors.red);
+                                                  return;
+                                                }
+                                                await printController.getSingleUser(data.createdBy!).then((e){
+                                                  openNewTabInvoice(context, printController.invoicePrintModel(data, controller.invoiceTextEditingControllerList[index].text, controller.invoiceDateList[index], printController.singleCustomerModel.value));
+                                                });                                          },
+                                              icon: printController.isLoading.value ? SizedBox(
+                                                  width: 20, height: 20,
+                                                  child: CircularProgressIndicator()) : Icon(Icons.print, color: Colors.blueGrey,)
+                                          );
+                                        }
                                       )
                                     ],
                                   ),

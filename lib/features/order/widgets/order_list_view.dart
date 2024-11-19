@@ -180,7 +180,7 @@ class OrderList extends StatelessWidget {
 
               Container(
                   height: 48,
-                  width: 130,
+                  width: 160,
                   decoration: BoxDecoration(
                     color: Colors.white
                   ),
@@ -240,12 +240,14 @@ class OrderList extends StatelessWidget {
                         borderRadius: BorderRadius.circular(100)
                       ),
                       child: EasyTooltip(
-                        text: 'See have',
+                        text: 'Edit',
                         child: IconButton(
                           onPressed: (){
+                            controller.orderId.value = data.id.toString();
+                            Get.toNamed(AppRoute.edit_order, arguments: data);
 
                           },
-                          icon: Icon(Icons.check_circle_outline, color: Colors.indigo, size: 20,),
+                          icon: Icon(Icons.edit, color: Colors.indigo, size: 20,),
                         ),
                       ),
                     )
@@ -255,26 +257,27 @@ class OrderList extends StatelessWidget {
 
 
               //Action button
-              Align(
-                alignment: Alignment.centerLeft,
-                child: SizedBox(
-                  width: 130,
-                  child: Obx(() {
-                      return Checkbox(
-                        value: controller.selectedOrdersItems.contains(data),
-                        onChanged: (bool? value) {
-                          if(value == true){
-                            controller.selectedOrdersItems.add(data!);
-                          }else{
-                            controller.selectedOrdersItems.remove(data!);
-                          }
-                        },
-
-                      );
-                    }
-                  )
-                ),
-              ),
+              // Align(
+              //   alignment: Alignment.centerLeft,
+              //   child: SizedBox(
+              //     width: 130,
+              //     child: Obx(() {
+              //         return Checkbox(
+              //           value: controller.selectedOrdersItems.contains(data),
+              //           onChanged: (bool? value) {
+              //             if(value == true){
+              //               controller.selectedOrdersItems.add(data!);
+              //             }else{
+              //               controller.selectedOrdersItems.remove(data!);
+              //             }
+              //           },
+              //
+              //         );
+              //       }
+              //     )
+              //   ),
+              // ),
+              ///TODO: selection working later
 
 
 

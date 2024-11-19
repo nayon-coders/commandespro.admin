@@ -8,6 +8,7 @@ import 'package:commandespro_admin/features/app_screen/screen/app_setting.dart';
 import 'package:commandespro_admin/features/customers_screen/screen/customer_screen.dart';
 import 'package:commandespro_admin/features/dashboard/screens/dashboard.dart';
 import 'package:commandespro_admin/features/invoice/screen/invoice_genaret.dart';
+import 'package:commandespro_admin/features/order/screen/edit_order.dart';
 import 'package:commandespro_admin/features/order/screen/order_invoice.dart';
 import 'package:commandespro_admin/features/order/screen/order_list.dart';
 import 'package:commandespro_admin/features/products/screens/add_products.dart';
@@ -127,6 +128,12 @@ class AppPages{
       transition: Transition.fade,
       page: ()=>OrderListView(),
       binding: OrderBinding()
+    ),
+    GetPage(
+        name: AppRoute.edit_order,
+        transition: Transition.fade,
+        page: ()=>EditOrder(),
+        binding: OrderBinding()
     ),
     GetPage(
       name: AppRoute.postal_code,

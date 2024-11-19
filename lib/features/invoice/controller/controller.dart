@@ -1,7 +1,9 @@
 import 'package:commandespro_admin/data/model/all_order_model.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:get/get_rx/get_rx.dart';
 import 'package:get/get_rx/src/rx_types/rx_types.dart';
+import 'package:get/state_manager.dart';
 import 'package:intl/intl.dart';
 
 class InvoiceController extends GetxController {
@@ -12,12 +14,14 @@ class InvoiceController extends GetxController {
   RxList<OrderItem> shortOrderList = <OrderItem>[].obs;
   RxList<OrderItem> selectedOrdersItems = <OrderItem>[].obs;
   RxBool isAllSelectedOrder = false.obs;
+  RxList<TextEditingController> invoiceTextEditingControllerList = <TextEditingController>[].obs;
 
   RxString statDate = ''.obs;
   RxString endDate = ''.obs;
   var filteringStartDate = DateTime.now().obs;
   var filteringEndDate = DateTime.now().obs;
 
+  RxList<String> invoiceDateList = <String>[].obs;
    RxString get invoiceDate => DateFormat("MM/dd/yyyy").format(DateTime.now()).obs;
    RxString? get invoiceTotalOrderAmount => shortOrderList.map((e) => e.total)!.reduce((a, b) => a! + b! )!.toStringAsFixed(2).obs;
    RxString? get totalTaxAmount => shortOrderList.map((e) => e.taxAmount)!.reduce((a, b) => a! + b! )!.toStringAsFixed(2).obs;
@@ -41,9 +45,11 @@ class InvoiceController extends GetxController {
         //short with start date to end date, payment status and customer name
         //short with start date to end date
         if (element.createdAt!.isAfter(filteringStartDate.value) &&
-            element.createdAt!.isBefore(filteringEndDate.value) ||
+            element.createdAt!.isBefore(filteringEndDate.value) &&
             element.company == selectedCustomerName.value) {
           shortOrderList.add(element);
+          invoiceTextEditingControllerList.add(TextEditingController());
+          invoiceDateList.add(invoiceDate.value);
         }
       });
       return shortOrderList;

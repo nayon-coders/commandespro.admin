@@ -18,7 +18,7 @@ class OrderController extends GetxController{
     super.onInit();
     getAllOrder();
   }
-
+RxString orderId = "".obs;
   RxList<OrderItem> selectedOrdersItems = <OrderItem>[].obs;
   Rx<OrderItem> selectedOrder = OrderItem().obs;
   RxBool isAllSelectedOrder = false.obs;
