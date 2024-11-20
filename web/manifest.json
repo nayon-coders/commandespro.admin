@@ -1,11 +1,11 @@
 {
-    "name": "commandespro_admin",
-    "short_name": "commandespro_admin",
+    "name": "Commandespro Admin",
+    "short_name": "Commandespro Admin",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",
     "theme_color": "#0175C2",
-    "description": "A new Flutter project.",
+    "description": "This is Commandespro Admin panel for managing your business",
     "orientation": "portrait-primary",
     "prefer_related_applications": false,
     "icons": [

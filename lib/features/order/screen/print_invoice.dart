@@ -14,7 +14,7 @@ class PrintInvoiceView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final encodedData = Uri.encodeComponent(jsonEncode(jsonData));
-    final iframeUrl = 'assets/invoice-print/index.html?data=$encodedData';
+    final iframeUrl = 'assets/assets/invoice-print/index.html?data=$encodedData';
 
     if (kIsWeb) {
       // Register the iframe only for web
