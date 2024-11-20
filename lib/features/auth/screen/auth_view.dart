@@ -16,59 +16,64 @@ class _AuthViewState extends State<AuthView> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Center(
-        child: Container(
-         padding: EdgeInsets.all(30),
-          width: 500,
-          height: 400,
-          decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.circular(10),
-            boxShadow: [
-              BoxShadow(
-                color: Colors.grey.withOpacity(0.5),
-                spreadRadius: 5,
-                blurRadius: 7,
-                offset: const Offset(0, 3), // changes position of shadow
-              ),
-            ],
-          ),
-          child: Column(
-            children: [
-              Image.asset("assets/images/logo.png",width: 200,),
-              const SizedBox(height: 20,),
-               Text("Login",style: h1TextStyle(),),
-              const SizedBox(height: 20,),
-              TextField(
-                controller: controller.nameController,
-                decoration: InputDecoration(
-                  hintText: "Email",
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(10),
+        child: LayoutBuilder(
+          builder: (context, constraints) {
+            return Container(
+              margin: constraints.maxWidth > 600 ? EdgeInsets.zero : EdgeInsets.only(left: 10, right:10),
+             padding: EdgeInsets.all(30),
+              width: 500,
+              height: 400,
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(10),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.grey.withOpacity(0.5),
+                    spreadRadius: 5,
+                    blurRadius: 7,
+                    offset: const Offset(0, 3), // changes position of shadow
                   ),
-                ),
+                ],
               ),
-              const SizedBox(height: 20,),
-              TextField(
-                controller: controller.passwordController,
-                decoration: InputDecoration(
-                  hintText: "Password",
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(10),
+              child: Column(
+                children: [
+                  Image.asset("assets/images/logo.png",width: 200,),
+                  const SizedBox(height: 20,),
+                   Text("Login",style: h1TextStyle(),),
+                  const SizedBox(height: 20,),
+                  TextField(
+                    controller: controller.nameController,
+                    decoration: InputDecoration(
+                      hintText: "Email",
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                    ),
                   ),
-                ),
-              ),
-              const SizedBox(height: 20,),
-              Obx(() {
-                  return AppButton(
-                      isLoading: controller.isLoading.value,
+                  const SizedBox(height: 20,),
+                  TextField(
+                    controller: controller.passwordController,
+                    decoration: InputDecoration(
+                      hintText: "Password",
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 20,),
+                  Obx(() {
+                      return AppButton(
+                          isLoading: controller.isLoading.value,
 
-                      onClick: (){
-                        controller.adminLogin(controller.nameController.text, controller.passwordController.text);
-                      }, text: "Login");
-                }
+                          onClick: (){
+                            controller.adminLogin(controller.nameController.text, controller.passwordController.text);
+                          }, text: "Login");
+                    }
+                  ),
+                ],
               ),
-            ],
-          ),
+            );
+          }
         ),
       )
     );
