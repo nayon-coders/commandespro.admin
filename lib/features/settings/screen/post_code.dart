@@ -3,6 +3,7 @@ import 'package:commandespro_admin/features/menus/screens/app_scaffold.dart';
 import 'package:commandespro_admin/features/products/controller/postcode.controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:responsive_framework/responsive_framework.dart';
 
 import '../../../comman/app_input.dart';
 import '../../../utility/app_const.dart';
@@ -31,15 +32,17 @@ class _PostCodeState extends State<PostCode> {
 
   @override
   Widget build(BuildContext context) {
+    bool isMobile = ResponsiveBreakpoints.of(context).isMobile;
+    bool isTab = ResponsiveBreakpoints.of(context).isTablet;
     return AppScaffold(
         body:Container(
-          padding:const EdgeInsets.only(left: 100, right: 100, top: 40, bottom: 50),
+          padding: isMobile || isTab ? EdgeInsets.all(15) : EdgeInsets.only(left: 100, right: 100, top: 40, bottom: 50),
           width:Get.width ,
           child: Column(
             children: [
               Container(
-                width: Get.width*0.50,
-                padding:const EdgeInsets.all(20),
+                width: isMobile || isTab ? Get.width : Get.width*0.50,
+                padding: isMobile || isTab ? EdgeInsets.all(15) : EdgeInsets.all(20),
                 decoration: BoxDecoration(
                   color: Colors.white,
                   borderRadius: BorderRadius.circular(10),
@@ -57,7 +60,7 @@ class _PostCodeState extends State<PostCode> {
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                   const Center(child: Text("Postal Code Management",style:TextStyle(fontSize: 30,fontWeight: FontWeight.w600,color: AppColors.primaryColor),)),
+                    Center(child: Text("Postal Code Management",style:TextStyle(fontSize: isMobile || isTab ? 20 : 30,fontWeight: FontWeight.w600,color: AppColors.primaryColor),)),
                     const SizedBox(height: 20,),
 
                     //Enter Postal Code
@@ -66,7 +69,7 @@ class _PostCodeState extends State<PostCode> {
                       crossAxisAlignment: CrossAxisAlignment.end,
                       children: [
                         SizedBox(
-                          width:MediaQuery.sizeOf(context).width*0.38,
+                          width: isMobile || isTab ? Get.width*.50 : MediaQuery.sizeOf(context).width*0.38,
                             child: AppInput(hint: " Add a postal code", controller: controller.postCode.value, text: "Postal Code*")),
                         const SizedBox(width: 10,),
                         Obx(() {
@@ -109,7 +112,7 @@ class _PostCodeState extends State<PostCode> {
 
                     //Postal List Table
                     Container(
-                      width: Get.width*0.48,
+                      width: isMobile || isTab ? Get.width : Get.width*0.48,
                       decoration: BoxDecoration(
                         border: Border.all(color: Colors.grey),
                       ),
@@ -120,19 +123,19 @@ class _PostCodeState extends State<PostCode> {
                           Container(
                             height: 45,
                             color: AppColors.primaryColor,
-                            child:const Padding(
+                            child: Padding(
                               padding:  EdgeInsets.only(left: 8.0),
                               child: Row(
                                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                 crossAxisAlignment: CrossAxisAlignment.center,
                                 children: [
                                   SizedBox(
-                                    width: 200,
-                                      child: Text("Postal Code",style: TextStyle(fontWeight: FontWeight.w600,fontSize: 16,color: Colors.white),)),
+                                    width:  200,
+                                      child: Text("Postal Code",style: TextStyle(fontWeight: FontWeight.w600,fontSize: isMobile || isTab ? 13 : 16,color: Colors.white),)),
 
                                   SizedBox(
                                     width: 100,
-                                      child: Text("Action",style: TextStyle(fontWeight: FontWeight.w600,fontSize: 16,color: Colors.white),)),
+                                      child: Text("Action",style: TextStyle(fontWeight: FontWeight.w600,fontSize:  isMobile || isTab ? 13 : 16,color: Colors.white),)),
                                 ],
 
                               ),
