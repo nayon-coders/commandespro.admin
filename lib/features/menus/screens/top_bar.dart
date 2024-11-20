@@ -16,7 +16,7 @@ class TopbarWidgets extends StatelessWidget {
     var role = sharedPreferences!.getString("role");
     return LayoutBuilder(
       builder: (context, constraints){
-      if (constraints.maxWidth > 600) {
+      if (constraints.maxWidth > 800) {
        return Container(
           padding: const EdgeInsets.all(AppPadding.defaultPadding),
           decoration: BoxDecoration(

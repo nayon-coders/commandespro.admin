@@ -6,6 +6,7 @@ import 'package:commandespro_admin/routes/app_pages.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
+import 'package:responsive_framework/responsive_framework.dart';
 
 import '../../../comman/app_table/app.table.dart';
 import '../../../comman/app_table/table.header.dart';
@@ -34,10 +35,12 @@ class _AdminListState extends State<AdminList> {
 
   @override
   Widget build(BuildContext context) {
+    bool isMobile = ResponsiveBreakpoints.of(context).isMobile;
+    bool isTab = ResponsiveBreakpoints.of(context).isTablet;
     return AppScaffold(
         body:Container(
           padding: const EdgeInsets.all(20),
-          margin:const EdgeInsets.only(left: 100, right: 100, top: 20, bottom: 30),
+          margin: isMobile || isTab ? EdgeInsets.all(15) : EdgeInsets.only(left: 100, right: 100, top: 20, bottom: 30),
           decoration: BoxDecoration(
             color: Colors.white,
           ),

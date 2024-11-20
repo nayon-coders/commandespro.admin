@@ -10,6 +10,7 @@ import 'package:commandespro_admin/utility/app_const.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:responsive_framework/responsive_framework.dart';
 
 import '../../../comman/app_input.dart';
 import '../../../comman/app_table/app.table.dart';
@@ -38,10 +39,14 @@ class _InvoiceGanerateState extends State<InvoiceGanerate> {
   @override
   Widget build(BuildContext context) {
 
+    bool isMobile = ResponsiveBreakpoints.of(context).isMobile;
+    bool isTab = ResponsiveBreakpoints.of(context).isTablet;
+
+
     return AppScaffold(
       body: Container(
         padding: EdgeInsets.all(20),
-        margin: EdgeInsets.only(left: 100, right: 100, top: 50,bottom: 50),
+        margin: isMobile || isTab ? EdgeInsets.all(15) : EdgeInsets.only(left: 100, right: 100, top: 50,bottom: 50),
         decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.circular(10),

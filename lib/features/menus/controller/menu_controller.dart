@@ -17,5 +17,17 @@ class AppMenuController extends GetxController{
    RxBool onAddCustomerClick = false.obs;
    RxBool onAddCMDClick = false.obs;
 
+   RxList subMenu = [].obs;
+   //set sub menu for mobile
+   setSubMenu(element){
+    subMenu.value = element;
+    update();
+   }
+
+   resetSubMenu(){
+     subMenu.value = [];
+     update();
+   }
+
 
 }

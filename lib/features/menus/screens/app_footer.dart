@@ -8,21 +8,45 @@ class AppFooter extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      height: 100,
-      width: Get.width,
-      padding: EdgeInsets.all(30),
-      decoration: BoxDecoration(
-        color: Colors.black,
-      ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.start,
-        children: [
-          Image.asset("assets/images/logo.png", width: 200, height: 100,),
-          Text("© 2022 CommandesPro. All rights reserved.", style: TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.w400),),
-        ],
-      ),
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        if(constraints.maxWidth > 800){
+          return Container(
+            height: 100,
+            width: Get.width,
+            padding: EdgeInsets.all(30),
+            decoration: BoxDecoration(
+              color: Colors.black,
+            ),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                Image.asset("assets/images/logo.png", width: 200, height: 100,),
+                Text("© 2022 CommandesPro. All rights reserved.", style: TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.w400),),
+              ],
+            ),
 
+          );
+        }else{
+          return Container(
+            height: 200,
+            width: Get.width,
+            padding: EdgeInsets.all(30),
+            decoration: BoxDecoration(
+              color: Colors.black,
+            ),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Image.asset("assets/images/logo.png", width: 150, height: 80,),
+                Text("© 2022 CommandesPro. All rights reserved.", style: TextStyle(color: Colors.white, fontSize: 12, fontWeight: FontWeight.w400),),
+              ],
+            ),
+
+          );
+        }
+
+      }
     );
   }
 }
