@@ -29,7 +29,8 @@ class AppRoute {
   static const String customer_invoice = '/customer-invoice';
   static const String customer_assets = '/customer-assets';
   static const String pages = '/app-pages';
-  static const String setting = '/app-seetting';
+  static const String setting = '/app-setting';
+  static const String credit = '/credit-screen';
   static const String profile = '/profile';
   static const String login = '/login';
   static const String register = '/register';

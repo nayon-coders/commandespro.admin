@@ -27,6 +27,7 @@ import '../data/binding/product_binding.dart';
 import '../data/binding/user_binding.dart';
 import '../features/app_screen/screen/app_page.dart';
 import '../features/auth/screen/auth_view.dart';
+import '../features/cradit/screen/cradit.dart';
 import '../features/products/screens/category.dart';
 import '../features/products/screens/product_list.dart';
 import 'app_pages.dart';
@@ -156,6 +157,11 @@ class AppPages{
         transition: Transition.fade,
         page: ()=>InvoiceGanerate(),
         binding: InvoiceGenarateBinding()
+    ),
+    GetPage(
+        name: AppRoute.credit,
+        transition: Transition.fade,
+        page: ()=>CraditScreen(),
     ),
   ];
 }

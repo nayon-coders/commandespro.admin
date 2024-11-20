@@ -10,6 +10,7 @@ import 'package:responsive_framework/responsive_framework.dart';
 
 import '../../../comman/app_table/app.table.dart';
 import '../../../comman/app_table/table.header.dart';
+import '../../../main.dart';
 
 class AdminList extends StatefulWidget {
    AdminList({super.key});
@@ -130,7 +131,7 @@ class _AdminListState extends State<AdminList> {
                                           },
                                           icon:const Icon(Icons.edit,color: Colors.amber,)
                                       ),
-                                      IconButton(
+                                      sharedPreferences!.getString("role")! == "Admin" ? Center():   IconButton(
                                           onPressed: (){
                                             Get.defaultDialog(
                                               title: "Are you sure?",

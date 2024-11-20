@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:html' as html;
+import 'package:commandespro_admin/data/json/menus_list.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
@@ -30,11 +31,6 @@ class AuthController extends GetxController {
     super.onReady();
   }
 
-  @override
-  void onClose() {
-    nameController.dispose();
-    passwordController.dispose();
-  }
 
   bool _isValid() {
     if (nameController.text.trim().isEmpty) {
@@ -75,6 +71,7 @@ class AuthController extends GetxController {
       await getMyProfile();
       if(sharedPreferences!.getString("role") != null){
         print("account role it ---- ${sharedPreferences!.getString("role")}");
+
         Get.snackbar("Login Success!", "Welcome to Admin Panel");
         Get.toNamed(AppRoute.dashboard);
       }
@@ -96,6 +93,7 @@ class AuthController extends GetxController {
 
     if(response.statusCode == 200){
       sharedPreferences!.setString("role", data["role_name"]);
+      AppMenus.getMenuForRole(data["role_name"]);
       myprofiel.value = AdminProfileModel.fromJson(data);
     }
     isGettingMyProfile.value = false;

@@ -2,6 +2,7 @@ import 'package:commandespro_admin/features/app_screen/controller/privacy_policy
 import 'package:commandespro_admin/features/menus/screens/app_scaffold.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:responsive_framework/responsive_framework.dart';
 import '../../../comman/AppButton.dart';
 import '../../../comman/app_input.dart';
 
@@ -11,10 +12,18 @@ class AppPage extends GetView<PrivacyPolicyController> {
 
   @override
   Widget build(BuildContext context) {
+    bool isMobile = ResponsiveBreakpoints.of(context).isMobile;
+    bool isTab = ResponsiveBreakpoints.of(context).isTablet;
+    double fontSize = 16;
+    if(isMobile || isTab){
+      fontSize = 13;
+    }else{
+      fontSize = 16;
+    }
     return AppScaffold(
         body:Container(
           width: Get.width,
-          padding:const EdgeInsets.only(left: 100, right: 100, top: 40, bottom: 50),
+          padding: isMobile || isTab ? EdgeInsets.all(15) : EdgeInsets.only(left: 100, right: 100, top: 40, bottom: 50),
           child: Column(
             children: [
               Container(

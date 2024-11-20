@@ -1,3 +1,4 @@
+import 'package:commandespro_admin/main.dart';
 import 'package:commandespro_admin/routes/app_pages.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -8,14 +9,24 @@ import '../../../utility/app_const.dart';
 import '../../../utility/text_style.dart';
 import '../controller/menu_controller.dart';
 
-class AppMenuBar extends StatelessWidget {
+class AppMenuBar extends StatefulWidget {
    AppMenuBar({
     super.key,
   });
 
+  @override
+  State<AppMenuBar> createState() => _AppMenuBarState();
+}
+
+class _AppMenuBarState extends State<AppMenuBar> {
   final AppMenuController controller = Get.find();
 
-
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    AppMenus.getMenuForRole(sharedPreferences!.getString("role")!); //get menu for role
+  }
 
    @override
   Widget build(BuildContext context) {
@@ -61,7 +72,7 @@ class MobileMenuView extends StatelessWidget {
               icon: Icon(Icons.menu, color: Colors.white, size: 30,)),
           IconButton(
               onPressed: (){
-                Get.toNamed(AppRoute.profile);
+                Get.toNamed(AppRoute.setting);
 
               },
               icon: Icon(Icons.person, color: Colors.white, size: 30,)),
@@ -97,7 +108,7 @@ class WebMenuView extends StatelessWidget {
             height: 40,
             child: ListView.builder(
               scrollDirection: Axis.horizontal,
-              itemCount: AppMenus.menus.length,
+              itemCount: AppMenus.menus!.length,
               itemBuilder: (_, index){
                 return Obx((){
                   //------
@@ -117,7 +128,7 @@ class WebMenuView extends StatelessWidget {
                       },
                       onTap: (){
                         controller.selectedMenuId.value = index; //set selected menu id
-                        Get.toNamed(AppMenus.menus[index]["page"]!); //navigate to the page
+                        Get.toNamed(AppMenus.menus![index]["page"]!); //navigate to the page
                       },
                       child: Container(
                         decoration: BoxDecoration(
@@ -130,18 +141,18 @@ class WebMenuView extends StatelessWidget {
                         ),
                         child: Row(
                           children: [
-                            Text("${AppMenus.menus[index]["title"]}",
+                            Text("${AppMenus.menus![index]["title"]}",
                               style: controller.selectedMenuId.value == index ? selectedMenuTextStyle() : menusTextStyle() ,
                             ),
-                            AppMenus.menus[index]["items"]!.isNotEmpty ? Icon(Icons.keyboard_arrow_down_outlined, color: controller.selectedMenuId.value == index  ? Colors.black :Colors.white,) : Center(),
+                            AppMenus.menus![index]["items"]!.isNotEmpty ? Icon(Icons.keyboard_arrow_down_outlined, color: controller.selectedMenuId.value == index  ? Colors.black :Colors.white,) : Center(),
                           ],
                         ),
                       ),
                     ),
 
                     //sub menu
-                    items: AppMenus.menus[index]["items"]!.isNotEmpty
-                        ? AppMenus.menus[index]["items"].map<Widget>((item) {
+                    items: AppMenus.menus![index]["items"]!.isNotEmpty
+                        ? AppMenus.menus![index]["items"].map<Widget>((item) {
                       return InkWell(
                         onHover: (isHovered) {
                           WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -266,7 +277,7 @@ class WebMenuView extends StatelessWidget {
                     ),
                     child: Row(
                       children: [
-                        Icon(Icons.shopping_cart_outlined, color:  controller.onAddCustomerHome.value ? Colors.black: AppColors.primaryColor,), //icon
+                        Icon(Icons.person, color:  controller.onAddCustomerHome.value ? Colors.black: AppColors.primaryColor,), //icon
                         Text("AJUTRE UN CLIENT".tr, style: TextStyle(color:  controller.onAddCustomerHome.value || controller.onAddCustomerClick.value ? Colors.black: AppColors.primaryColor, fontSize: 16, fontWeight: FontWeight.w600),), //text
                       ],
                     ),

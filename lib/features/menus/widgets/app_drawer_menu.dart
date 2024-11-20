@@ -29,9 +29,9 @@ class _AppMenuDrawerState extends State<AppMenuDrawer> {
             child: ListView.builder(
               shrinkWrap: true,
               //physics: NeverScrollableScrollPhysics(),
-              itemCount: AppMenus.menus.length,
+              itemCount: AppMenus.menus!.length,
               itemBuilder: (_, index){
-                var menu = AppMenus.menus[index];
+                var menu = AppMenus.menus![index];
                 return Container(
                   decoration: BoxDecoration(
                       border: Border(
