@@ -1,6 +1,7 @@
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:responsive_framework/responsive_framework.dart';
 
 import '../../../data/model/user.list.model.dart';
 import '../../../routes/app_pages.dart';
@@ -20,6 +21,14 @@ class SelectCustomer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    bool isMobile = ResponsiveBreakpoints.of(context).isMobile;
+    bool isTab = ResponsiveBreakpoints.of(context).isTablet;
+    double fontSize = 16;
+    if(isMobile || isTab){
+      fontSize = 13;
+    }else{
+      fontSize = 16;
+    }
     return Column(
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -28,17 +37,17 @@ class SelectCustomer extends StatelessWidget {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            const Text("Select Customer",style: TextStyle(
+             Text("Select Customer",style: TextStyle(
               fontWeight: FontWeight.w600,
-              fontSize: 16,
+              fontSize: fontSize,
             ),),
             TextButton(
               onPressed: ()=>Get.toNamed(AppRoute.addClient),
-              child:  const Text("Add new customer",
+              child:   Text("Add new customer",
                 style: TextStyle(
                   color: AppColors.primaryColor,
                   fontWeight: FontWeight.w600,
-                  fontSize: 16,
+                  fontSize: fontSize,
                 ),
               ),
             )

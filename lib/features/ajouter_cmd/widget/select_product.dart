@@ -1,6 +1,7 @@
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:responsive_framework/responsive_framework.dart';
 
 import '../../../data/model/product.list.model.dart';
 import '../../../routes/app_pages.dart';
@@ -20,6 +21,14 @@ class SelectProduct extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    bool isMobile = ResponsiveBreakpoints.of(context).isMobile;
+    bool isTab = ResponsiveBreakpoints.of(context).isTablet;
+    double fontSize = 16;
+    if(isMobile || isTab){
+      fontSize = 13;
+    }else{
+      fontSize = 16;
+    }
     return Obx(() {
         return Visibility(
           visible: controller.selectedUser.value != null,
@@ -30,9 +39,9 @@ class SelectProduct extends StatelessWidget {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  const Text("Select Product",style: TextStyle(
+                   Text("Select Product",style: TextStyle(
                     fontWeight: FontWeight.w600,
-                    fontSize: 16,
+                    fontSize: fontSize,
                   ),),
                   // TextButton(
                   //   onPressed: ()=>Get.toNamed(AppRoute.add_new_product),

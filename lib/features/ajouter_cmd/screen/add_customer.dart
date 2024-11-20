@@ -5,6 +5,7 @@ import 'package:commandespro_admin/features/ajouter_cmd/widget/selected_button.d
 import 'package:commandespro_admin/features/menus/screens/app_scaffold.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:responsive_framework/responsive_framework.dart';
 
 import '../../../../../../../comman/app_input.dart';
 import '../../../../../../../comman/dropdown2.dart';
@@ -28,10 +29,18 @@ class _AddCustomerState extends State<AddCustomer> {
 
   @override
   Widget build(BuildContext context) {
+    bool isMobile = ResponsiveBreakpoints.of(context).isMobile;
+    bool isTab = ResponsiveBreakpoints.of(context).isTablet;
+    double fontSize = 16;
+    if(isMobile || isTab){
+      fontSize = 13;
+    }else{
+      fontSize = 16;
+    }
     return AppScaffold(
         body:Container(
           width: Get.width,
-          padding:const EdgeInsets.only(left: 100, right: 100, top: 40, bottom: 50),
+          padding: isMobile || isTab ? EdgeInsets.all(15) : EdgeInsets.only(left: 100, right: 100, top: 40, bottom: 50),
           child: Column(
             children: [
               Container(
@@ -78,7 +87,7 @@ class _AddCustomerState extends State<AddCustomer> {
                                       }
                                     },
                                     child: Container(
-                                      width: 120,
+                                      width: isMobile ? 90 : 120,
                                       height: 45,
                                       margin: const EdgeInsets.only(right: 10),
                                       decoration: BoxDecoration(
@@ -87,7 +96,7 @@ class _AddCustomerState extends State<AddCustomer> {
                                         borderRadius: BorderRadius.circular(5)
                                       ),
                                       child: Center(
-                                        child: Text(GlobalVariable.accountType[index],style: TextStyle(color: controller.selectedRole.contains(GlobalVariable.accountType[index]) ? Colors.white : AppColors.primaryColor,fontSize: 16,fontWeight: FontWeight.w600),),
+                                        child: Text(GlobalVariable.accountType[index],style: TextStyle(color: controller.selectedRole.contains(GlobalVariable.accountType[index]) ? Colors.white : AppColors.primaryColor,fontSize: isMobile ? 12 : 16,fontWeight: FontWeight.w600),),
                                       ),
                                     ),
                                   );
@@ -182,53 +191,53 @@ class _AddCustomerState extends State<AddCustomer> {
                     // ),
 
                     const SizedBox(height: 30,),
-
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        const Text("Adresses de Livraison",style:TextStyle(color: AppColors.primaryColor,fontSize: 35,fontWeight: FontWeight.bold)),
-                        Obx(() {
-                           if(controller.isShippingAddress.value){
-                             return  Container(
-                               color: AppColors.primaryColor,
-                               child: TextButton(
-                                 onPressed: (){
-                                    controller.isShippingAddress.value = false;
-                                 },
-                                 child: Text("Close it",
-                                   style: TextStyle(color: Colors.white,fontSize: 20,fontWeight: FontWeight.w600),
-
-                                 ),
-                               ),
-                             );
-                           }else{
-                             return Container(
-                               color: AppColors.primaryColor,
-                               child: TextButton(
-                                 onPressed: (){
-                                   controller.isShippingAddress.value = true;
-                                 },
-                                 child: Text("Add Shipping Address",
-                                    style: TextStyle(color: Colors.white,fontSize: 20,fontWeight: FontWeight.w600),
-                                 ),
-                               ),
-                             );
-                           }
-                          }
-                        )
-                      ],
-                    ),
-                    const SizedBox(height: 25,),
-                    //shipping address
-                    Obx(() {
-                      if(controller.isShippingAddress.value){
-                        return ShippingAddressView();
-                      }else{
-                        return Center();
-                      }
-
-                      }
-                    ),
+                    //
+                    // Row(
+                    //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    //   children: [
+                    //     const Text("Adresses de Livraison",style:TextStyle(color: AppColors.primaryColor,fontSize: 35,fontWeight: FontWeight.bold)),
+                    //     Obx(() {
+                    //        if(controller.isShippingAddress.value){
+                    //          return  Container(
+                    //            color: AppColors.primaryColor,
+                    //            child: TextButton(
+                    //              onPressed: (){
+                    //                 controller.isShippingAddress.value = false;
+                    //              },
+                    //              child: Text("Close it",
+                    //                style: TextStyle(color: Colors.white,fontSize: 20,fontWeight: FontWeight.w600),
+                    //
+                    //              ),
+                    //            ),
+                    //          );
+                    //        }else{
+                    //          return Container(
+                    //            color: AppColors.primaryColor,
+                    //            child: TextButton(
+                    //              onPressed: (){
+                    //                controller.isShippingAddress.value = true;
+                    //              },
+                    //              child: Text("Add Shipping Address",
+                    //                 style: TextStyle(color: Colors.white,fontSize: 20,fontWeight: FontWeight.w600),
+                    //              ),
+                    //            ),
+                    //          );
+                    //        }
+                    //       }
+                    //     )
+                    //   ],
+                    // ),
+                    // const SizedBox(height: 25,),
+                    // //shipping address
+                    // Obx(() {
+                    //   if(controller.isShippingAddress.value){
+                    //     return ShippingAddressView();
+                    //   }else{
+                    //     return Center();
+                    //   }
+                    //
+                    //   }
+                    // ),
 
                     const SizedBox(height: 15,),
                     Obx(() {

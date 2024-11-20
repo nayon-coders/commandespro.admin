@@ -12,6 +12,7 @@ import 'package:commandespro_admin/features/products/controller/product_controll
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:responsive_framework/responsive_framework.dart';
 
 import '../../../comman/AppButton.dart';
 import '../../../utility/app_const.dart';
@@ -59,10 +60,18 @@ class _AddCmdState extends State<AddCmd> {
 
   @override
   Widget build(BuildContext context) {
+    bool isMobile = ResponsiveBreakpoints.of(context).isMobile;
+    bool isTab = ResponsiveBreakpoints.of(context).isTablet;
+    double fontSize = 16;
+    if(isMobile || isTab){
+      fontSize = 13;
+    }else{
+      fontSize = 16;
+    }
     return AppScaffold(
         body:Container(
           width: Get.width,
-          padding:const EdgeInsets.only(left: 200, right: 200, top: 40, bottom: 50),
+          padding: isMobile || isTab ? EdgeInsets.all(15): EdgeInsets.only(left: 200, right: 200, top: 40, bottom: 50),
           child: Column(
             children: [
               Container(
@@ -112,7 +121,7 @@ class _AddCmdState extends State<AddCmd> {
                                 style: TextStyle(
                                   fontWeight: FontWeight.w600,
                                   color: Colors.black,
-                                  fontSize: 16
+                                  fontSize: fontSize
                                 ),
                               ),
                               SizedBox(height: 10,),
@@ -153,7 +162,7 @@ class _AddCmdState extends State<AddCmd> {
                                   style: TextStyle(
                                       fontWeight: FontWeight.w600,
                                       color: Colors.black,
-                                      fontSize: 16
+                                      fontSize: fontSize
                                   ),
                                 ),
                                 SizedBox(height: 10,),

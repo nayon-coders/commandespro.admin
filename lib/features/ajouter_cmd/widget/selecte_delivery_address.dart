@@ -3,6 +3,7 @@ import 'package:commandespro_admin/features/ajouter_cmd/widget/add_delivery_addr
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:responsive_framework/responsive_framework.dart';
 
 import '../../../data/model/user.list.model.dart';
 import '../../../routes/app_pages.dart';
@@ -22,6 +23,14 @@ class SelectDeliveryAddress extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    bool isMobile = ResponsiveBreakpoints.of(context).isMobile;
+    bool isTab = ResponsiveBreakpoints.of(context).isTablet;
+    double fontSize = 16;
+    if(isMobile || isTab){
+      fontSize = 13;
+    }else{
+      fontSize = 16;
+    }
     return Obx(() {
         return Visibility(
           visible: customerController.selectedUser.value.id != null,
@@ -33,9 +42,9 @@ class SelectDeliveryAddress extends StatelessWidget {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  const Text("Select Delivery Address",style: TextStyle(
+                   Text("Select Delivery Address",style: TextStyle(
                     fontWeight: FontWeight.w600,
-                    fontSize: 16,
+                    fontSize: fontSize,
                   ),),
                   TextButton(
                     onPressed: (){
@@ -51,11 +60,11 @@ class SelectDeliveryAddress extends StatelessWidget {
                       }
 
                     },
-                    child:  const Text("Add new delivery address",
+                    child:   Text("Add address",
                       style: TextStyle(
                         color: AppColors.primaryColor,
                         fontWeight: FontWeight.w600,
-                        fontSize: 16,
+                        fontSize: fontSize,
                       ),
                     ),
                   )
