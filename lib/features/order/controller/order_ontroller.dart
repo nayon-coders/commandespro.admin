@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_rx/get_rx.dart';
 import 'package:get/get_rx/src/rx_types/rx_types.dart';
+import 'package:intl/intl.dart';
 
 import '../../../app.config.dart';
 import '../../../data/model/all_order_model.dart';
@@ -301,4 +302,8 @@ RxString orderId = "".obs;
     }
     return Colors.transparent; // For cases where it's not displayed
   }
+
+
+
+
 }
