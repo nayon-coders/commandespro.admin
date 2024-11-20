@@ -1,15 +1,13 @@
+import 'package:commandespro_admin/features/app_screen/controller/privacy_policy_controller.dart';
 import 'package:commandespro_admin/features/menus/screens/app_scaffold.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-
 import '../../../comman/AppButton.dart';
 import '../../../comman/app_input.dart';
 
-class AppPage extends StatelessWidget {
-   AppPage({super.key});
+class AppPage extends GetView<PrivacyPolicyController> {
+   const AppPage({super.key});
 
-  final _privacyPolicy = TextEditingController();
-  final _termsCondition = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -34,67 +32,90 @@ class AppPage extends StatelessWidget {
                   ],
                 ),
 
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    SizedBox(
-                      width: Get.width*0.40,
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
+                child: Obx(() {
+                  if(controller.isGetting.value){
+                    return const Center(child: CircularProgressIndicator.adaptive(),);
+                  }else{
+                    return Column(
+                      children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
 
-                          const SizedBox(height: 20,),
+                            //Privacy Policy
+                            SizedBox(
+                              width: Get.width*0.40,
+                              child: AppInput(
+                                hint: "Privacy Policy",
+                                controller:controller.privacyPolicy.value,
+                                text: "Privacy Policy *",
+                                maxLine: 15,
+                              ),
+                            ),
 
-                          AppInput(
-                              hint: "Privacy Policy",
-                              controller:_privacyPolicy,
-                              text: "Privacy Policy *",
-                            maxLine: 15,
-                          ),
-                          const SizedBox(height:20,),
+                            //terms Condition
+                            SizedBox(
+                              width: Get.width*0.40,
+                              child: AppInput(
+                                hint: "Terms Condition",
+                                controller:  controller.termsCondition.value,
+                                text: "Terms Condition *",
+                                maxLine: 15,
+                              ),
+                            ),
+                          ],
+                        ),
 
+                       const SizedBox(height: 40,),
 
+                        //AboutUs & Legal
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
 
-                          AppButton(
-                            onClick: (){},
-                            text: "Save",
+                            //About us
+                            SizedBox(
+                              width: Get.width*0.40,
+                              child: AppInput(
+                                hint: "About Us",
+                                controller:controller.aboutUs.value,
+                                text: "About Us *",
+                                maxLine: 15,
+                              ),
+                            ),
 
-                          ),
+                            //Legal
+                            SizedBox(
+                              width: Get.width*0.40,
+                              child: AppInput(
+                                hint: "Legal",
+                                controller:  controller.legal.value,
+                                text: "Legal *",
+                                maxLine: 15,
+                              ),
+                            ),
+                          ],
+                        ),
 
-                        ],
-                      ),
-                    ),
-                    SizedBox(
-                      width: Get.width*0.40,
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
+                        const SizedBox(height: 40,),
+                        AppButton(
+                          width: Get.width,
+                          isLoading: controller.isUpdating.value,
+                          onClick: (){
+                            controller.upDatePrivacy();
+                          },
+                          text: "Save",
 
-                          const SizedBox(height: 20,),
+                        ),
+                      ],
+                    );
+                  }
 
-                          AppInput(
-                              hint: "Terms Condition",
-                              controller:  _termsCondition,
-                              text: "Terms Condition *",
-                            maxLine: 15,
-                          ),
-                          const SizedBox(height:20,),
-                          AppButton(
-                            onClick: (){},
-                            text: "Save",
-
-                          ),
-
-                        ],
-                      ),
-                    ),
-                  ],
+                  }
                 ),
               ),
-
 
 
             ],

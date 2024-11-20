@@ -14,6 +14,8 @@ class AppConfig{
   static const String LOGIN = "$BASE_URL/admins/login";
   static const String MY_PROFILE = "$BASE_URL/admins/me";
 
+  static const String UPDATE_PASSWORD = "$BASE_URL/admins/update/password";
+
   //product
   static const String PRODUCT_GET = "$BASE_URL/product/all";
   static const String PRODUCT_ADD = "$BASE_URL/product/create";
@@ -69,6 +71,7 @@ class AppConfig{
 
   //setting
   static const String PRIVACY_GET = "$BASE_URL/settings/privacy";
+  static const String PRIVACY_UPDATE = "$BASE_URL/settings/privacy";
 
 
 

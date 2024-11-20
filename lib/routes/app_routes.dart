@@ -1,3 +1,4 @@
+import 'package:commandespro_admin/data/binding/app_setting_binding.dart';
 import 'package:commandespro_admin/data/binding/category_binding.dart';
 import 'package:commandespro_admin/data/binding/invoice_genarate_binding.dart';
 import 'package:commandespro_admin/data/binding/order_binding.dart';
@@ -90,6 +91,7 @@ class AppPages{
     GetPage(
         name: AppRoute.setting,
         transition:Transition.fade ,
+        binding: AppSettingBinding(),
         page: ()=>AppSetting(),
 
     ),
@@ -97,6 +99,7 @@ class AppPages{
       name: AppRoute.pages,
       transition:Transition.fade ,
       page: ()=>AppPage(),
+      binding: AppSettingBinding(),
 
     ),
 
