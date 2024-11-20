@@ -52,7 +52,9 @@ class _AppMenuDrawerState extends State<AppMenuDrawer> {
                         trailing: menu["items"]!.isEmpty ? SizedBox(width: 1, height: 1,) : Icon(Icons.arrow_drop_down),
                         onTap: () {
                           if(menu["items"]!.isEmpty){
+
                             Get.toNamed(menu["page"]);
+                            controller.resetSubMenu();
                           }else{
                             controller.setSubMenu(menu["items"]);
                           }

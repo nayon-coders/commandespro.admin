@@ -26,188 +26,382 @@ class _CategoryScreenState extends State<CategoryScreen> {
   @override
   Widget build(BuildContext context) {
     return AppScaffold(
-      body: Container(
-        padding: EdgeInsets.only(left: 100, right: 100, top: 50, bottom: 50),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            // left side  menus
-            Expanded(
-              child: AddMainCategporyWidgets(controller: controller),
+      body: LayoutBuilder(
+        builder: (context, constraints) {
+          bool isMobile = constraints.maxWidth < 800;
+          return Container(
+            padding: isMobile ? EdgeInsets.all(15) : EdgeInsets.only(left: 100, right: 100, top: 50, bottom: 50),
+            child: Builder(
+
+              builder: (context) {
+                if(isMobile){
+                  return  _buildMobileView(context);
+                }else{
+                  return _buildWebView(context);
+                }
+
+              }
             ),
-            SizedBox(width: 20,),
-            Expanded(
-              child: Container(
-                height: 430,
-                padding: EdgeInsets.all(15),
-                decoration: BoxDecoration(
-                  color: Colors.grey.shade300,
-                  borderRadius: BorderRadius.circular(5),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.grey.shade300,
-                      blurRadius: 3,
-                      spreadRadius: 1,
-                    )
-                  ],
-                ),
-                child: Column(
+          );
+        }
+      ),
+    );
+  }
+
+  Row _buildWebView(BuildContext context) {
+    return Row(
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text("Add a New Sub Category",
-                      style: TextStyle(
-                          fontSize: 18,
-                          color: AppColors.primaryColor,
-                          fontWeight: FontWeight.w900
-                      ),
+                    // left side  menus
+                    Expanded(
+                      child: AddMainCategporyWidgets(controller: controller),
                     ),
-                    SizedBox(height: 30,),
-                    Center(
-                      child: InkWell(
-                        onTap: ()async{
-                          await FirebaseImageController.startWebFilePicker(controller.subCategoryCallBack);
-                        },
-                        child: Obx(() {
-                            return DottedBorder(
-                              borderPadding: EdgeInsets.all(10),
-                              child: SizedBox(
-                                width: 100,
-                                height: 100,
-                                child: Center(
-                                  child: controller.subCatImage.value != null ? Image.memory(controller.subCatImage.value!) :  Icon(Icons.upload_outlined, color: Colors.grey, size: 30,),
+                    SizedBox(width: 20,),
+                    Expanded(
+                      child: Container(
+                        height: 430,
+                        padding: EdgeInsets.all(15),
+                        decoration: BoxDecoration(
+                          color: Colors.grey.shade300,
+                          borderRadius: BorderRadius.circular(5),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.grey.shade300,
+                              blurRadius: 3,
+                              spreadRadius: 1,
+                            )
+                          ],
+                        ),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text("Add a New Sub Category",
+                              style: TextStyle(
+                                  fontSize: 18,
+                                  color: AppColors.primaryColor,
+                                  fontWeight: FontWeight.w900
+                              ),
+                            ),
+                            SizedBox(height: 30,),
+                            Center(
+                              child: InkWell(
+                                onTap: ()async{
+                                  await FirebaseImageController.startWebFilePicker(controller.subCategoryCallBack);
+                                },
+                                child: Obx(() {
+                                  return DottedBorder(
+                                    borderPadding: EdgeInsets.all(10),
+                                    child: SizedBox(
+                                      width: 100,
+                                      height: 100,
+                                      child: Center(
+                                        child: controller.subCatImage.value != null ? Image.memory(controller.subCatImage.value!) :  Icon(Icons.upload_outlined, color: Colors.grey, size: 30,),
+                                      ),
+                                    ),
+                                  );
+                                }
                                 ),
                               ),
-                            );
-                          }
+                            ),
+                            SizedBox(height: 10,),
+                            AppInput(
+                              text: "",
+                              hint: "Sub Category Name",
+                              isValidatorNeed: true,
+                              controller: controller.subCategoryName.value,
+                            ),
+                            SizedBox(height: 20,),
+                            Obx(() {
+                              // Check if mainCategoryModel.value or data is null
+                              if (controller.isLoading.value) {
+                                return Center(); // Loading state
+                              } else if (controller.mainCategoryModel.value?.data == null ||
+                                  controller.mainCategoryModel.value.data!.isEmpty) {
+                                return Center(child: Text('No categories available')); // When data is empty or null
+                              } else {
+                                return DropdownButtonHideUnderline(
+                                  child: DropdownButton2<SingleCategory>(
+                                    isExpanded: true,
+                                    hint: Text(
+                                      'Select Main Category',
+                                      style: TextStyle(
+                                        fontSize: 14,
+                                        color: Theme.of(context).hintColor,
+                                      ),
+                                    ),
+                                    items: controller.mainCategoryModel.value.data!.map((item) {
+                                      return DropdownMenuItem<SingleCategory>(
+                                        value: item,
+                                        child: Text(
+                                          item.name ?? '', // Add null safety check here
+                                          style: const TextStyle(
+                                            fontSize: 14,
+                                          ),
+                                        ),
+                                      );
+                                    }).toList(),
+                                    value: controller.mainCategoryModel.value.data!
+                                        .contains(controller.singleMainCategory.value)
+                                        ? controller.singleMainCategory.value
+                                        : null, // Ensure a valid value is selected
+                                    onChanged: (value) {
+                                      if (value != null) {
+                                        controller.singleMainCategory.value = value;
+                                        controller.subCatList.value = value.subCategories ?? [];
+                                        controller.mainCatId.value = value.id.toString();
+                                      }
+                                    },
+                                    buttonStyleData: ButtonStyleData(
+                                      padding: EdgeInsets.symmetric(horizontal: 16),
+                                      height: 50,
+                                      decoration: BoxDecoration(
+                                        color: Colors.white,
+                                        borderRadius: BorderRadius.circular(4),
+                                        border: Border.all(width: 1, color: Colors.grey.shade300),
+                                      ),
+                                    ),
+                                    menuItemStyleData: const MenuItemStyleData(
+                                      height: 40,
+                                    ),
+                                  ),
+                                );
+                              }
+                            }),
+                            SizedBox(height: 20,),
+                            Obx(() {
+                              return AppButton(
+                                isLoading: controller.isAddingSubCat.value,
+                                width: Get.width,
+                                onClick: (){
+                                  if(controller.subCategoryName.value.text.isNotEmpty){
+                                    controller.addSubCategory(9);
+                                  }
+                                },
+                                text: "Add New Sub Category",
+                              );
+                            }
+                            )
+
+                          ],
                         ),
                       ),
                     ),
-                    SizedBox(height: 10,),
-                    AppInput(
-                      text: "",
-                      hint: "Sub Category Name",
-                      isValidatorNeed: true,
-                      controller: controller.subCategoryName.value,
-                    ),
-                    SizedBox(height: 20,),
-                    Obx(() {
-                      // Check if mainCategoryModel.value or data is null
-                      if (controller.isLoading.value) {
-                        return Center(); // Loading state
-                      } else if (controller.mainCategoryModel.value?.data == null ||
-                          controller.mainCategoryModel.value.data!.isEmpty) {
-                        return Center(child: Text('No categories available')); // When data is empty or null
-                      } else {
-                        return DropdownButtonHideUnderline(
-                          child: DropdownButton2<SingleCategory>(
-                            isExpanded: true,
-                            hint: Text(
-                              'Select Main Category',
+                    SizedBox(width: 20,),
+                    Expanded(
+                      child: Container(
+                        height: 430,
+                        padding: EdgeInsets.all(20),
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(5),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.grey.shade300,
+                              blurRadius: 3,
+                              spreadRadius: 1,
+                            )
+                          ],
+                        ),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text("All Categories",
                               style: TextStyle(
-                                fontSize: 14,
-                                color: Theme.of(context).hintColor,
+                                  fontSize: 18,
+                                  color: AppColors.primaryColor,
+                                  fontWeight: FontWeight.w900
                               ),
                             ),
-                            items: controller.mainCategoryModel.value.data!.map((item) {
-                              return DropdownMenuItem<SingleCategory>(
-                                value: item,
-                                child: Text(
-                                  item.name ?? '', // Add null safety check here
-                                  style: const TextStyle(
-                                    fontSize: 14,
-                                  ),
-                                ),
-                              );
-                            }).toList(),
-                            value: controller.mainCategoryModel.value.data!
-                                .contains(controller.singleMainCategory.value)
-                                ? controller.singleMainCategory.value
-                                : null, // Ensure a valid value is selected
-                            onChanged: (value) {
-                              if (value != null) {
-                                controller.singleMainCategory.value = value;
-                                controller.subCatList.value = value.subCategories ?? [];
-                                controller.mainCatId.value = value.id.toString();
-                              }
-                            },
-                            buttonStyleData: ButtonStyleData(
-                              padding: EdgeInsets.symmetric(horizontal: 16),
-                              height: 50,
-                              decoration: BoxDecoration(
-                                color: Colors.white,
-                                borderRadius: BorderRadius.circular(4),
-                                border: Border.all(width: 1, color: Colors.grey.shade300),
-                              ),
-                            ),
-                            menuItemStyleData: const MenuItemStyleData(
-                              height: 40,
-                            ),
-                          ),
-                        );
-                      }
-                    }),
-                    SizedBox(height: 20,),
-                    Obx(() {
-                        return AppButton(
-                          isLoading: controller.isAddingSubCat.value,
-                          width: Get.width,
-                          onClick: (){
-                            if(controller.subCategoryName.value.text.isNotEmpty){
-                              controller.addSubCategory(9);
-                            }
-                          },
-                          text: "Add New Sub Category",
-                        );
-                      }
-                    )
+                            SizedBox(height: 10,),
+                            GetAllCategory(
+                              controller: controller,
+                            )
+
+                          ],
+                        ),
+                      ),
+                    ),
 
                   ],
-                ),
-              ),
-            ),
-            SizedBox(width: 20,),
-            Expanded(
-              child: Container(
-                height: 430,
-                padding: EdgeInsets.all(20),
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(5),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.grey.shade300,
-                      blurRadius: 3,
-                      spreadRadius: 1,
-                    )
-                  ],
-                ),
-                child: Column(
+                );
+  }
+
+  Column _buildMobileView(BuildContext context) {
+    return Column(
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text("All Categories",
-                      style: TextStyle(
-                          fontSize: 18,
-                          color: AppColors.primaryColor,
-                          fontWeight: FontWeight.w900
+                    // left side  menus
+                    AddMainCategporyWidgets(controller: controller),
+                    SizedBox(height: 20,),
+                    Container(
+                      height: 430,
+                      padding: EdgeInsets.all(15),
+                      decoration: BoxDecoration(
+                        color: Colors.grey.shade300,
+                        borderRadius: BorderRadius.circular(5),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.grey.shade300,
+                            blurRadius: 3,
+                            spreadRadius: 1,
+                          )
+                        ],
+                      ),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text("Add a New Sub Category",
+                            style: TextStyle(
+                                fontSize: 18,
+                                color: AppColors.primaryColor,
+                                fontWeight: FontWeight.w900
+                            ),
+                          ),
+                          SizedBox(height: 30,),
+                          Center(
+                            child: InkWell(
+                              onTap: ()async{
+                                await FirebaseImageController.startWebFilePicker(controller.subCategoryCallBack);
+                              },
+                              child: Obx(() {
+                                return DottedBorder(
+                                  borderPadding: EdgeInsets.all(10),
+                                  child: SizedBox(
+                                    width: 100,
+                                    height: 100,
+                                    child: Center(
+                                      child: controller.subCatImage.value != null ? Image.memory(controller.subCatImage.value!) :  Icon(Icons.upload_outlined, color: Colors.grey, size: 30,),
+                                    ),
+                                  ),
+                                );
+                              }
+                              ),
+                            ),
+                          ),
+                          SizedBox(height: 10,),
+                          AppInput(
+                            text: "",
+                            hint: "Sub Category Name",
+                            isValidatorNeed: true,
+                            controller: controller.subCategoryName.value,
+                          ),
+                          SizedBox(height: 20,),
+                          Obx(() {
+                            // Check if mainCategoryModel.value or data is null
+                            if (controller.isLoading.value) {
+                              return Center(); // Loading state
+                            } else if (controller.mainCategoryModel.value?.data == null ||
+                                controller.mainCategoryModel.value.data!.isEmpty) {
+                              return Center(child: Text('No categories available')); // When data is empty or null
+                            } else {
+                              return DropdownButtonHideUnderline(
+                                child: DropdownButton2<SingleCategory>(
+                                  isExpanded: true,
+                                  hint: Text(
+                                    'Select Main Category',
+                                    style: TextStyle(
+                                      fontSize: 14,
+                                      color: Theme.of(context).hintColor,
+                                    ),
+                                  ),
+                                  items: controller.mainCategoryModel.value.data!.map((item) {
+                                    return DropdownMenuItem<SingleCategory>(
+                                      value: item,
+                                      child: Text(
+                                        item.name ?? '', // Add null safety check here
+                                        style: const TextStyle(
+                                          fontSize: 14,
+                                        ),
+                                      ),
+                                    );
+                                  }).toList(),
+                                  value: controller.mainCategoryModel.value.data!
+                                      .contains(controller.singleMainCategory.value)
+                                      ? controller.singleMainCategory.value
+                                      : null, // Ensure a valid value is selected
+                                  onChanged: (value) {
+                                    if (value != null) {
+                                      controller.singleMainCategory.value = value;
+                                      controller.subCatList.value = value.subCategories ?? [];
+                                      controller.mainCatId.value = value.id.toString();
+                                    }
+                                  },
+                                  buttonStyleData: ButtonStyleData(
+                                    padding: EdgeInsets.symmetric(horizontal: 16),
+                                    height: 50,
+                                    decoration: BoxDecoration(
+                                      color: Colors.white,
+                                      borderRadius: BorderRadius.circular(4),
+                                      border: Border.all(width: 1, color: Colors.grey.shade300),
+                                    ),
+                                  ),
+                                  menuItemStyleData: const MenuItemStyleData(
+                                    height: 40,
+                                  ),
+                                ),
+                              );
+                            }
+                          }),
+                          SizedBox(height: 20,),
+                          Obx(() {
+                            return AppButton(
+                              isLoading: controller.isAddingSubCat.value,
+                              width: Get.width,
+                              onClick: (){
+                                if(controller.subCategoryName.value.text.isNotEmpty){
+                                  controller.addSubCategory(9);
+                                }
+                              },
+                              text: "Add New Sub Category",
+                            );
+                          }
+                          )
+
+                        ],
                       ),
                     ),
-                    SizedBox(height: 10,),
-                    GetAllCategory(
-                      controller: controller,
-                    )
+                    SizedBox(height: 20,),
+                    Container(
+                      height: 500,
+                      padding: EdgeInsets.all(20),
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(5),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.grey.shade300,
+                            blurRadius: 3,
+                            spreadRadius: 1,
+                          )
+                        ],
+                      ),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text("All Categories",
+                            style: TextStyle(
+                                fontSize: 18,
+                                color: AppColors.primaryColor,
+                                fontWeight: FontWeight.w900
+                            ),
+                          ),
+                          SizedBox(height: 10,),
+                          GetAllCategory(
+                            controller: controller,
+                          )
+
+                        ],
+                      ),
+                    ),
 
                   ],
-                ),
-              ),
-            ),
-
-          ],
-        ),
-      ),
-    );
+                );
   }
 }
 

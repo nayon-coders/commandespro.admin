@@ -24,5 +24,10 @@ class AppMenuController extends GetxController{
     update();
    }
 
+   resetSubMenu(){
+     subMenu.value = [];
+     update();
+   }
+
 
 }
