@@ -5,6 +5,7 @@ import 'package:commandespro_admin/features/customers_screen/controller/user.con
 import 'package:commandespro_admin/features/menus/screens/app_scaffold.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:responsive_framework/responsive_framework.dart';
 
 import '../../../comman/app_table/app.table.dart';
 import '../../../comman/app_table/table.header.dart';
@@ -34,10 +35,14 @@ class _CustomerScreenState extends State<CustomerScreen> {
   @override
   Widget build(BuildContext context) {
 
+    bool isMobile = ResponsiveBreakpoints.of(context).isMobile;
+    bool isTab = ResponsiveBreakpoints.of(context).isTablet;
+
+
     return AppScaffold(
       body:Container(
-        padding: const EdgeInsets.all(20),
-        margin:const EdgeInsets.only(left: 100, right: 100, top: 20, bottom: 30),
+        padding: const EdgeInsets.all(15),
+        margin: isMobile || isTab ? EdgeInsets.all(15) : EdgeInsets.only(left: 100, right: 100, top: 20, bottom: 30),
         decoration: BoxDecoration(
           color: Colors.white,
         ),
