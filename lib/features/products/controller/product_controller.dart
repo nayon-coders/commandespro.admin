@@ -1,7 +1,9 @@
 import 'dart:convert';
 
+import 'package:commandespro_admin/routes/app_pages.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:get/get_rx/get_rx.dart';
 
 import '../../../app.config.dart';
 import '../../../controller/firebase.image.controller.dart';
@@ -9,7 +11,13 @@ import '../../../data/model/product.list.model.dart';
 import '../../../data/service/api.service.dart';
 class ProductController extends GetxController{
 
+  //from key
+  var formKey = GlobalKey<FormState>();
+  RxDouble productPageHeight = 970.00.obs;
+  RxDouble productPageMobileHeight = 950.00.obs;
 
+
+  RxList vatList = ["5", "10", "15", "20"].obs;
 
   Rx<TextEditingController> productName = TextEditingController().obs;
   Rx<TextEditingController> productShortDes = TextEditingController().obs;
@@ -167,8 +175,11 @@ class ProductController extends GetxController{
 
 
     if(res.statusCode == 200){
-      Get.snackbar("Success!", "Product updated success", backgroundColor: Colors.green);
       clearAll();
+
+      Get.toNamed(AppRoute.product_list);
+
+      Get.snackbar("Success!", "Product updated success", backgroundColor: Colors.green);
     }else{
       Get.snackbar("Error!", "Something went wrong. Status Code: ${res.statusCode}", backgroundColor: Colors.red);
     }
@@ -230,6 +241,7 @@ class ProductController extends GetxController{
 
   // list for
   RxList<TextEditingController> productPurchasePriceList = <TextEditingController>[].obs;
+  RxList<TextEditingController> productNameList = <TextEditingController>[].obs;
   RxList<TextEditingController> productTypesList = <TextEditingController>[].obs;
   RxList<TextEditingController> stock = <TextEditingController>[].obs;
   RxList<TextEditingController> units = <TextEditingController>[].obs;
@@ -239,6 +251,7 @@ class ProductController extends GetxController{
   //add add list for product
   addProductListTextEditing(SingleProducts data){
     productPurchasePriceList.add(TextEditingController(text: data.purchasePrice.toString()));
+    productNameList.add(TextEditingController(text: data.name.toString()));
     productTypesList.add(TextEditingController(text: data.productType.toString()));
     stock.add(TextEditingController(text: data.isStock.toString()));
     units.add(TextEditingController(text: data.unit.toString()));
@@ -248,7 +261,7 @@ class ProductController extends GetxController{
 
   //edit info from list
   RxBool isEditProductList = false.obs;
-  editProductList(id, index)async{
+  editProductList(id, index, {bool isFromClick = false})async{
     isEditProductList.value = true;
 
 
@@ -265,10 +278,14 @@ class ProductController extends GetxController{
 
     if(res.statusCode == 200){
       getAllProduct();
-      Get.snackbar("Success!", "Product updated success", backgroundColor: Colors.green);
+      if(isFromClick){
+        Get.snackbar("Success!", "Product updated success", backgroundColor: Colors.green);
+      }
       clearAll();
     }else{
-      Get.snackbar("Error!", "Something went wrong. Status Code: ${res.statusCode}", backgroundColor: Colors.red);
+      if(isFromClick){
+        Get.snackbar("Error!", "Something went wrong. Status Code: ${res.statusCode}", backgroundColor: Colors.red);
+      }
     }
     getAllProduct();
     isEditProductList.value = false;

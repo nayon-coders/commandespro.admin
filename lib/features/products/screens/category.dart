@@ -30,6 +30,7 @@ class _CategoryScreenState extends State<CategoryScreen> {
         builder: (context, constraints) {
           bool isMobile = constraints.maxWidth < 800;
           return Container(
+            height: Get.height,
             padding: isMobile ? EdgeInsets.all(15) : EdgeInsets.only(left: 100, right: 100, top: 50, bottom: 50),
             child: Builder(
 
@@ -501,9 +502,11 @@ class AddMainCategporyWidgets extends StatelessWidget {
   }
 }
 
+
 class GetAllCategory extends StatelessWidget {
   const GetAllCategory({
-    super.key, required this.controller,
+    super.key,
+    required this.controller,
   });
 
   final CategoryController controller;
@@ -513,194 +516,193 @@ class GetAllCategory extends StatelessWidget {
     return SizedBox(
       height: 350,
       child: Obx(() {
-        if(controller.isDataGetting.value){
-          return Center(child: CircularProgressIndicator(),);
-        }else{
-          return ListView.builder(
+        if (controller.isDataGetting.value) {
+          return Center(
+            child: CircularProgressIndicator(),
+          );
+        } else {
+          return ReorderableListView.builder(
+            onReorder: (oldIndex, newIndex) {
+              if (newIndex > oldIndex) newIndex--; // Adjust index
+              final item = controller.mainCategoryModel.value.data!.removeAt(oldIndex);
+              controller.mainCategoryModel.value.data!.insert(newIndex, item);
+              controller.mainCategoryModel.refresh(); // Notify listeners
+            },
             itemCount: controller.mainCategoryModel.value.data!.length,
-            itemBuilder: (_, index){
+            itemBuilder: (_, index) {
               var data = controller.mainCategoryModel.value.data![index];
-              return Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Container(
-                    height: 30,
-                    decoration: BoxDecoration(
-                      color: Colors.grey.shade100
-                    ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Row(
-                          children: [
-                            AppNetworkImage(image: data.image!, height: 30, width: 30,),
-                            SizedBox(width: 10,),
-                            Text("${data.name}",
-                              style: TextStyle(
+
+              return ReorderableDragStartListener(
+                key: ValueKey(data.id), // Unique key for main category
+                index: index,
+                child: Column(
+                  children: [
+                    Container(
+                      height: 30,
+                      margin: const EdgeInsets.only(bottom: 8),
+                      padding: const EdgeInsets.symmetric(horizontal: 12),
+                      decoration: BoxDecoration(
+                        color: Colors.grey.shade100,
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Row(
+                            children: [
+                              AppNetworkImage(image: data.image!, height: 30, width: 30),
+                              SizedBox(width: 10),
+                              Text(
+                                "${data.name}",
+                                style: TextStyle(
                                   fontSize: 14,
                                   color: Colors.black,
-                                  fontWeight: FontWeight.w600
+                                  fontWeight: FontWeight.w600,
+                                ),
                               ),
-                            ),
-                          ],
-                        ),
-                        Row(
-                          children: [
-                            IconButton(
-                              onPressed: (){
-                                controller.editSingleCategory.value = data!;
-                                controller.categoryName.value.text = data.name!;
-                                controller.selectedId.value = data.id.toString();
-                              },
-                              icon: Icon(Icons.edit, color: Colors.blue, size: 20,),
-                            ),
-                            IconButton(
-                              onPressed: (){
-                                Get.defaultDialog(
+                            ],
+                          ),
+                          Row(
+                            children: [
+                              IconButton(
+                                onPressed: () {
+                                  controller.editSingleCategory.value = data;
+                                  controller.categoryName.value.text = data.name!;
+                                  controller.selectedId.value = data.id.toString();
+                                },
+                                icon: Icon(Icons.edit, color: Colors.blue, size: 20),
+                              ),
+                              IconButton(
+                                onPressed: () {
+                                  Get.defaultDialog(
                                     title: "Are You sure?",
-                                    content: Container(
-                                      width: 400,
-                                      padding: const EdgeInsets.all(12.0),
-                                      child: const Text(
-                                          "Do you want to delete this category? If you delete the category, all subcategories will be deleted and also all products under this category will be deleted."),
-                                    ),
+                                    content: const Text(
+                                        "Do you want to delete this category? If you delete the category, all subcategories will be deleted, and also all products under this category will be deleted."),
                                     actions: [
                                       TextButton(
-                                          onPressed: () {
-                                            Get.back();
-                                          },
-                                          child: const Text(
-                                            "Cancel",
-                                            style: TextStyle(
-                                                color: Colors
-                                                    .black),
-                                          )),
+                                        onPressed: () {
+                                          Get.back();
+                                        },
+                                        child: const Text(
+                                          "Cancel",
+                                          style: TextStyle(color: Colors.black),
+                                        ),
+                                      ),
                                       TextButton(
-                                          onPressed: () async {
-                                            Get.back();
-                                            await controller
-                                                .deleteMainCategory(
-                                                data.id
-                                                    .toString());
-
-                                          },
-                                          child: const Text(
-                                            "Delete",
-                                            style: TextStyle(
-                                                color: Colors
-                                                    .red),
-                                          )),
-                                    ]
-                                );
-                              },
-                              icon: Icon(Icons.delete, color: Colors.red, size: 20,),
-                            ),
-
-                          ],
-                        )
-                      ],
+                                        onPressed: () async {
+                                          Get.back();
+                                          await controller.deleteMainCategory(data.id.toString());
+                                        },
+                                        child: const Text(
+                                          "Delete",
+                                          style: TextStyle(color: Colors.red),
+                                        ),
+                                      ),
+                                    ],
+                                  );
+                                },
+                                icon: Icon(Icons.delete, color: Colors.red, size: 20),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
                     ),
-                  ),
-                  data.subCategories!.isEmpty ? Center() : SizedBox(
-                    child: ListView.builder(
-                        physics: const NeverScrollableScrollPhysics(),
-                        shrinkWrap: true,
-                        itemCount: data.subCategories!.length,
-                        itemBuilder: (context, subIndex) {
-                          var subCat = data.subCategories![subIndex];
-                          return  Container(
-                            height: 30,
-                            margin: const EdgeInsets.only(
-                                left: 40, bottom: 5),
-                            padding: const EdgeInsets.only(
-                                left: 5, right: 5),
-                            decoration: BoxDecoration(
-                              color: Colors.grey.shade50,
-                              borderRadius:
-                              BorderRadius.circular(10),
-                            ),
-                            child: Row(
-                              mainAxisAlignment:
-                              MainAxisAlignment
-                                  .spaceBetween,
-                              children: [
-                                Row(
+                    if (data.subCategories != null && data.subCategories!.isNotEmpty)
+                      Padding(
+                        padding: const EdgeInsets.only(left: 20),
+                        child: ReorderableListView.builder(
+                          physics: NeverScrollableScrollPhysics(),
+                          shrinkWrap: true,
+                          onReorder: (oldIndex, newIndex) {
+                            if (newIndex > oldIndex) newIndex--; // Adjust index
+                            final subItem = data.subCategories!.removeAt(oldIndex);
+                            data.subCategories!.insert(newIndex, subItem);
+                            controller.mainCategoryModel.refresh(); // Notify listeners
+                          },
+                          itemCount: data.subCategories!.length,
+                          itemBuilder: (context, subIndex) {
+                            var subCat = data.subCategories![subIndex];
+
+                            return ReorderableDragStartListener(
+                              key: ValueKey(subCat.id), // Unique key for subcategory
+                              index: subIndex,
+                              child: Container(
+                                height: 30,
+                                margin: const EdgeInsets.only(bottom: 5),
+                                padding: const EdgeInsets.symmetric(horizontal: 12),
+                                decoration: BoxDecoration(
+                                  color: Colors.grey.shade50,
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                   children: [
-                                    AppNetworkImage(image: subCat.image!, height: 30, width: 30,),
-                                    SizedBox(
-                                      width: 10,
+                                    Row(
+                                      children: [
+                                        AppNetworkImage(image: subCat.image!, height: 30, width: 30),
+                                        SizedBox(width: 10),
+                                        Text(
+                                          "${subCat.name}",
+                                          style: TextStyle(
+                                            fontWeight: FontWeight.w500,
+                                            fontSize: 14,
+                                          ),
+                                        ),
+                                      ],
                                     ),
-                                    Text(
-                                      "${subCat.name}",
-                                      style: TextStyle(
-                                          fontWeight:
-                                          FontWeight.w500,
-                                          fontSize: 14),
-                                    )
+                                    IconButton(
+                                      onPressed: () {
+                                        Get.defaultDialog(
+                                          title: "Are You sure?",
+                                          content: const Text(
+                                              "Do you want to delete this subcategory?"),
+                                          actions: [
+                                            TextButton(
+                                              onPressed: () {
+                                                Get.back();
+                                              },
+                                              child: const Text(
+                                                "Cancel",
+                                                style: TextStyle(color: Colors.black),
+                                              ),
+                                            ),
+                                            TextButton(
+                                              onPressed: () async {
+                                                Get.back();
+                                                await controller.deleteSubCategory(subCat.id.toString());
+                                              },
+                                              child: const Text(
+                                                "Delete",
+                                                style: TextStyle(color: Colors.red),
+                                              ),
+                                            ),
+                                          ],
+                                        );
+                                      },
+                                      icon: Icon(
+                                        Icons.delete,
+                                        color: Colors.red,
+                                        size: 20,
+                                      ),
+                                    ),
                                   ],
                                 ),
-                                SizedBox(
-                                  width: 50,
-                                  height: 40,
-                                  child: Row(
-                                    children: [
-                                      IconButton(
-                                          onPressed: () {
-                                            Get.defaultDialog(
-                                                title: "Are You sure?",
-                                                content: const Text(
-                                                    "Do you want to delete this category?"),
-                                                actions: [
-                                                  TextButton(
-                                                      onPressed: () {
-                                                        Get.back();
-                                                      },
-                                                      child: const Text(
-                                                        "Cancel",
-                                                        style: TextStyle(
-                                                            color: Colors
-                                                                .black),
-                                                      )),
-                                                  TextButton(
-                                                      onPressed: () async {
-                                                        Get.back();
-                                                        await controller
-                                                            .deleteSubCategory(
-                                                            subCat.id
-                                                                .toString());
-
-                                                      },
-                                                      child: const Text(
-                                                        "Delete",
-                                                        style: TextStyle(
-                                                            color: Colors
-                                                                .red),
-                                                      )),
-                                                ]
-                                            );
-                                          },
-                                          icon: Icon(
-                                            Icons.delete,
-                                            color: Colors.red,
-                                            size: 20,
-                                          )),
-                                    ],
-                                  ),
-                                )
-                              ],
-                            ),
-                          );
-                        }),
-                  )
-                ],
+                              ),
+                            );
+                          },
+                        ),
+                      ),
+                  ],
+                ),
               );
             },
           );
-        }
+
+
 
         }
-      ),
+      }),
     );
   }
 }

@@ -50,6 +50,11 @@ class _ProductListState extends State<ProductList> {
         ),
         child: AppTable(
           title: "Product List",
+          isShowAddButton: true,
+          buttonText: "Add New Product",
+          onAddButton: (){
+            Get.toNamed(AppRoute.add_new_product);
+          },
           headersChildren:const [
             TableHeader(name: "REF", width: 30),
             TableHeader(name: "PRODUCTS", width: 200),
@@ -112,7 +117,13 @@ class _ProductListState extends State<ProductList> {
                             color: Colors.white,
                             border: Border.all(color: Colors.grey.shade200),
                           ),
-                          child: Text("${data.name}"),
+                          child: InputFiled(
+                              hint: "Name",
+                              controller: _productController.productNameList.value[index],
+                            onChanged: (v){
+                              _productController.editProductList(data.id.toString(), index);
+                            },
+                          )
                         ),
                         //Stock
                         Container(
@@ -124,6 +135,9 @@ class _ProductListState extends State<ProductList> {
                               border: Border.all(color: Colors.grey.shade200),
                             ),
                             child: InputFiled(
+                                onChanged: (v){
+                                  _productController.editProductList(data.id.toString(), index);
+                                },
                                 hint: "Purchases price",
                                 controller: _productController.productPurchasePriceList.value[index]
                             )
@@ -144,6 +158,7 @@ class _ProductListState extends State<ProductList> {
                                   setState(() {
                                     _productController.productTypesList.value[index].text = v!.toString();
                                   });
+                                    _productController.editProductList(data.id.toString(), index);
                                 }),
                         ),
                         Container(
@@ -156,7 +171,10 @@ class _ProductListState extends State<ProductList> {
                             ),
                             child: InputFiled(
                                 hint: "UV",
-                                controller: _productController.units.value[index]
+                                controller: _productController.units.value[index],
+                              onChanged: (v){
+                                _productController.editProductList(data.id.toString(), index);
+                              },
                             )
                         ),
                         Container(
@@ -169,7 +187,10 @@ class _ProductListState extends State<ProductList> {
                             ),
                             child: InputFiled(
                                 hint: "Stock",
-                                controller: _productController.stock.value[index]
+                                controller: _productController.stock.value[index],
+                              onChanged: (v){
+                                _productController.editProductList(data.id.toString(), index);
+                              },
                             )
                         ),
                         Container(
@@ -188,6 +209,7 @@ class _ProductListState extends State<ProductList> {
                                   setState(() {
                                     _productController.origin.value[index].text = v!.toString();
                                   });
+                                    _productController.editProductList(data.id.toString(), index);
                                 }),
                         ),
                         //Status
@@ -214,7 +236,7 @@ class _ProductListState extends State<ProductList> {
                                 Obx(() {
                                   return IconButton(
                                       onPressed: (){
-                                        _productController.editProductList(data.id.toString(), index);
+                                        _productController.editProductList(data.id.toString(), index, isFromClick: true);
                                       },
                                       icon: _productController.isDeletingData.value ? Center(child: CircularProgressIndicator(),) : Icon(Icons.save,color: Colors.green,));
                                 }
