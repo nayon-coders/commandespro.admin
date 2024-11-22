@@ -63,13 +63,17 @@ class AppInput extends StatelessWidget {
           validator: (v){
             if(isValidatorNeed){
               if(v!.isEmpty){
-                return "This filed must not be empty.";
+                return "This field is required.";
               }
               return null;
             }
 
           },
           decoration: InputDecoration(
+            errorStyle: TextStyle(
+              color: Colors.red,
+              fontSize: 12,
+            ),
             contentPadding: EdgeInsets.all(20),
             hintText: hint,
             hintStyle: TextStyle(fontWeight: FontWeight.w400,fontSize: 13,color: Colors.blueGrey),

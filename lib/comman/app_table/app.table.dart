@@ -109,13 +109,15 @@
 // }
 
 
+import 'package:commandespro_admin/routes/app_pages.dart';
 import 'package:commandespro_admin/utility/app_const.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 
 
 class AppTable extends StatelessWidget {
-  AppTable({super.key, this. onPageFront, required this.headersChildren, required this.row, required this.onSearch,  this.searchController, required this.title, this.onChanged, this.isSearchShow = true, this.onPageBack, this.pageLength});
+  AppTable({super.key, this.onAddButton, this.buttonText = "Add New",  this.isShowAddButton = false, this. onPageFront, required this.headersChildren, required this.row, required this.onSearch,  this.searchController, required this.title, this.onChanged, this.isSearchShow = true, this.onPageBack, this.pageLength});
   final List<Widget> headersChildren;
   final Color headerBg = AppColors.primaryColor;
   final Widget row;
@@ -124,9 +126,12 @@ class AppTable extends StatelessWidget {
   final String title;
   final Function(String)? onChanged;
   final bool isSearchShow;
+  final bool isShowAddButton;
   final VoidCallback? onPageBack;
   final VoidCallback? onPageFront;
   final int? pageLength;
+  final String buttonText;
+  final VoidCallback? onAddButton;
 
   @override
   Widget build(BuildContext context) {
@@ -138,11 +143,40 @@ class AppTable extends StatelessWidget {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text("${title}",
-              style:const TextStyle(
-                fontWeight: FontWeight.bold,
-                fontSize: 20,
-              ),
+            Row(
+              children: [
+                Text("${title}",
+                  style:const TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 20,
+                  ),
+                ),
+                SizedBox(width: 20,),
+                isShowAddButton? InkWell(
+                  onTap:onAddButton,
+                  child: Container(
+                    padding: EdgeInsets.only(left: 20, right: 20),
+                    height: 40,
+                    decoration: BoxDecoration(
+                      color: AppColors.primaryColor,
+                      borderRadius: BorderRadius.circular(5),
+                    ),
+                    child: Row(
+                      children: [
+                        Icon(Icons.add, color: Colors.white, size: 17,),
+                        SizedBox(width: 10,),
+                        Center(
+                          child: Text("${buttonText}",
+                            style:const TextStyle(
+                              color: Colors.white,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ) : Center()
+              ],
             ),
 
             isSearchShow ?  Row(
