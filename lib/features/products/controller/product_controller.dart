@@ -13,7 +13,7 @@ class ProductController extends GetxController{
 
   //from key
   var formKey = GlobalKey<FormState>();
-  RxDouble productPageHeight = 970.00.obs;
+  RxDouble productPageHeight = 1000.00.obs;
   RxDouble productPageMobileHeight = 950.00.obs;
 
 

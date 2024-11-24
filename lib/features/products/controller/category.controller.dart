@@ -15,6 +15,13 @@ import '../../../data/service/api.service.dart';
 
 class CategoryController extends GetxController{
 
+  var categoryFormKey = GlobalKey<FormState>().obs;
+  var subCategoryFormKey = GlobalKey<FormState>().obs;
+
+  RxString categoryImageErrorText = "".obs;
+  RxString subCategoryImageErrorText = "".obs;
+  RxString selectMainCategoryErrorText = "".obs;
+
 
   Rx<Uint8List?> mainCatImage = Rx<Uint8List?>(null);
   Rx<Uint8List?> subCatImage = Rx<Uint8List?>(null);
@@ -154,7 +161,7 @@ class CategoryController extends GetxController{
     isAddingSubCat.value = true;
 
       // Convert Uint8List to Base64
-      var convertImage = await FirebaseImageController.uploadImageToFirebaseStorage(subCatImage.value!, "sub_category_image");
+      var convertImage = await FirebaseImageController.uploadImageToFirebaseStorage(subCatImage.value!, "$imagePath");
 
       final response = await http.post(
         Uri.parse(AppConfig.SUB_CATEGORY_CREATE),
@@ -217,6 +224,10 @@ class CategoryController extends GetxController{
     categoryName.value.clear();
     subCategoryName.value.clear();
     selectedId.value = "";
+    categoryImageErrorText.value = "";
+    subCategoryImageErrorText.value = "";
+    selectMainCategoryErrorText.value = "";
+
   }
 
 

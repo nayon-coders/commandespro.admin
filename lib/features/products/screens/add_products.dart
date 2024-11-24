@@ -101,8 +101,11 @@ class _AddProductsState extends State<AddProducts> {
                               await controller.addProduct(images);
                             }
                           }else{
+                            controller.productPageHeight.value =  controller.productPageHeight.value + 80;
                             Get.snackbar("Error!", "Please fill all the required field", backgroundColor: Colors.red, colorText: Colors.white);
                           }
+                        }else{
+                          controller.productPageHeight.value =  controller.productPageHeight.value + 100;
                         }
                       },
                       child: Center(
@@ -425,7 +428,7 @@ class _AddProductsState extends State<AddProducts> {
                          ],
                        ),
                        SizedBox(height: 5,),
-                       AddProductErrorText.productImageError.value.isEmpty ? Center() : ErrorText(text: AddProductErrorText.productImageError.value),
+                       images != null || images.isEmpty ? const Center() : const ErrorText(text:"This filed is required!"),
                      ],
                    ),
                  );
@@ -478,7 +481,7 @@ class _AddProductsState extends State<AddProducts> {
                          children: [
                            Expanded(child: AppInput(text: "Wholesale Price (+15%)", hint: "Wholesale Price ",  readOnly: true,  controller: controller.wholesalersPrice.value)),
                            SizedBox(width: 20,),
-                           Expanded(child: AppInput(text: "Discount (%)", hint: "Discount (%)", controller: controller.productDiscountPrice.value)),
+                           Expanded(child: AppInput(text: "Discount (%)", hint: "Discount (%)", controller: controller.productDiscountPrice.value, isValidatorNeed: false, )),
                          ],
                        ),
                        SizedBox(height: 20,),
