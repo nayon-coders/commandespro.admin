@@ -4,6 +4,7 @@ import 'package:commandespro_admin/routes/app_pages.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_rx/get_rx.dart';
+import 'package:get/get_rx/src/rx_types/rx_types.dart';
 
 import '../../../app.config.dart';
 import '../../../controller/firebase.image.controller.dart';
@@ -17,8 +18,11 @@ class ProductController extends GetxController{
   RxDouble productPageMobileHeight = 950.00.obs;
 
 
-  RxList vatList = ["5", "10", "15", "20"].obs;
+  RxList vatList = ["0", "5", "10", "15", "20"].obs;
 
+
+
+  Rx<TextEditingController> search = TextEditingController().obs;
   Rx<TextEditingController> productName = TextEditingController().obs;
   Rx<TextEditingController> productShortDes = TextEditingController().obs;
   Rx<TextEditingController> productDes = TextEditingController().obs;
@@ -31,6 +35,7 @@ class ProductController extends GetxController{
   Rx<TextEditingController> restaurantPrice = TextEditingController().obs;
   Rx<TextEditingController> resellerPrice = TextEditingController().obs;
   Rx<TextEditingController> wholesalersPrice = TextEditingController().obs;
+  Rx<TextEditingController> supperMarcent = TextEditingController().obs;
   Rx<TextEditingController> productDiscountPrice = TextEditingController().obs;
   RxString mainCatId = "".obs;
   RxBool isEdit = false.obs;
@@ -60,6 +65,7 @@ class ProductController extends GetxController{
   //  getAllProduct();
   }
 
+
   //get all product
   Future<List<SingleProducts>?> getAllProduct()async{
     isGettingData.value = true;
@@ -79,6 +85,20 @@ class ProductController extends GetxController{
     return  productListModel.value.data;
 
   }
+  // Pagination variables
+  RxInt currentPage = 1.obs; // Start at the first page
+  RxInt itemsPerPage = 20.obs;
+
+
+  // Calculate paginated data
+  List<SingleProducts> get paginatedProducts {
+    int startIndex = int.parse("${(currentPage - 1) * itemsPerPage.value}");
+    final endIndex = startIndex + itemsPerPage.value;
+    return singleProductsList!.sublist(startIndex, endIndex.clamp(0, singleProductsList!.length));
+  }
+  // Check if there are more pages available
+  bool get hasMorePages => currentPage * itemsPerPage.value < singleProductsList.length;
+
 
 
   // New method to search orders by company name
@@ -122,6 +142,7 @@ class ProductController extends GetxController{
       "regular_price": restaurantPrice.value.text,
       "selling_price": resellerPrice.value.text,
       "whole_price": wholesalersPrice.value.text,
+      "supper_marcent": supperMarcent.value.text,
       "discount_price": productDiscountPrice.value.text,
       "images": convertedImage,
       "subcategories": subCatListId.value,
@@ -166,6 +187,7 @@ class ProductController extends GetxController{
       "regular_price": restaurantPrice.value.text,
       "selling_price": resellerPrice.value.text,
       "whole_price": wholesalersPrice.value.text,
+      "supper_marcent": supperMarcent.value.text,
       "discount_price": productDiscountPrice.value.text,
       "images": convertedImage.isEmpty ? productImages.value : convertedImage,
       "subcategories": subCatListId.value,
@@ -241,6 +263,10 @@ class ProductController extends GetxController{
 
   // list for
   RxList<TextEditingController> productPurchasePriceList = <TextEditingController>[].obs;
+  RxList sellingPrice = [].obs;
+  RxList restaurentPrice = [].obs;
+  RxList wholePrice = [].obs;
+  RxList supperMarketPrice = [].obs;
   RxList<TextEditingController> productNameList = <TextEditingController>[].obs;
   RxList<TextEditingController> productTypesList = <TextEditingController>[].obs;
   RxList<TextEditingController> stock = <TextEditingController>[].obs;
@@ -251,6 +277,10 @@ class ProductController extends GetxController{
   //add add list for product
   addProductListTextEditing(SingleProducts data){
     productPurchasePriceList.add(TextEditingController(text: data.purchasePrice.toString()));
+    sellingPrice.add(data.sellingPrice);
+    restaurentPrice.add(data.regularPrice);
+    wholePrice.add(data.wholePrice);
+    supperMarketPrice.add(data.supper_marcent);
     productNameList.add(TextEditingController(text: data.name.toString()));
     productTypesList.add(TextEditingController(text: data.productType.toString()));
     stock.add(TextEditingController(text: data.isStock.toString()));
@@ -258,6 +288,9 @@ class ProductController extends GetxController{
     origin.add(TextEditingController(text: data.country.toString()));
     status.add(TextEditingController(text: data.status.toString()));
   }
+
+
+  //calculate price for product when purchase price chang
 
   //edit info from list
   RxBool isEditProductList = false.obs;
@@ -271,6 +304,12 @@ class ProductController extends GetxController{
       "country": origin[index].value.text,
       "stock" : stock[index].value.text,
       "purchase_price": productPurchasePriceList[index].value.text,
+      "regular_price": restaurentPrice[index],
+      "selling_price": sellingPrice[index],
+      "whole_price": wholePrice[index],
+      "supper_marcent":  supperMarketPrice[index],
+
+
     };
 
 
@@ -287,7 +326,7 @@ class ProductController extends GetxController{
         Get.snackbar("Error!", "Something went wrong. Status Code: ${res.statusCode}", backgroundColor: Colors.red);
       }
     }
-    getAllProduct();
+   // getAllProduct();
     isEditProductList.value = false;
 
 
@@ -306,6 +345,10 @@ class ProductController extends GetxController{
     tax.value = "";
     country.value = "";
     productPurchasePrice.value.clear();
+    restaurentPrice.clear();
+    sellingPrice.clear();
+    wholePrice.clear();
+    supperMarketPrice.clear();
     restaurantPrice.value.clear();
     resellerPrice.value.clear();
     wholesalersPrice.value.clear();

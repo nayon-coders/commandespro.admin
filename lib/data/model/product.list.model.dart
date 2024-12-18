@@ -50,7 +50,8 @@ class SingleProducts {
   final int? isStock;
   final DateTime? createdAt;
   final DateTime? updatedAt;
-  final int? purchasePrice;
+  final dynamic purchasePrice;
+  final dynamic supper_marcent;
   final double? regularPrice;
   final double? sellingPrice;
   final double? wholePrice;
@@ -87,6 +88,7 @@ class SingleProducts {
     this.variants,
     this.subcategories,
     this.tags,
+    this.supper_marcent
   });
 
   factory SingleProducts.fromJson(Map<String, dynamic> json) => SingleProducts(
@@ -104,6 +106,7 @@ class SingleProducts {
     createdAt: json["created_at"] == null ? null : DateTime.parse(json["created_at"]),
     updatedAt: json["updated_at"] == null ? null : DateTime.parse(json["updated_at"]),
     purchasePrice: json["purchase_price"],
+    supper_marcent: json["supper_marcent"],
     regularPrice: json["regular_price"]?.toDouble(),
     sellingPrice: json["selling_price"]?.toDouble(),
     wholePrice: json["whole_price"]?.toDouble(),

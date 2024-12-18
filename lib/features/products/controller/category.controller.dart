@@ -15,13 +15,6 @@ import '../../../data/service/api.service.dart';
 
 class CategoryController extends GetxController{
 
-  var categoryFormKey = GlobalKey<FormState>().obs;
-  var subCategoryFormKey = GlobalKey<FormState>().obs;
-
-  RxString categoryImageErrorText = "".obs;
-  RxString subCategoryImageErrorText = "".obs;
-  RxString selectMainCategoryErrorText = "".obs;
-
 
   Rx<Uint8List?> mainCatImage = Rx<Uint8List?>(null);
   Rx<Uint8List?> subCatImage = Rx<Uint8List?>(null);
@@ -63,7 +56,7 @@ class CategoryController extends GetxController{
         "category_image": convertImage
       };
 
-     var response = await ApiService().postApi(AppConfig.CATEGORY_MAIN_ADD, data);
+      var response = await ApiService().postApi(AppConfig.CATEGORY_MAIN_ADD, data);
 
       if (response.statusCode == 200) {
         clearImage();
@@ -160,30 +153,30 @@ class CategoryController extends GetxController{
   Future addSubCategory(imagePath)async{
     isAddingSubCat.value = true;
 
-      // Convert Uint8List to Base64
-      var convertImage = await FirebaseImageController.uploadImageToFirebaseStorage(subCatImage.value!, "$imagePath");
+    // Convert Uint8List to Base64
+    var convertImage = await FirebaseImageController.uploadImageToFirebaseStorage(subCatImage.value!, "sub_category_image");
 
-      final response = await http.post(
-        Uri.parse(AppConfig.SUB_CATEGORY_CREATE),
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: json.encode({
-          'name': subCategoryName.value.text, // The name of the category
-          'main_cat_id': mainCatId.value, // The name of the category
-          'image': convertImage, // The Base64 image data
-        }),
-      );
-      // Handle the response
-      if (response.statusCode == 200) {
-        isAddingSubCat.value = false;
-        getMainCategory();
-        clearImage();
-        clearInputText();
-        Get.snackbar('Success', 'Sub Category created successfully' ,backgroundColor: Colors.green);
-      } else {
-        Get.snackbar('Error', 'Failed to create sub category', backgroundColor: Colors.red);
-      }
+    final response = await http.post(
+      Uri.parse(AppConfig.SUB_CATEGORY_CREATE),
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: json.encode({
+        'name': subCategoryName.value.text, // The name of the category
+        'main_cat_id': mainCatId.value, // The name of the category
+        'image': convertImage, // The Base64 image data
+      }),
+    );
+    // Handle the response
+    if (response.statusCode == 200) {
+      isAddingSubCat.value = false;
+      getMainCategory();
+      clearImage();
+      clearInputText();
+      Get.snackbar('Success', 'Sub Category created successfully' ,backgroundColor: Colors.green);
+    } else {
+      Get.snackbar('Error', 'Failed to create sub category', backgroundColor: Colors.red);
+    }
     isAddingSubCat.value = false;
 
   }
@@ -200,6 +193,42 @@ class CategoryController extends GetxController{
       Get.snackbar("Error!", "Something is wrong with server. Status Code: ${res.statusCode}", backgroundColor: Colors.red);
     }
     isDataDeleting.value = false;
+  }
+
+  //orientation category update
+  orientationCategoryUpdate(SingleCategory item, String index)async{
+   // isDataUpdating.value = true;
+    var data =  {
+      "sn_number": index,
+      "category_name": "${item.name}",
+      "category_image": "${item.image}",
+    };
+    print("data --- ${data}");
+    var res = await ApiService().putApi(AppConfig.CATEGORY_MAIN_UPDATE+"${item.id.toString()}", data);
+    if(res.statusCode == 200){
+      Get.snackbar("Success!", "Category oriantation  updated success", backgroundColor: Colors.green);
+      getMainCategory();
+    }else{
+      Get.snackbar("Error!", "Something is wrong with server. Status Code: ${res.statusCode}", backgroundColor: Colors.red);
+    }
+   // isDataUpdating.value = false;
+  }
+
+  orientationSubCategoryUpdate(SingleCategory item, String index)async{
+    // isDataUpdating.value = true;
+    var data =  {
+      "sn_number": index,
+      "name": "${item.name}",
+      "image": "${item.image}",
+    };
+    print("data --- ${data}");
+    var res = await ApiService().putApi(AppConfig.SUB_CATEGORY_UPDATE+"${item.id.toString()}", data);
+    print("res --- ${res.body}");
+    if(res.statusCode == 200){
+     // getMainCategory();
+    }else{
+    }
+    // isDataUpdating.value = false;
   }
 
 
@@ -224,10 +253,6 @@ class CategoryController extends GetxController{
     categoryName.value.clear();
     subCategoryName.value.clear();
     selectedId.value = "";
-    categoryImageErrorText.value = "";
-    subCategoryImageErrorText.value = "";
-    selectMainCategoryErrorText.value = "";
-
   }
 
 

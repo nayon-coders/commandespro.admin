@@ -466,24 +466,29 @@ class _AddProductsState extends State<AddProducts> {
                            controller.restaurantPrice.value.text = ((double.parse(v) / 100) * 42 + double.parse(v)).toStringAsFixed(2);
                            controller.resellerPrice.value.text = ((double.parse(v) / 100) * 25 + double.parse(v)).toStringAsFixed(2);
                            controller.wholesalersPrice.value.text = ((double.parse(v) / 100) * 15 + double.parse(v)).toStringAsFixed(2);
+                           controller.supperMarcent.value.text = ((double.parse(v) / 100) * 10 + double.parse(v)).toStringAsFixed(2);
                          },
                        ),
                        SizedBox(height: 20,),
                        Row(
                          children: [
-                           Expanded(child: AppInput(text: "Reseller Price (+25%)", hint: "Reseller Price ", readOnly: true, controller: controller.resellerPrice.value)),
+                           Expanded(child: AppInput(text: "Prix Revendeurs (+25%)", hint: "Prix Revendeurs ", readOnly: true, controller: controller.resellerPrice.value)),
                            SizedBox(width: 20,),
-                           Expanded(child: AppInput(text: "Restaurant Price (+42%)", hint: "Restaurant Price ",   readOnly: true, controller: controller.restaurantPrice.value)),
+                           Expanded(child: AppInput(text: "Prix Restaurants  (+42%)", hint: "Prix Restaurants ",   readOnly: true, controller: controller.restaurantPrice.value)),
                          ],
                        ),
                        SizedBox(height: 20,),
                        Row(
                          children: [
-                           Expanded(child: AppInput(text: "Wholesale Price (+15%)", hint: "Wholesale Price ",  readOnly: true,  controller: controller.wholesalersPrice.value)),
+                           Expanded(child: AppInput(text: "Prix Grossistes (+15%)", hint: "Prix Grossistes ",  readOnly: true,  controller: controller.wholesalersPrice.value)),
                            SizedBox(width: 20,),
-                           Expanded(child: AppInput(text: "Discount (%)", hint: "Discount (%)", controller: controller.productDiscountPrice.value, isValidatorNeed: false, )),
+                           Expanded(child: AppInput(text: "Prix supermarché.  (+10%)", hint: "Prix supermarché.  ",  readOnly: true,  controller: controller.supperMarcent.value)),
+
                          ],
                        ),
+                       SizedBox(height: 20,),
+                       AppInput(text: "Discount (%)", hint: "Discount (%)", controller: controller.productDiscountPrice.value, isValidatorNeed: false, ),
+
                        SizedBox(height: 20,),
                        Text("Select One Or More Category",
                          style: formTitleStyle(),
