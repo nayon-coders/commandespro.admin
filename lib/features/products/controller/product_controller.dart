@@ -69,8 +69,8 @@ class ProductController extends GetxController{
   //get all product
   Future<List<SingleProducts>?> getAllProduct()async{
     isGettingData.value = true;
-
-    var res = await ApiService().getApi(AppConfig.PRODUCT_GET);
+    clearAll();
+    var res = await ApiService().getApi(AppConfig.PRODUCT_GET+"?page=$currentPage");
     singleProductsList.clear();
     if(res.statusCode == 200){
       productListModel.value = ProductListModel.fromJson(jsonDecode(res.body));
@@ -87,18 +87,18 @@ class ProductController extends GetxController{
   }
   // Pagination variables
   RxInt currentPage = 1.obs; // Start at the first page
-  RxInt itemsPerPage = 20.obs;
-
-
-  // Calculate paginated data
-  List<SingleProducts> get paginatedProducts {
-    int startIndex = int.parse("${(currentPage - 1) * itemsPerPage.value}");
-    final endIndex = startIndex + itemsPerPage.value;
-    return singleProductsList!.sublist(startIndex, endIndex.clamp(0, singleProductsList!.length));
-  }
-  // Check if there are more pages available
-  bool get hasMorePages => currentPage * itemsPerPage.value < singleProductsList.length;
-
+  // RxInt itemsPerPage = 20.obs;
+  //
+  //
+  // // Calculate paginated data
+  // List<SingleProducts> get paginatedProducts {
+  //   int startIndex = int.parse("${(currentPage - 1) * itemsPerPage.value}");
+  //   final endIndex = startIndex + itemsPerPage.value;
+  //   return singleProductsList!.sublist(startIndex, endIndex.clamp(0, singleProductsList!.length));
+  // }
+  // // Check if there are more pages available
+  // bool get hasMorePages => currentPage * itemsPerPage.value < singleProductsList.length;
+  //
 
 
   // New method to search orders by company name
@@ -280,7 +280,7 @@ class ProductController extends GetxController{
     sellingPrice.add(data.sellingPrice);
     restaurentPrice.add(data.regularPrice);
     wholePrice.add(data.wholePrice);
-    supperMarketPrice.add(data.supper_marcent);
+    supperMarketPrice.add(data.supperMarcent);
     productNameList.add(TextEditingController(text: data.name.toString()));
     productTypesList.add(TextEditingController(text: data.productType.toString()));
     stock.add(TextEditingController(text: data.isStock.toString()));
@@ -316,11 +316,12 @@ class ProductController extends GetxController{
     var res = await ApiService().putApi(AppConfig.PRODUCT_UPDATE+"$id", data);
 
     if(res.statusCode == 200){
-      getAllProduct();
+     // getAllProduct();
       if(isFromClick){
+        getAllProduct();
         Get.snackbar("Success!", "Product updated success", backgroundColor: Colors.green);
       }
-      clearAll();
+      //clearAll();
     }else{
       if(isFromClick){
         Get.snackbar("Error!", "Something went wrong. Status Code: ${res.statusCode}", backgroundColor: Colors.red);
@@ -342,6 +343,7 @@ class ProductController extends GetxController{
     productUnit.value.clear();
     productDes.value.clear();
     productShortDes.value.clear();
+    productNameList.clear();
     tax.value = "";
     country.value = "";
     productPurchasePrice.value.clear();

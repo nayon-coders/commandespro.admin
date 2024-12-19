@@ -12,12 +12,16 @@ class ProductListModel {
   final bool? success;
   final String? message;
   final int? totalProducts;
+  final int? totalPages;
+  final int? currentPage;
   final List<SingleProducts>? data;
 
   ProductListModel({
     this.success,
     this.message,
     this.totalProducts,
+    this.totalPages,
+    this.currentPage,
     this.data,
   });
 
@@ -25,6 +29,8 @@ class ProductListModel {
     success: json["success"],
     message: json["message"],
     totalProducts: json["totalProducts"],
+    totalPages: json["totalPages"],
+    currentPage: json["currentPage"],
     data: json["data"] == null ? [] : List<SingleProducts>.from(json["data"]!.map((x) => SingleProducts.fromJson(x))),
   );
 
@@ -32,6 +38,8 @@ class ProductListModel {
     "success": success,
     "message": message,
     "totalProducts": totalProducts,
+    "totalPages": totalPages,
+    "currentPage": currentPage,
     "data": data == null ? [] : List<dynamic>.from(data!.map((x) => x.toJson())),
   };
 }
@@ -41,27 +49,27 @@ class SingleProducts {
   final int? categoryId;
   final String? name;
   final String? productType;
-  final String? unit;
+  final dynamic? unit;
   final String? longDescription;
   final String? shortDescription;
   final String? status;
-  final double? tax;
+  final int? tax;
   final String? country;
   final int? isStock;
   final DateTime? createdAt;
   final DateTime? updatedAt;
   final dynamic purchasePrice;
-  final dynamic supper_marcent;
-  final double? regularPrice;
-  final double? sellingPrice;
-  final double? wholePrice;
-  final double? discountPrice;
+  final dynamic? regularPrice;
+  final dynamic? sellingPrice;
+  final dynamic? wholePrice;
+  final dynamic? discountPrice;
+  final dynamic? supperMarcent;
   final String? categoryImage;
   final String? categoryName;
-  final List<ProductImages>? images;
-  final List<Variant>? variants;
+  final List<dynamic>? images;
+  final List<dynamic>? variants;
   final List<Subcategory>? subcategories;
-  final List<String>? tags;
+  final List<dynamic>? tags;
 
   SingleProducts({
     this.id,
@@ -82,43 +90,41 @@ class SingleProducts {
     this.sellingPrice,
     this.wholePrice,
     this.discountPrice,
+    this.supperMarcent,
     this.categoryImage,
     this.categoryName,
     this.images,
     this.variants,
     this.subcategories,
     this.tags,
-    this.supper_marcent
   });
 
   factory SingleProducts.fromJson(Map<String, dynamic> json) => SingleProducts(
     id: json["id"],
     categoryId: json["category_id"],
     name: json["name"],
-    productType: json["product_type"],
-    unit: json["unit"],
-    longDescription: json["long_description"],
-    shortDescription: json["short_description"],
-    status: json["status"],
-    tax: json["tax"]?.toDouble(),
-    country: json["country"],
+    productType: json["product_type"]!,
+    unit: json["unit"]!,
+    longDescription: json["long_description"]!,
+    shortDescription: json["short_description"]!,
+    status: json["status"]!,
+    tax: json["tax"],
+    country: json["country"]!,
     isStock: json["is_stock"],
     createdAt: json["created_at"] == null ? null : DateTime.parse(json["created_at"]),
     updatedAt: json["updated_at"] == null ? null : DateTime.parse(json["updated_at"]),
     purchasePrice: json["purchase_price"],
-    supper_marcent: json["supper_marcent"],
-    regularPrice: json["regular_price"]?.toDouble(),
-    sellingPrice: json["selling_price"]?.toDouble(),
-    wholePrice: json["whole_price"]?.toDouble(),
-    discountPrice: json["discount_price"]?.toDouble(),
+    regularPrice: json["regular_price"],
+    sellingPrice: json["selling_price"],
+    wholePrice: json["whole_price"],
+    discountPrice: json["discount_price"],
+    supperMarcent: json["supper_marcent"],
     categoryImage: json["category_image"],
     categoryName: json["category_name"],
-    images: json["images"] == null ? [] : List<ProductImages>.from(json["images"]!.map((x) => ProductImages.fromJson(x))),
-    variants: json["variants"] == null ? [] : List<Variant>.from(json["variants"]!.map((x) => Variant.fromJson(x))),
-    subcategories: json["subcategories"] == null
-        ? []
-        : (json["subcategories"] as List).where((x) => x != null).map((x) => Subcategory.fromJson(x)).toList(),
-    tags: json["tags"] == null ? [] : List<String>.from(json["tags"]!.map((x) => x)),
+    images: json["images"] == null ? [] : List<dynamic>.from(json["images"]!.map((x) => x)),
+    variants: json["variants"] == null ? [] : List<dynamic>.from(json["variants"]!.map((x) => x)),
+    subcategories: json["subcategories"] == null ? [] : List<Subcategory>.from(json["subcategories"]!.map((x) => Subcategory.fromJson(x))),
+    tags: json["tags"] == null ? [] : List<dynamic>.from(json["tags"]!.map((x) => x)),
   );
 
   Map<String, dynamic> toJson() => {
@@ -140,34 +146,16 @@ class SingleProducts {
     "selling_price": sellingPrice,
     "whole_price": wholePrice,
     "discount_price": discountPrice,
+    "supper_marcent": supperMarcent,
     "category_image": categoryImage,
     "category_name": categoryName,
-    "images": images == null ? [] : List<dynamic>.from(images!.map((x) => x.toJson())),
-    "variants": variants == null ? [] : List<dynamic>.from(variants!.map((x) => x.toJson())),
+    "images": images == null ? [] : List<dynamic>.from(images!.map((x) => x)),
+    "variants": variants == null ? [] : List<dynamic>.from(variants!.map((x) => x)),
     "subcategories": subcategories == null ? [] : List<dynamic>.from(subcategories!.map((x) => x.toJson())),
     "tags": tags == null ? [] : List<dynamic>.from(tags!.map((x) => x)),
   };
 }
 
-class ProductImages {
-  final int? imageId;
-  final String? imageUrl;
-
-  ProductImages({
-    this.imageId,
-    this.imageUrl,
-  });
-
-  factory ProductImages.fromJson(Map<String, dynamic> json) => ProductImages(
-    imageId: json["image_id"],
-    imageUrl: json["image_url"],
-  );
-
-  Map<String, dynamic> toJson() => {
-    "image_id": imageId,
-    "image_url": imageUrl,
-  };
-}
 
 class Subcategory {
   final int? subCategoryId;
@@ -193,26 +181,3 @@ class Subcategory {
   };
 }
 
-class Variant {
-  final int? variantId;
-  final String? variantName;
-  final String? variantValue;
-
-  Variant({
-    this.variantId,
-    this.variantName,
-    this.variantValue,
-  });
-
-  factory Variant.fromJson(Map<String, dynamic> json) => Variant(
-    variantId: json["variant_id"],
-    variantName: json["variant_name"],
-    variantValue: json["variant_value"],
-  );
-
-  Map<String, dynamic> toJson() => {
-    "variant_id": variantId,
-    "variant_name": variantName,
-    "variant_value": variantValue,
-  };
-}

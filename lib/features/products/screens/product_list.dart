@@ -56,7 +56,7 @@ class _ProductListState extends State<ProductList> {
             Get.toNamed(AppRoute.add_new_product);
           },
           headersChildren:const [
-            // TableHeader(name: "REF", width: 40),
+            TableHeader(name: "REF", width: 40),
             TableHeader(name: "PRODUCTS", width: 200),
             TableHeader(name: "PURCHASE PRICE ", width: 140),
             TableHeader(name: "PR", width: 70),
@@ -71,13 +71,11 @@ class _ProductListState extends State<ProductList> {
             TableHeader(name: "Action", width: 100),
           ],
           row:  Obx(() {
-            if(_productController.singleProductsList.isEmpty ){
-              if(_productController.isGettingData.value) {
-                return Center(child: CircularProgressIndicator(),);
-              }else{
-                return Center(child: Text("No product found!"),);
-              }
-            }else {
+            if(_productController.isGettingData.value) {
+              return SizedBox(
+                  height: 200,
+                  child: Center(child: CircularProgressIndicator(),));
+            } else {
               //if data
               return Column(
                 mainAxisAlignment: MainAxisAlignment.start,
@@ -106,16 +104,16 @@ class _ProductListState extends State<ProductList> {
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
                             //Id
-                            // Container(
-                            //   width: 40,
-                            //   padding: EdgeInsets.all(6),
-                            //   height: 40,
-                            //   decoration: BoxDecoration(
-                            //     color: Colors.white,
-                            //     border: Border.all(color: Colors.grey.shade200),
-                            //   ),
-                            //   child: Center(child: Text("${index+1}")),
-                            // ),
+                            Container(
+                              width: 40,
+                              padding: EdgeInsets.all(6),
+                              height: 40,
+                              decoration: BoxDecoration(
+                                color: Colors.white,
+                                border: Border.all(color: Colors.grey.shade200),
+                              ),
+                              child: Center(child: Text("${index+1}")),
+                            ),
                             //Name
                             Container(
                                 width: 200,
@@ -159,7 +157,7 @@ class _ProductListState extends State<ProductList> {
 
                                       });
                                       print(" _productController.sellingPrice ${ _productController.sellingPrice}");
-                                     // _productController.editProductList(data.id.toString(), index);
+                                      _productController.editProductList(data.id.toString(), index);
                                     },
                                     hint: "Purchases price",
                                     controller: _productController.productPurchasePriceList.value[index]
@@ -347,36 +345,49 @@ class _ProductListState extends State<ProductList> {
                       );
                     },
                   ),
-                  // SizedBox(height: 20,),
-                  // //pagination
-                  // Row(
-                  //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  //   crossAxisAlignment: CrossAxisAlignment.center,
-                  //   children: [
-                  //     Text("Showing 1 to 10 of 100 entries"),
-                  //     Row(
-                  //       children: [
-                  //         IconButton(
-                  //           onPressed: _productController.currentPage.value > 1 ? () {
-                  //             _productController.currentPage.value--;
-                  //           } : null,
-                  //           icon: Icon(Icons.arrow_back_ios),
-                  //         ),
-                  //
-                  //         Obx(() {
-                  //             return Text("${_productController.currentPage.value}");
-                  //           }
-                  //         ),
-                  //         IconButton(
-                  //           onPressed: _productController.hasMorePages ? () {
-                  //             _productController.currentPage.value++;
-                  //           } : null,
-                  //           icon: Icon(Icons.arrow_forward_ios),
-                  //         ),
-                  //       ],
-                  //     ),
-                  //   ],
-                  // ),
+                  SizedBox(height: 20,),
+                  //pagination
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Text("Showing 20 of ${_productController.productListModel.value!.totalProducts} entries"),
+                      Row(
+                        children: [
+                          IconButton(
+                            onPressed: (){
+                              if(_productController.currentPage.value > 0){
+                                _productController.currentPage.value--;
+                                //call the api
+                                _productController.getAllProduct();
+                              }else{
+                                return null;
+                              }
+                            },
+                            icon: Icon(Icons.arrow_back_ios),
+                          ),
+
+                          Obx(() {
+                              return _productController.isGettingData.value
+                                  ? CircularProgressIndicator() :  Text("${ _productController.currentPage.value} of ${_productController.productListModel.value!.totalPages}");
+                            }
+                          ),
+                          IconButton(
+                            onPressed: (){
+                              if(_productController.currentPage.value < _productController.productListModel.value!.totalPages!){
+                                _productController.currentPage.value++;
+                                //call the api
+                                _productController.getAllProduct();
+                              }else{
+                                return null;
+                              }
+                            },
+                            icon: Icon(Icons.arrow_forward_ios),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
                 ],
               );
             }
